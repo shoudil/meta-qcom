@@ -7,7 +7,7 @@ require conf/machine/include/qcom-common.inc
 DEFAULTTUNE = "armv8-2a-crypto"
 require conf/machine/include/arm/arch-armv8-2a.inc
 
-KERNEL_CMDLINE_EXTRA ?= "pcie_pme=nomsi earlycon"
+KERNEL_CMDLINE_EXTRA ?= "earlycon"
 
 MACHINE_ESSENTIAL_EXTRA_RRECOMMENDS += " \
     packagegroup-qcom-boot-essential \
