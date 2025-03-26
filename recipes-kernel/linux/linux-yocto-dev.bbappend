@@ -21,6 +21,7 @@ SRC_URI:append:qcom = " \
     file://qcm6490-board-dts/0003-arm64-dts-qcom-qcs6490-rb3gen2-Modify-WSA-and-VA-mac.patch \
     file://qcm6490-board-dts/0004-arm64-dts-qcom-qcs6490-rb3gen2-add-WSA8830-speakers-.patch \
     file://qcm6490-board-dts/0005-arm64-dts-qcom-qcs6490-rb3gen2-Add-sound-card.patch \
+    file://qcm6490-board-dts/0001-dts-rb3gen2-soundwire-checkin.patch \
     file://workarounds/0001-QCLINUX-arm64-dts-qcom-qcm6490-disable-sdhc1-for-ufs.patch \
     file://workarounds/0001-PENDING-arm64-dts-qcom-Remove-voltage-vote-support-f.patch \
     file://drivers/0003-PCI-Add-new-start_link-stop_link-function-ops.patch \
