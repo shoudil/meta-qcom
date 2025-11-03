@@ -115,6 +115,7 @@ jobs:
           - qcs9100-ride-sx
           - qrb2210-rb1-core-kit
           - qcom-armv7a
+          - sm8750-mtp
         distro:
           - name: poky-altcfg
             yamlfile: ""
