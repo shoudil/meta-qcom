@@ -14,6 +14,7 @@ RRECOMMENDS:${PN}-firmware = " \
     linux-firmware-qcom-sa8775p-audio \
     linux-firmware-qcom-sa8775p-compute \
     linux-firmware-qcom-sa8775p-generalpurpose \
+    linux-firmware-qcom-sa8775p-qupv3fw \
     linux-firmware-qcom-vpu \
 "
 
