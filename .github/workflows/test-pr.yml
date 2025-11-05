@@ -32,6 +32,13 @@ jobs:
         with:
           path: artifacts
 
+      - name: Download event file
+        uses: actions/download-artifact@v4
+        with:
+            run-id: ${{ github.event.workflow_run.id }}
+            path: artifacts
+            github-token: ${{ github.token }}
+
       - name: "List files"
         run: |
           echo $GITHUB_WORKSPACE
