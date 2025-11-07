@@ -33,12 +33,12 @@ jobs:
           fetch-depth: 0
 
       - name: Download Artifacts
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
           path: artifacts
 
       - name: Download event file
-        uses: actions/download-artifact@v4
+        uses: actions/download-artifact@v6
         with:
             run-id: ${{ github.event.workflow_run.id }}
             path: artifacts
