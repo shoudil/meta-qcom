@@ -1,7 +1,7 @@
 # meta-qcom
 
-![Build on push](https://img.shields.io/github/actions/workflow/status/qualcomm-linux/meta-qcom/push.yml)
-![Nightly Build](https://img.shields.io/github/actions/workflow/status/qualcomm-linux/meta-qcom/nightly-build.yml)
+[![Build on push](https://img.shields.io/github/actions/workflow/status/qualcomm-linux/meta-qcom/push.yml?label=Build%20on%20push)](https://github.com/qualcomm-linux/meta-qcom/actions/workflows/push.yml)
+[![Nightly Build](https://img.shields.io/github/actions/workflow/status/qualcomm-linux/meta-qcom/nightly-build.yml?label=Nightly%20Build)](https://github.com/qualcomm-linux/meta-qcom/actions/workflows/nightly-build.yml)
 
 ## Introduction
 
