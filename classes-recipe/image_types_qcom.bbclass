@@ -104,7 +104,7 @@ create_qcomflash_pkg() {
 
     # boot firmware
     for bfw in `find ${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR} -maxdepth 1 -type f \
-            \( -name '*.elf' ! -name 'abl2esp*.elf' \) -o \
+            \( -name '*.elf' ! -name 'abl2esp*.elf' ! -name 'xbl_config*.elf' \) -o \
             -name '*.mbn*' -o \
             -name '*.fv' -o \
             -name 'sec.dat'` ; do
@@ -114,6 +114,16 @@ create_qcomflash_pkg() {
     # abl2esp
     if [ -e "${DEPLOY_DIR_IMAGE}/abl2esp-${ABL_SIGNATURE_VERSION}.elf" ]; then
         install -m 0644 "${DEPLOY_DIR_IMAGE}/abl2esp-${ABL_SIGNATURE_VERSION}.elf" .
+    fi
+
+    # xbl_config
+    xbl_config="xbl_config.elf"
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'kvm', 'true', 'false', d)}; then
+        xbl_config="xbl_config_kvm.elf"
+    fi
+
+    if [ -f "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/${xbl_config}" ]; then
+        install -m 0644 "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/${xbl_config}" xbl_config.elf
     fi
 
     # sail nor firmware
