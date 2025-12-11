@@ -22,7 +22,7 @@ SRC_URI = "git://github.com/qualcomm-linux/kernel.git;${SRCBRANCH};protocol=http
 
 # Additional kernel configs.
 SRC_URI += " \
-    file://configs/qcom.cfg \
+    file://configs/bsp-additions.cfg \
 "
 
 # To build tip of qcom-next branch set preferred
@@ -37,12 +37,13 @@ KBUILD_DEFCONFIG ?= "defconfig"
 KBUILD_DEFCONFIG:qcom-armv7a = "qcom_defconfig"
 
 KBUILD_CONFIG_EXTRA = "${@bb.utils.contains('DISTRO_FEATURES', 'hardened', '${S}/kernel/configs/hardening.config', '', d)}"
-KBUILD_CONFIG_EXTRA:append:aarch64 = "${S}/arch/arm64/configs/prune.config"
+KBUILD_CONFIG_EXTRA:append:aarch64 = " ${S}/arch/arm64/configs/prune.config"
+KBUILD_CONFIG_EXTRA:append:aarch64 = " ${S}/arch/arm64/configs/qcom.config"
 
 do_configure:prepend() {
     # Use a copy of the 'defconfig' from the actual repo to merge fragments
     cp ${S}/arch/${ARCH}/configs/${KBUILD_DEFCONFIG} ${B}/.config
 
     # Merge fragment for QCOM value add features
-    ${S}/scripts/kconfig/merge_config.sh -m -O ${B} ${B}/.config ${@" ".join(find_cfgs(d))} ${KBUILD_CONFIG_EXTRA}
+    ${S}/scripts/kconfig/merge_config.sh -m -O ${B} ${B}/.config ${KBUILD_CONFIG_EXTRA} ${@" ".join(find_cfgs(d))}
 }
