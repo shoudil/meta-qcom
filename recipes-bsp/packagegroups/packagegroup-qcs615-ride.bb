@@ -15,7 +15,7 @@ RRECOMMENDS:${PN}-firmware = " \
     linux-firmware-qcom-qcs615-compute \
     linux-firmware-qcom-venus-5.4 \
 "
-RRECOMMENDS:${PN}-hexagon-dsp-binaries = " \
+RDEPENDS:${PN}-hexagon-dsp-binaries = " \
     hexagon-dsp-binaries-qcom-qcs615-ride-adsp \
     hexagon-dsp-binaries-qcom-qcs615-ride-cdsp \
 "
