@@ -18,5 +18,7 @@ uboot_compile_config:append:qcom() {
 
 # Symlink the 'main' u-boot.bin to boot.img so the qcom image bbclass pick it up
 uboot_deploy_config:append:qcom() {
-    cd ${DEPLOYDIR} && ln -sf u-boot-${type}-${PV}-${PR}.bin boot-${MACHINE}.img
+    if [ "${@d.getVar('PREFERRED_PROVIDER_virtual/bootloader')}" = "${PN}" ] ; then
+        cd ${DEPLOYDIR} && ln -sf u-boot-${type}-${PV}-${PR}.bin boot-${MACHINE}.img
+    fi
 }
