@@ -77,6 +77,7 @@ create_qcomflash_pkg() {
     if [ -n "${QCOM_PARTITION_FILES_SUBDIR}" ]; then
         for pbin in ${DEPLOY_DIR_IMAGE}/${QCOM_PARTITION_FILES_SUBDIR}/gpt_main*.bin \
                     ${DEPLOY_DIR_IMAGE}/${QCOM_PARTITION_FILES_SUBDIR}/gpt_backup*.bin \
+                    ${DEPLOY_DIR_IMAGE}/${QCOM_PARTITION_FILES_SUBDIR}/gpt_both*.bin \
                     ${DEPLOY_DIR_IMAGE}/${QCOM_PARTITION_FILES_SUBDIR}/zeros_*.bin \
                     ${DEPLOY_DIR_IMAGE}/${QCOM_PARTITION_FILES_SUBDIR}/rawprogram[0-9].xml \
                     ${DEPLOY_DIR_IMAGE}/${QCOM_PARTITION_FILES_SUBDIR}/patch*.xml ; do
