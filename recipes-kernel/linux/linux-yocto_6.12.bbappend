@@ -1,3 +1,4 @@
+require linux-yocto-qcom.inc
 
 SRC_URI:append:qcom = " \
     file://generic-drivers/0001-FROMLIST-dma-heap-Add-proper-kref-handling-on-dma-bu.patch \
