@@ -19,6 +19,7 @@ QCOM_DTB_FILE ?= "dtb.bin"
 
 QCOM_BOOT_FILES_SUBDIR ?= ""
 QCOM_PARTITION_FILES_SUBDIR ??= "${QCOM_BOOT_FILES_SUBDIR}"
+QCOM_PARTITION_FILES_SUBDIR_SPINOR ??= ""
 
 QCOM_PARTITION_CONF ?= "qcom-partition-conf"
 
@@ -90,7 +91,9 @@ create_qcomflash_pkg() {
     fi
 
     if [ -n "${QCOM_BOOT_FILES_SUBDIR}" ]; then
-        if [ -n "${QCOM_CDT_FILE}" ]; then
+        # install CDT file if present,for targets with spinor, CDT file
+        # will be in spinor subfolder instead of root folder
+        if [ -n "${QCOM_CDT_FILE}" ] && [ -e "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/${QCOM_CDT_FILE}.bin" ]; then
             install -m 0644 ${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/${QCOM_CDT_FILE}.bin cdt.bin
         fi
 
@@ -118,6 +121,25 @@ create_qcomflash_pkg() {
         if [ -d "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/sail_nor" ]; then
             install -d sail_nor
             find "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/sail_nor" -maxdepth 1 -type f -exec install -m 0644 {} sail_nor \;
+        fi
+
+        # SPI-NOR firmware, partition bins, CDT etc.
+        if [ -d "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/spinor" ]; then
+            install -d spinor
+            find "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/spinor" -maxdepth 1 -type f -exec install -m 0644 {} spinor \;
+
+            # partition bins/xml files
+            if [ -n "${QCOM_PARTITION_FILES_SUBDIR_SPINOR}" ]; then
+                deploy_partition_files ${DEPLOY_DIR_IMAGE}/${QCOM_PARTITION_FILES_SUBDIR_SPINOR} spinor
+            fi
+
+            # cdt file
+            if [ -n "${QCOM_CDT_FILE}" ]; then
+                install -m 0644 ${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/spinor/${QCOM_CDT_FILE}.bin spinor/cdt.bin
+            fi
+
+            # copy programer to support flash of HLOS images
+            find "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/spinor" -maxdepth 1 -type f -name 'xbl_s_devprg_ns.melf' -exec install -m 0644 {} . \;
         fi
     fi
 
