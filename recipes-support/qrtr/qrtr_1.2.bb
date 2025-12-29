@@ -1,0 +1,19 @@
+SUMMARY = "Qualcomm QRTR applications and library"
+HOMEPAGE = "https://github.com/linux-msm/qrtr.git"
+SECTION = "devel"
+
+LICENSE = "BSD-3-Clause"
+LIC_FILES_CHKSUM = "file://LICENSE;md5=15329706fbfcb5fc5edcc1bc7c139da5"
+
+inherit systemd
+
+SRCREV = "b51ffaf22707b6000ecfb894c5b750f3bb7843b2"
+SRC_URI = "git://github.com/linux-msm/${BPN}.git;branch=master;protocol=https;tag=v${PV} \
+    file://0001-meson-allow-overriding-systemd-location.patch \
+"
+
+EXTRA_OEMESON = "-Dsystemd-unit-prefix=${systemd_system_unitdir}"
+
+inherit meson pkgconfig
+
+SYSTEMD_SERVICE:${PN} = "qrtr-ns.service"
