@@ -4,8 +4,7 @@ HOMEPAGE = "https://github.com/qualcomm/sensinghub"
 LICENSE = "BSD-3-Clause-Clear"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=9701d0ef17353f1d05d7b74c8712ebbd"
 
-SRCREV = "15eaa4651923da584f8d9f3417c3e92d0b61de35"
-PV = "1.0.3"
+SRCREV = "5f07e63c010b4080e2a0bebdbed514eea9145b88"
 
 SRC_URI = "git://github.com/qualcomm/sensinghub.git;protocol=https;branch=main;tag=v${PV}"
 
