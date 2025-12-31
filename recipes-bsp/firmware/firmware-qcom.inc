@@ -37,6 +37,9 @@ FILES:linux-firmware-qcom-${FW_QCOM_NAME}-venus = "${FW_QCOM_PATH}/venus.mbn* ${
 FILES:linux-firmware-qcom-${FW_QCOM_NAME}-wifi = "${FW_QCOM_PATH}/wcnss.mbn* ${FW_QCOM_PATH}/wlanmdsp.mbn*"
 FILES:linux-firmware-qcom-${FW_QCOM_NAME}-wifi-split = "${FW_QCOM_PATH}/wcnss.mdt ${FW_QCOM_PATH}/wcnss.b*"
 
+# Possible values are "xz" and "zst".
+FIRMWARE_COMPRESSION ?= ""
+
 python() {
     pn = d.getVar("PN")
     insanes = d.getVar("INSANE_SKIP:%s" % pn)
@@ -50,6 +53,23 @@ python() {
             d.appendVar("RDEPENDS:" + pkg, " " + pkg[:-6])
     if d.getVar("FW_QCOM_NAME") == "unset" and d.getVar("SPLIT_FIRMWARE_PACKAGES") != "":
         bb.error("%s: split firmware-qcom packages engaged, but FW_QCOM_NAME is not defined" % pn)
+}
+
+do_install:append() {
+    for fw in $(find ${D}${FW_QCOM_PATH} -type f)
+    do
+        if [ "${fw%%jsn}" = "${fw}" ]
+        then
+            case "${FIRMWARE_COMPRESSION}" in
+                zst | zstd)
+                    zstd --compress --rm ${fw}
+                    ;;
+                xz)
+                    xz --compress --check=crc32 ${fw}
+                    ;;
+            esac
+        fi
+    done
 }
 
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
