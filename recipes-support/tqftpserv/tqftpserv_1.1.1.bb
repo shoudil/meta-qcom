@@ -9,11 +9,9 @@ DEPENDS = "qrtr zstd"
 
 inherit systemd meson pkgconfig
 
-SRCREV = "0ed681362b6f7ac7381e0320501823be6d843006"
-SRC_URI = "git://github.com/linux-msm/${BPN}.git;branch=master;protocol=https \
+SRCREV = "443c82aadae2862dc7c12af48ac0b900f4bb0fe7"
+SRC_URI = "git://github.com/linux-msm/${BPN}.git;branch=master;protocol=https;tag=v${PV} \
 "
-
-PV = "0.0+"
 
 EXTRA_OEMESON = "-Dsystemd-unit-prefix=${systemd_system_unitdir}"
 
