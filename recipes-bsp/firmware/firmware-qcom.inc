@@ -48,7 +48,7 @@ python() {
 }
 
 do_install:append() {
-    for fw in $(find ${D}${FW_QCOM_PATH} -type f)
+    for fw in $(find ${D}${FW_QCOM_BASE_PATH} -type f)
     do
         if [ "${fw%%jsn}" = "${fw}" ]
         then
