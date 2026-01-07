@@ -33,8 +33,9 @@ SPLIT_FIRMWARE_PACKAGES = "\
     linux-firmware-qcom-adreno-a640 \
 "
 
-do_install:append() {
+do_install:prepend() {
     if [ -n "${ADRENO_URI}" ] ; then
+        install -d ${D}${FW_QCOM_BASE_PATH}
         install -m 0644 ${UNPACKDIR}/adreno/${ADRENO_PATH}/a640_gmu.bin ${D}${FW_QCOM_BASE_PATH}
     fi
 }

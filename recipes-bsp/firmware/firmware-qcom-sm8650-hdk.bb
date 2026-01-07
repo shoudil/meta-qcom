@@ -29,8 +29,9 @@ SPLIT_FIRMWARE_PACKAGES = "\
     linux-firmware-qcom-adreno-g790 \
 "
 
-do_install:append() {
+do_install:prepend() {
     if [ -n "${ADRENO_URI}" ] ; then
+        install -d ${D}${FW_QCOM_BASE_PATH}
         install -m 0644 ${UNPACKDIR}/adreno/${ADRENO_PATH}/gen70900_sqe.fw ${D}${FW_QCOM_BASE_PATH}
         install -m 0644 ${UNPACKDIR}/adreno/${ADRENO_PATH}/gmu_gen70900.bin ${D}${FW_QCOM_BASE_PATH}
     fi

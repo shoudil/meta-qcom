@@ -34,8 +34,9 @@ SPLIT_FIRMWARE_PACKAGES = "\
     linux-firmware-qcom-adreno-gmu-g700 \
 "
 
-do_install:append() {
+do_install:prepend() {
     if [ -n "${ADRENO_URI}" ] ; then
+        install -d ${D}${FW_QCOM_BASE_PATH}
         install -m 0644 ${UNPACKDIR}/adreno/${ADRENO_PATH}/a730_sqe.fw ${D}${FW_QCOM_BASE_PATH}
         install -m 0644 ${UNPACKDIR}/adreno/${ADRENO_PATH}/gmu_gen70000.bin ${D}${FW_QCOM_BASE_PATH}
     fi
