@@ -26,7 +26,7 @@ SPLIT_FIRMWARE_PACKAGES = "\
     linux-firmware-qcom-${FW_QCOM_NAME}-audio \
     linux-firmware-qcom-${FW_QCOM_NAME}-compute \
     linux-firmware-qcom-${FW_QCOM_NAME}-ipa \
-    linux-firmware-qcom-adreno-g790 \
+    linux-firmware-qcom-adreno-g709 \
 "
 
 do_install:prepend() {
@@ -37,4 +37,4 @@ do_install:prepend() {
     fi
 }
 
-FILES:linux-firmware-qcom-adreno-g790 += "${FW_QCOM_BASE_PATH}/gen70900_sqe.fw ${FW_QCOM_BASE_PATH}/gmu_gen70900.bin"
+FILES:linux-firmware-qcom-adreno-g709 += "${FW_QCOM_BASE_PATH}/gen70900_sqe.fw ${FW_QCOM_BASE_PATH}/gmu_gen70900.bin"
