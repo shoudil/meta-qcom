@@ -10,10 +10,8 @@ DEPENDS = "qrtr xz"
 inherit systemd
 
 SRCREV = "5ecd2fe926aca7abfe40724177f63b942cff3947"
-SRC_URI = "git://github.com/linux-msm/${BPN}.git;branch=master;protocol=https \
+SRC_URI = "git://github.com/linux-msm/${BPN}.git;branch=master;protocol=https;tag=v${PV} \
 "
-
-PV = "1.0+"
 
 do_install () {
     oe_runmake install DESTDIR=${D} prefix=${prefix} servicedir=${systemd_unitdir}/system
