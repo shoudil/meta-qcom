@@ -7,8 +7,7 @@ LICENSE = "BSD-3-Clause"
 LIC_FILES_CHKSUM = "file://LICENSE;md5=65b8cd575e75211d9d4ca8603167da1c"
 
 DEPENDS = "glib-2.0"
-SRCREV = "a82b29b33003213bbf5b553994cffc472a30981f"
-PV = "0.1.1"
+SRCREV = "6ea813ce9fdb1126b1aa18f5447befe9119be437"
 
 SRC_URI = "git://github.com/quic/qmi-framework.git;protocol=https;branch=main;tag=v${PV}"
 
