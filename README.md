@@ -7,7 +7,7 @@
 
 OpenEmbedded/Yocto Project hardware enablement layer for Qualcomm based platforms.
 
-This layers provides additional recipes and machine configuration files for
+This layer provides additional recipes and machine configuration files for
 Qualcomm platforms.
 
 This layer depends on:
@@ -19,7 +19,7 @@ branch: master
 revision: HEAD
 ```
 
-This layers has an optional dependency on meta-oe layer:
+This layer has an optional dependency on meta-oe layer:
 
 ```
 URI: https://github.com/openembedded/meta-openembedded.git
@@ -204,4 +204,4 @@ Please make sure to visit go/GitHubBasicsDoc and go/OSSBestPractices before prop
 ## License
 
 This layer is licensed under the MIT license. Check out [COPYING.MIT](COPYING.MIT)
-for more detais.
+for more details.
