@@ -8,3 +8,4 @@ header:
 target:
   - qcom-multimedia-image
   - qcom-multimedia-proprietary-image
+  - qcom-container-orchestration-image
