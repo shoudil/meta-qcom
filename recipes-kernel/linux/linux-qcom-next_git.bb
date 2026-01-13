@@ -8,12 +8,12 @@ inherit kernel cml1
 
 COMPATIBLE_MACHINE = "(qcom)"
 
-LINUX_VERSION ?= "6.18+6.19-rc2"
+LINUX_VERSION ?= "6.18+6.19-rc4"
 
 PV = "${LINUX_VERSION}+git"
 
-# tag: qcom-next-6.19-rc2-20260102
-SRCREV ?= "b613cd8d72f9e189efd1c9a5ee7fb33e50ef8b79"
+# tag: qcom-next-6.19-rc4-20260112
+SRCREV ?= "65bb05266d477c9f7b06bc275bd622dbed08a53b"
 
 SRCBRANCH ?= "nobranch=1"
 SRCBRANCH:class-devupstream ?= "branch=qcom-next"
