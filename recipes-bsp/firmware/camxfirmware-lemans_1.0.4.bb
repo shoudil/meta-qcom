@@ -15,17 +15,28 @@ inherit allarch
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
+# Possible values are "xz" and "zst".
+FIRMWARE_COMPRESSION ?= ""
+
 do_install() {
     install -d ${D}${nonarch_base_libdir}/firmware/qcom/sa8775p
     install -d ${D}${nonarch_base_libdir}/firmware/qcom/qcs8300
     install -d ${D}${datadir}/doc/${BPN}
 
     cp -r ${S}/usr/lib/firmware/CAMERA_ICP.mbn ${D}${nonarch_base_libdir}/firmware/qcom/sa8775p/
+
+    case "${FIRMWARE_COMPRESSION}" in
+        zst | zstd)
+            zstd --compress --rm ${D}${nonarch_base_libdir}/firmware/qcom/sa8775p/CAMERA_ICP.mbn
+            ;;
+        xz)
+            xz --compress --check=crc32 ${D}${nonarch_base_libdir}/firmware/qcom/sa8775p/CAMERA_ICP.mbn
+            ;;
+    esac
+
     install -m 0644 ${S}/usr/share/doc/${BPN}/NO.LOGIN.BINARY.LICENSE.QTI.pdf ${D}${datadir}/doc/${BPN}
 
-    # Link target should be relative to the link location
-    ln -sf ../sa8775p/CAMERA_ICP.mbn \
-        ${D}${nonarch_base_libdir}/firmware/qcom/qcs8300/CAMERA_ICP.mbn
+    ln -srf ${D}${nonarch_base_libdir}/firmware/qcom/sa8775p/CAMERA_ICP.mbn* ${D}${nonarch_base_libdir}/firmware/qcom/qcs8300/
 }
 
 PACKAGES += "camxfirmware-monaco"
