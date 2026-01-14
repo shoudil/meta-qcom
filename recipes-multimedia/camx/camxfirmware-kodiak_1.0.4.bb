@@ -11,11 +11,6 @@ S = "${UNPACKDIR}"
 
 inherit allarch
 
-# This package is currently only used and tested on ARMv8 (aarch64) machines.
-# Therefore, builds for other architectures are not necessary and are explicitly excluded.
-COMPATIBLE_MACHINE = "^$"
-COMPATIBLE_MACHINE:aarch64 = "(.*)"
-
 # Disable configure and compile steps since this recipe uses prebuilt binaries.
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
