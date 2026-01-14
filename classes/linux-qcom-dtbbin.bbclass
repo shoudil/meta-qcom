@@ -24,9 +24,9 @@ do_qcom_dtbbin_deploy() {
         rm -rf ${DTBBIN_DEPLOYDIR}/$dtb_base_name
     done
 
-    # Generate qclinux_fit.img along side combined-dtb.dtb
-    mkfs.vfat -S ${QCOM_VFAT_SECTOR_SIZE} -C ${DTBBIN_DEPLOYDIR}/multi-dtb.vfat ${DTBBIN_SIZE}
-    mcopy -i "${DTBBIN_DEPLOYDIR}/multi-dtb.vfat" -vsmpQ ${DEPLOY_DIR_IMAGE}/qclinuxfitImage ::/qclinux_fit.img
+    # Generate an image with qclinuxfitImage (multi-dtb image) alongside individual DTB images.
+    mkfs.vfat -S ${QCOM_VFAT_SECTOR_SIZE} -C ${DTBBIN_DEPLOYDIR}/dtb-multi-dtb-image.vfat ${DTBBIN_SIZE}
+    mcopy -i "${DTBBIN_DEPLOYDIR}/dtb-multi-dtb-image.vfat" -vsmpQ ${DEPLOY_DIR_IMAGE}/qclinuxfitImage ::/qclinux_fit.img
 }
 addtask qcom_dtbbin_deploy after do_populate_sysroot do_packagedata before do_deploy
 
