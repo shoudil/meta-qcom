@@ -7,6 +7,6 @@
 FILESEXTRAPATHS:prepend := "${THISDIR}/${BPN}-${gpsPV}:${THISDIR}/${BPN}:"
 gpsPV = "${PV}"
 
-SRC_URI += " \
+SRC_URI:append:qcom = " \
     file://0001-Introduce-Qualcomm-PDS-service-support.patch \
 "
