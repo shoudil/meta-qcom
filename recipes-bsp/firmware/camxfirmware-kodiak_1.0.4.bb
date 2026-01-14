@@ -15,11 +15,24 @@ inherit allarch
 do_configure[noexec] = "1"
 do_compile[noexec] = "1"
 
+# Possible values are "xz" and "zst".
+FIRMWARE_COMPRESSION ?= ""
+
 do_install() {
     install -d ${D}${nonarch_base_libdir}/firmware/qcom/qcm6490
     install -d ${D}${datadir}/doc/${BPN}
 
     cp -r ${S}/usr/lib/firmware/CAMERA_ICP_170.elf ${D}${nonarch_base_libdir}/firmware/qcom/qcm6490/
+
+    case "${FIRMWARE_COMPRESSION}" in
+        zst | zstd)
+            zstd --compress --rm ${D}${nonarch_base_libdir}/firmware/qcom/qcm6490/CAMERA_ICP_170.elf
+            ;;
+        xz)
+            xz --compress --check=crc32 ${D}${nonarch_base_libdir}/firmware/qcom/qcm6490/CAMERA_ICP_170.elf
+            ;;
+    esac
+
     install -m 0644 ${S}/usr/share/doc/${BPN}/NO.LOGIN.BINARY.LICENSE.QTI.pdf ${D}${datadir}/doc/${BPN}
 }
 
