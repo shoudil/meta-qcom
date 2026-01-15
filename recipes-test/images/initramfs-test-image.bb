@@ -9,7 +9,7 @@ PACKAGE_INSTALL += " \
     alsa-utils-alsaucm \
     alsa-utils-amixer \
     alsa-utils-aplay \
-    alsa-utils-speakertest \
+    alsa-utils-speaker-test \
     bluez5 \
     bootrr \
     dhcpcd \
