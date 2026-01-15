@@ -13,10 +13,10 @@ SRC_URI = " \
    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/camx-kodiak_${PV}_armv8-2a.tar.gz;name=camx \
    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/chicdk-kodiak_${PV}_armv8-2a.tar.gz;name=chicdk \
    "
-SRC_URI[camxlib.sha256sum] = "55afef79b50eeded709af6079f22fd1565580cab3fc23568e3e1b9691bf10a29"
-SRC_URI[camx.sha256sum] = "632c9b7e43cef62488760f8318a00c16ee6aca04b85ad4fcb66d32a2151ec171"
-SRC_URI[chicdk.sha256sum] = "c03c94fac84563f2f2c9b464b1338d7b65ce09b51d270e70b0cbf92e40b8188d"
-PBT_BUILD_DATE = "260102"
+SRC_URI[camxlib.sha256sum] = "5cddfb0cdac55f64e35236799849a62b6477fcdb9809382484e1a8eeeda68cb5"
+SRC_URI[camx.sha256sum] = "f84b71b651d0a367c28cca8446f6549293162cae15ee977d60df2577247ae6b6"
+SRC_URI[chicdk.sha256sum] = "78b6afd1e21b92f6aa11ec4b4da5c9633f485dd2ab4c1d6da1002abc9f7a2198"
+PBT_BUILD_DATE = "260115"
 
 S = "${UNPACKDIR}"
 
@@ -38,7 +38,7 @@ do_install() {
     install -d ${D}${datadir}/doc/chicdk-kodiak
     install -d ${D}${bindir}
 
-    cp -r ${S}/usr/lib/* ${D}${libdir}
+    cp -r ${S}/usr/lib/camx ${D}${libdir}
     cp -r ${S}/usr/bin/* ${D}${bindir}
 
     # Remove unnecessary development symlinks (.so) from the staged image
