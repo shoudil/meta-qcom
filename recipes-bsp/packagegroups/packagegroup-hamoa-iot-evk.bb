@@ -17,5 +17,6 @@ RRECOMMENDS:${PN}-firmware = " \
 "
 
 RDEPENDS:${PN}-hexagon-dsp-binaries = " \
+    hexagon-dsp-binaries-qcom-hamoa-iot-evk-adsp \
     hexagon-dsp-binaries-qcom-hamoa-iot-evk-cdsp \
 "
