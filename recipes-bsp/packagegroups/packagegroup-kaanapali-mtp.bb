@@ -4,6 +4,7 @@ inherit packagegroup
 
 PACKAGES = " \
     ${PN}-firmware \
+    ${PN}-hexagon-dsp-binaries \
 "
 
 RRECOMMENDS:${PN}-firmware = " \
@@ -14,4 +15,9 @@ RRECOMMENDS:${PN}-firmware = " \
     linux-firmware-qcom-kaanapali-compute \
     linux-firmware-qcom-kaanapali-soccp \
     linux-firmware-qcom-vpu \
+"
+
+RRECOMMENDS:${PN}-hexagon-dsp-binaries = " \
+    hexagon-dsp-binaries-qcom-kaanapali-mtp-adsp \
+    hexagon-dsp-binaries-qcom-kaanapali-mtp-cdsp \
 "
