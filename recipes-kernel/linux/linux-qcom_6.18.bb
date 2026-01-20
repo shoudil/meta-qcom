@@ -12,8 +12,8 @@ LINUX_VERSION ?= "6.18"
 
 PV = "${LINUX_VERSION}"
 
-# tag: qcom-6.18.y-20251217
-SRCREV ?= "27507852413bd8ba6205a95a4a1df15e62b88009"
+# tag: qcom-6.18.y-20260120
+SRCREV ?= "b588875924316e2f73aa987cec342e624147f87c"
 
 SRCBRANCH ?= "nobranch=1"
 SRCBRANCH:class-devupstream ?= "branch=qcom-6.18.y"
