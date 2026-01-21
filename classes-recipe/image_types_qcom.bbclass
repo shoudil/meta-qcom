@@ -136,6 +136,11 @@ create_qcomflash_pkg() {
                 install -m 0644 ${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/spinor/${QCOM_CDT_FILE}.bin spinor/cdt.bin
             fi
 
+            # dtb image
+            if [ -n "${QCOM_DTB_FILE}" ]; then
+                install -m 0644 ${DEPLOY_DIR_IMAGE}/dtb-${QCOM_DTB_DEFAULT}-image.vfat spinor/${QCOM_DTB_FILE}
+            fi
+
             # copy programer to support flash of HLOS images
             find "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/spinor" -maxdepth 1 -type f -name 'xbl_s_devprg_ns.melf' -exec install -m 0644 {} . \;
         fi
