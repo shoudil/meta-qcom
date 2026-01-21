@@ -12,11 +12,13 @@ SRC_URI = " \
    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/${BPN}_${PV}_armv8-2a.tar.gz;name=camxlib \
    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/camx-kodiak_${PV}_armv8-2a.tar.gz;name=camx \
    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/chicdk-kodiak_${PV}_armv8-2a.tar.gz;name=chicdk \
+   https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/camxapi-kodiak_${PV}_armv8-2a.tar.gz;name=camxapi \
    "
-SRC_URI[camxlib.sha256sum] = "5cddfb0cdac55f64e35236799849a62b6477fcdb9809382484e1a8eeeda68cb5"
-SRC_URI[camx.sha256sum] = "f84b71b651d0a367c28cca8446f6549293162cae15ee977d60df2577247ae6b6"
-SRC_URI[chicdk.sha256sum] = "78b6afd1e21b92f6aa11ec4b4da5c9633f485dd2ab4c1d6da1002abc9f7a2198"
-PBT_BUILD_DATE = "260115"
+SRC_URI[camxlib.sha256sum] = "e95b0bdb3e4508b6b19a764db3842ce2c407781604182398def03be0a13da9db"
+SRC_URI[camx.sha256sum] = "ab23bcb4afcba902906196c2b38dd6856c9c38e86115885cf567f0c7087446ab"
+SRC_URI[chicdk.sha256sum] = "3426792ae0bf4401cf9cd7ef613a482b604fd92a2be7c8fffe14dbcfc6701a37"
+SRC_URI[camxapi.sha256sum] = "ed3eabc456eaab2b313ea3a2469e234519e5747dd80e83a953b2c010c4b2280c"
+PBT_BUILD_DATE = "260120"
 
 S = "${UNPACKDIR}"
 
@@ -37,9 +39,11 @@ do_install() {
     install -d ${D}${datadir}/doc/camx-kodiak
     install -d ${D}${datadir}/doc/chicdk-kodiak
     install -d ${D}${bindir}
+    install -d ${D}${includedir}
 
-    cp -r ${S}/usr/lib/camx ${D}${libdir}
+    cp -r ${S}/usr/lib/* ${D}${libdir}
     cp -r ${S}/usr/bin/* ${D}${bindir}
+    cp -r ${S}/usr/include/* ${D}${includedir}
 
     # Remove unnecessary development symlinks (.so) from the staged image
     rm -f ${D}${libdir}/camx/kodiak/*${SOLIBSDEV}
@@ -61,6 +65,8 @@ PACKAGE_BEFORE_PN += "camx-kodiak chicdk-kodiak"
 RDEPENDS:${PN} += "chicdk-kodiak"
 
 FILES:camx-kodiak = "\
+    ${libdir}/libcamera_hardware_kodiak*${SOLIBS} \
+    ${libdir}/libcamxexternalformatutils_kodiak*${SOLIBS} \
     ${libdir}/camx/kodiak/libchilog*${SOLIBS} \
     ${libdir}/camx/kodiak/camera/components/com.qti.node.eisv*${SOLIBS} \
     ${libdir}/camx/kodiak/camera/components/com.qti.node.swregistration*${SOLIBS} \
@@ -89,7 +95,14 @@ FILES:chicdk-kodiak = "\
     ${bindir}/ \
     "
 FILES:${PN} = "\
+    ${libdir}/libcamera_metadata_kodiak*${SOLIBS} \
     ${libdir}/camx/kodiak/*${SOLIBS} \
     ${libdir}/camx/kodiak/hw/*${SOLIBS} \
     ${libdir}/camx/kodiak/camera/components/*${SOLIBS} \
     "
+FILES:${PN}-dev = "\
+    ${libdir}/*${SOLIBSDEV} \
+    ${includedir}/ \
+    "
+# Preserve ${PN} naming to avoid ambiguity in package identification.
+DEBIAN_NOAUTONAME:${PN} = "1"
