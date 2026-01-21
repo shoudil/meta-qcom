@@ -81,8 +81,6 @@ jobs:
             yamlfile: ""
           - name: qcom-distro
             yamlfile: ':ci/qcom-distro-prop-image.yml'
-          - name: qcom-distro-kvm
-            yamlfile: ':ci/qcom-distro-kvm.yml'
           - name: qcom-distro-selinux
             yamlfile: ':ci/qcom-distro-selinux.yml'
           - name: qcom-distro-sota
@@ -164,8 +162,15 @@ jobs:
                 type: qcom-next-rt
                 dirname: "+linux-qcom-next-rt"
                 yamlfile: ":ci/linux-qcom-next-rt.yml"
-          # include kvm compatible machines for the builds
-          - machine: qcs9100-ride-sx
+          - machine: iq-9075-evk
+            distro:
+                name: qcom-distro-kvm
+                yamlfile: ':ci/qcom-distro-kvm.yml'
+            kernel:
+                type: default
+                dirname: ""
+                yamlfile: ""
+          - machine: iq-8275-evk
             distro:
                 name: qcom-distro-kvm
                 yamlfile: ':ci/qcom-distro-kvm.yml'
