@@ -67,7 +67,7 @@ do_install() {
 }
 
 RPROVIDES:${PN} = "camxlib-monaco"
-PACKAGE_BEFORE_PN += "camx-lemans chicdk-lemans"
+PACKAGE_BEFORE_PN += "camx-lemans chicdk-lemans camx-nhx"
 RDEPENDS:${PN} += "chicdk-lemans"
 
 FILES:camx-lemans = "\
@@ -90,8 +90,11 @@ FILES:chicdk-lemans = "\
     ${libdir}/camx/lemans/camera/*.bin \
     ${libdir}/camx/lemans/camera/com.qti.sensor*${SOLIBS} \
     ${libdir}/camx/lemans/hw/com.qti.chi.*${SOLIBS} \
+    ${bindir}/camx \
+    "
+FILES:camx-nhx = "\
+    ${bindir}/nhx.sh \
     ${sysconfdir}/camera/test/NHX/ \
-    ${bindir}/ \
     "
 FILES:${PN} = "\
     ${libdir}/libcamera_metadata_lemans*${SOLIBS} \
