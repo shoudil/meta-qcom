@@ -13,6 +13,17 @@ inherit module
 MAKE_TARGETS = "modules"
 MODULES_INSTALL_TARGET = "modules_install"
 
+do_install:append() {
+    install -d ${D}${includedir}/camx/camera/media
+    install -d ${D}${includedir}/camx/camera-kodiak/media
+
+    install -m 0644 ${S}/camera_kt/include/uapi/camera/media/* \
+        ${D}${includedir}/camx/camera-kodiak/media/
+
+    install -m 0644 ${S}/camera/include/uapi/camera/media/* \
+        ${D}${includedir}/camx/camera/media/
+}
+
 # This package is designed to run exclusively on ARMv8 (aarch64) machines.
 # Therefore, builds for other architectures are not necessary and are explicitly excluded.
 COMPATIBLE_MACHINE = "^$"
