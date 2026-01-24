@@ -13,13 +13,15 @@ SRC_URI = " \
     https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/camx-lemans_${PV}_armv8-2a.tar.gz;name=camx \
     https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/chicdk-lemans_${PV}_armv8-2a.tar.gz;name=chicdk \
     https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/camxcommon-lemans_${PV}_armv8-2a.tar.gz;name=camxcommon \
+    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/camxapi-lemans_${PV}_armv8-2a.tar.gz;name=camxapi \
     "
 
-SRC_URI[camxlib.sha256sum] = "e9c49b6e818db2a4a27ff80bf54c335861359e15de2055d52b6cf9aad995f0d5"
-SRC_URI[camx.sha256sum] = "3baea58276298602d5e9b980a814a089378f0c9095683503befa7c32eee01dba"
-SRC_URI[chicdk.sha256sum] = "bb73acd375abf114056c2fdfb345f648a3501a46ca292d5edf717a2ebae4b026"
-SRC_URI[camxcommon.sha256sum] = "9f028650c176e306da8f979adc52fd1010e588379fe53971bd909ef776e5519f"
-PBT_BUILD_DATE = "260102"
+SRC_URI[camxlib.sha256sum] = "1d50d674a31efcee469cca426e96fa8f6b91adfdaa6b16efaade902cace0a4c7"
+SRC_URI[camx.sha256sum] = "d78783a9adf4ac6bb7461cf37bcbfe341ace1ae12c575a159084fe4e58f1c4b6"
+SRC_URI[chicdk.sha256sum] = "d976d49276a2c126058b79bf47a7358d02385f990d2462ed0c205d566b38c82e"
+SRC_URI[camxcommon.sha256sum] = "a113f4ce1aa32ab2e69620f2f6a1fe2de4d0ba10a29ed6feddf5a635852740f7"
+SRC_URI[camxapi.sha256sum] = "4226952e8c5fa35535dd13c1f56befd836a6b266c0bc2dacc7a24aa1c98c2a67"
+PBT_BUILD_DATE = "260120"
 
 S = "${UNPACKDIR}"
 
@@ -41,10 +43,12 @@ do_install() {
     install -d ${D}${datadir}/doc/chicdk-lemans
     install -d ${D}${bindir}
     install -d ${D}/${sysconfdir}/camera/test/NHX/
+    install -d ${D}${includedir}
 
     cp -r ${S}/usr/lib/* ${D}${libdir}
     cp -r ${S}/etc/camera/test/NHX/NHX.YUV_NV12_Prev_MaxRes.json ${D}/${sysconfdir}/camera/test/NHX/
     cp -r ${S}/usr/bin/* ${D}${bindir}
+    cp -r ${S}/usr/include/*  ${D}${includedir}
 
     # Remove unnecessary development symlinks (.so) from the staged image
     rm -f ${D}${libdir}/camx/lemans/*${SOLIBSDEV}
@@ -63,10 +67,12 @@ do_install() {
 }
 
 RPROVIDES:${PN} = "camxlib-monaco"
-PACKAGE_BEFORE_PN += "camx-lemans chicdk-lemans"
+PACKAGE_BEFORE_PN += "camx-lemans chicdk-lemans camx-nhx"
 RDEPENDS:${PN} += "chicdk-lemans"
 
 FILES:camx-lemans = "\
+    ${libdir}/libcamera_hardware_lemans*${SOLIBS} \
+    ${libdir}/libcamxexternalformatutils_lemans*${SOLIBS} \
     ${libdir}/camx/lemans/hw/camera.qcom*${SOLIBS} \
     ${libdir}/camx/lemans/libcamera_hardware*${SOLIBS} \
     ${libdir}/camx/lemans/libcamxexternalformatutils*${SOLIBS} \
@@ -84,12 +90,22 @@ FILES:chicdk-lemans = "\
     ${libdir}/camx/lemans/camera/*.bin \
     ${libdir}/camx/lemans/camera/com.qti.sensor*${SOLIBS} \
     ${libdir}/camx/lemans/hw/com.qti.chi.*${SOLIBS} \
+    ${bindir}/camx \
+    "
+FILES:camx-nhx = "\
+    ${bindir}/nhx.sh \
     ${sysconfdir}/camera/test/NHX/ \
-    ${bindir}/ \
     "
 FILES:${PN} = "\
+    ${libdir}/libcamera_metadata_lemans*${SOLIBS} \
     ${libdir}/camx/lemans/*${SOLIBS} \
     ${libdir}/camx/lemans/camera/components/com.qti.node.swregistration*${SOLIBS} \
     ${libdir}/camx/lemans/hw/*${SOLIBS} \
     ${libdir}/camx/lemans/camera/components/*${SOLIBS} \
     "
+FILES:${PN}-dev = "\
+    ${libdir}/*${SOLIBSDEV} \
+    ${includedir}/ \
+    "
+# Preserve ${PN} naming to avoid ambiguity in package identification.
+DEBIAN_NOAUTONAME:${PN} = "1"
