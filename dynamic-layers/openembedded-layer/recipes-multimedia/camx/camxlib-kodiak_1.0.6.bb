@@ -43,7 +43,6 @@ do_install() {
 
     cp -r ${S}/usr/lib/* ${D}${libdir}
     cp -r ${S}/usr/bin/* ${D}${bindir}
-    cp -r ${S}/usr/include/* ${D}${includedir}
 
     # Remove unnecessary development symlinks (.so) from the staged image
     rm -f ${D}${libdir}/camx/kodiak/*${SOLIBSDEV}
