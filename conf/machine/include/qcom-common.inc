@@ -19,6 +19,13 @@ XSERVER ?= " \
 
 PREFERRED_PROVIDER_virtual/kernel ??= "linux-yocto"
 
+# Device Trees specific to linux-qcom family of kernels
+LINUX_QCOM_KERNEL_DEVICETREE ??= ""
+KERNEL_DEVICETREE:append:pn-linux-qcom = " ${LINUX_QCOM_KERNEL_DEVICETREE}"
+KERNEL_DEVICETREE:append:pn-linux-qcom-next = " ${LINUX_QCOM_KERNEL_DEVICETREE}"
+KERNEL_DEVICETREE:append:pn-linux-qcom-rt = " ${LINUX_QCOM_KERNEL_DEVICETREE}"
+KERNEL_DEVICETREE:append:pn-linux-qcom-next-rt = " ${LINUX_QCOM_KERNEL_DEVICETREE}"
+
 PREFERRED_PROVIDER_android-tools-conf = "android-tools-conf-configfs"
 
 # Fastboot expects an ext4 image, which needs to be 4096 aligned
