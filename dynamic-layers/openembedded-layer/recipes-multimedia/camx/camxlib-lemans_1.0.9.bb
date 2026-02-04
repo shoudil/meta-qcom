@@ -8,20 +8,18 @@ LICENSE = "LICENSE.qcom-2"
 LIC_FILES_CHKSUM = "file://usr/share/doc/${BPN}/NO.LOGIN.BINARY.LICENSE.QTI.pdf;md5=7a5da794b857d786888bbf2b7b7529c8 \
                     file://usr/share/doc/${BPN}/NOTICE;md5=198d001f49d9a313355d5219f669a76c"
 
+PBT_BUILD_DATE = "260203"
 SRC_URI = " \
     https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/${BPN}_${PV}_armv8-2a.tar.gz;name=camxlib \
     https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/camx-lemans_${PV}_armv8-2a.tar.gz;name=camx \
     https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/chicdk-lemans_${PV}_armv8-2a.tar.gz;name=chicdk \
     https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/camxcommon-lemans_${PV}_armv8-2a.tar.gz;name=camxcommon \
-    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/camxapi-lemans_${PV}_armv8-2a.tar.gz;name=camxapi \
     "
 
-SRC_URI[camxlib.sha256sum] = "caff6285e066edc1f4ab6c98fd6d79beaee54e6f3875699bb44392e14108843d"
-SRC_URI[camx.sha256sum] = "ba9faebcfa9d423ac63706f77dcfdac10ce843199ea0efc4229e35b3d20271a8"
-SRC_URI[chicdk.sha256sum] = "0d6e3bee536c75151eb67f6ba16788147327189e43efe8062d88aa483243e293"
-SRC_URI[camxcommon.sha256sum] = "080dc041a709a557e6455f9a3f825f1dc5d703690eb36deae99cae05cdf64956"
-SRC_URI[camxapi.sha256sum] = "6520347b1a96bc55132c33b3100c4100fc5c28a05c4ee02d7f4a91d6574b3934"
-PBT_BUILD_DATE = "260130"
+SRC_URI[camxlib.sha256sum] = "2e6a20530de17ffc506d20ca69149a02a2fd50c18990b3646f42c32f6fe42a7d"
+SRC_URI[camx.sha256sum] = "38de86b36cfe58a37273e95e4ccea7d3243226f439fc79f7abd7a9103f7bee34"
+SRC_URI[chicdk.sha256sum] = "91bb40b2fdc3e9816d99956efb2746b50f064e3b51661247bb28fc2d32045ef0"
+SRC_URI[camxcommon.sha256sum] = "891c78465fb5ffb61a9dd48ba694b18c2523065a87749d1c173bba1cf663c46c"
 
 S = "${UNPACKDIR}"
 
@@ -43,12 +41,10 @@ do_install() {
     install -d ${D}${datadir}/doc/chicdk-lemans
     install -d ${D}${bindir}
     install -d ${D}/${sysconfdir}/camera/test/NHX/
-    install -d ${D}${includedir}
 
     cp -r ${S}/usr/lib/* ${D}${libdir}
     cp -r ${S}/etc/camera/test/NHX/NHX.YUV_NV12_Prev_MaxRes.json ${D}/${sysconfdir}/camera/test/NHX/
     cp -r ${S}/usr/bin/* ${D}${bindir}
-    cp -r ${S}/usr/include/*  ${D}${includedir}
 
     # Remove unnecessary development symlinks (.so) from the staged image
     rm -f ${D}${libdir}/camx/lemans/*${SOLIBSDEV}
@@ -69,6 +65,7 @@ do_install() {
 RPROVIDES:${PN} = "camxlib-monaco"
 PACKAGE_BEFORE_PN += "camx-lemans chicdk-lemans camx-nhx"
 RDEPENDS:${PN} += "chicdk-lemans"
+RDEPENDS:${pn}-dev += "camxcommon-headers-dev"
 
 FILES:camx-lemans = "\
     ${libdir}/libcamera_hardware_lemans*${SOLIBS} \
@@ -105,7 +102,6 @@ FILES:${PN} = "\
     "
 FILES:${PN}-dev = "\
     ${libdir}/*${SOLIBSDEV} \
-    ${includedir}/ \
     "
 # Preserve ${PN} naming to avoid ambiguity in package identification.
 DEBIAN_NOAUTONAME:${PN} = "1"
