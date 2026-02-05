@@ -39,7 +39,9 @@ runs:
         for J in $JOBFILES
           do
               echo $J
-              NAME=$(echo "$J" | cut --delimiter "/" --field 3)
+              BASE_NAME=$(echo "$J" | cut --delimiter "/" --field 3)
+              TEST_PLAN=$(basename "$J" .yaml)
+              NAME="${BASE_NAME}-${TEST_PLAN}"
               echo $NAME
               F_TMP="${J#*/}"
               RESULT_NAME="${F_TMP//\//-}"
