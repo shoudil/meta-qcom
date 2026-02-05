@@ -97,7 +97,7 @@ create_qcomflash_pkg() {
 
         # boot firmware
         for bfw in `find ${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR} -maxdepth 1 -type f \
-                \( -name '*.elf' ! -name 'abl2esp*.elf' ! -name 'xbl_config*.elf' \) -o \
+                \( -name '*.elf' ! -name 'abl2esp*.elf' ! -name 'xbl_config*.elf' ! -name 'uefi.elf' \) -o \
                 -name '*.mbn*' -o \
                 -name '*.fv' -o \
                 -name 'cdt_*.bin' -o \
@@ -114,6 +114,18 @@ create_qcomflash_pkg() {
 
         if [ -f "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/${xbl_config}" ]; then
             install -m 0644 "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/${xbl_config}" xbl_config.elf
+        fi
+
+        # bootloader selection
+        bootloader_bin="${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/uefi.elf"
+        bootloader_provider='${PREFERRED_PROVIDER_virtual/bootloader}'
+        case "$bootloader_provider" in
+            u-boot*)
+                bootloader_bin="${DEPLOY_DIR_IMAGE}/u-boot-${UBOOT_CONFIG_DEFAULT}.mbn"
+                ;;
+        esac
+        if [ -f "${bootloader_bin}" ]; then
+            install -m 0644 "${bootloader_bin}" uefi.elf
         fi
 
         # sail nor firmware
