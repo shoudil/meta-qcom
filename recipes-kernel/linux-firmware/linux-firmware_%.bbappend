@@ -8,6 +8,7 @@ PATCHTOOL:qcom = "git"
 
 SRC_URI:append:qcom = " \
     file://0001-linux-firmware-qcom-sync-audioreach-firmwares-from-v.patch \
+    file://0001-ATH11k-QCA6698AQ-Add-wlan-bdf-for-Talos-EVK.patch \
 "
 
 PACKAGES:append:qcom = " \
