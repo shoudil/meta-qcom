@@ -6,8 +6,8 @@
 
 FIT_DTB_COMPATIBLE[apq8016-sbc] = "qcom,apq8016-sbc"
 FIT_DTB_COMPATIBLE[apq8096-db820c] = "qcom,apq8096-sbc"
-FIT_DTB_COMPATIBLE[kaanapali-mtp] = "qcom,kaanapali-mtp"
 FIT_DTB_COMPATIBLE[hamoa-iot-evk] = "qcom,hamoa-evk"
+FIT_DTB_COMPATIBLE[kaanapali-mtp] = "qcom,kaanapali-mtp"
 FIT_DTB_COMPATIBLE[lemans-evk] = " \
                                    qcom,qcs9075-iot \
                                    qcom,qcs9075v2-iot \
@@ -60,3 +60,4 @@ FIT_DTB_COMPATIBLE[sa8775p-ride-r3-camx] = "qcom,sa8775p-qamr2-camx"
 FIT_DTB_COMPATIBLE[sdm845-db845c] = "qcom,sdm845"
 FIT_DTB_COMPATIBLE[sm8450-hdk] = "qcom,sm8450-hdk"
 FIT_DTB_COMPATIBLE[sm8750-mtp] = "qcom,sm8750-mtp"
+FIT_DTB_COMPATIBLE[talos-evk-lvds-auo_g133han01] = "qcom,talos-evk-lvds-auo,g133han01"

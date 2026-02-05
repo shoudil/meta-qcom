@@ -51,7 +51,7 @@ python do_generate_qcom_fitimage() {
     for dtb in kernel_devicetree.split():
         dtb_name = os.path.basename(dtb)
         dtb_base = os.path.splitext(dtb_name)[0]
-        compatible = d.getVarFlag("FIT_DTB_COMPATIBLE", dtb_base) or ""
+        compatible = d.getVarFlag("FIT_DTB_COMPATIBLE", dtb_base.replace(',', '_')) or ""
         dtb_path = os.path.join(dtb_dir, f"{dtb_base}.dtb")
         if not compatible and dtb_name != "qcom-metadata.dtb":
             bb.fatal(f"FIT_DTB_COMPATIBLE[{dtb_base}] is not set. ")
