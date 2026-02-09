@@ -27,7 +27,7 @@ runs:
         with:
           repository: qualcomm-linux/lava-test-plans
           path: lava-test-plans
-          ref: e5bc7469cf6f73157d9f533ab02a88d818446320
+          ref: 9127456666ae1c095fe3fdd2918b95299c2ea1eb
 
       - uses: actions/setup-python@v6
         with:
@@ -90,18 +90,18 @@ runs:
               echo "DEVICE_TYPE=dragonboard-410c" >> dragonboard-410c.ini
               echo "BOOT_IMG_FILE=boot-apq8016-sbc-qcom-armv8a.img" >> dragonboard-410c.ini
               cat dragonboard-410c.ini
-              lava-test-plans --dry-run --variables dragonboard-410c.ini --test-plan "${GITHUB_REPOSITORY#*/}/${{ inputs.distro_name }}/${{ inputs.testplan }}" --device-type "dragonboard-410c" --dry-run-path "${JOBS_OUT_PATH}/dragonboard-410c-${{ inputs.distro_name }}${{ inputs.kernel }}-${{ inputs.testplan }}" || true
+              lava-test-plans --dry-run --variables dragonboard-410c.ini --test-plan "${GITHUB_REPOSITORY#*/}/${{ inputs.distro_name }}/${{ inputs.testplan }}" --device-type "projects/${GITHUB_REPOSITORY#*/}/devices/dragonboard-410c" --dry-run-path "${JOBS_OUT_PATH}/dragonboard-410c-${{ inputs.distro_name }}${{ inputs.kernel }}-${{ inputs.testplan }}" || true
               cp "${VARS_OUT_PATH}/gh-variables.ini" dragonboard-820c.ini
               echo "BOOT_IMG_FILE=boot-apq8096-db820c-qcom-armv8a.img" >> dragonboard-820c.ini
               echo "DEVICE_TYPE=dragonboard-820c" >> dragonboard-820c.ini
               cat dragonboard-820c.ini
-              lava-test-plans --dry-run --variables dragonboard-820c.ini --test-plan "${GITHUB_REPOSITORY#*/}/${{ inputs.distro_name }}/${{ inputs.testplan }}" --device-type "dragonboard-820c" --dry-run-path "${JOBS_OUT_PATH}/dragonboard-820c-${{ inputs.distro_name }}${{ inputs.kernel }}-${{ inputs.testplan }}" || true
+              lava-test-plans --dry-run --variables dragonboard-820c.ini --test-plan "${GITHUB_REPOSITORY#*/}/${{ inputs.distro_name }}/${{ inputs.testplan }}" --device-type "projects/${GITHUB_REPOSITORY#*/}/devices/dragonboard-820c" --dry-run-path "${JOBS_OUT_PATH}/dragonboard-820c-${{ inputs.distro_name }}${{ inputs.kernel }}-${{ inputs.testplan }}" || true
               echo "MACHINE=dragonboard" >> $GITHUB_ENV
           else
               echo "DEVICE_TYPE=${{ inputs.machine }}" >> "${VARS_OUT_PATH}/gh-variables.ini"
 
               cat "${VARS_OUT_PATH}/gh-variables.ini"
-              lava-test-plans --dry-run --variables "${VARS_OUT_PATH}/gh-variables.ini" --test-plan "${GITHUB_REPOSITORY#*/}/${{ inputs.distro_name }}/${{ inputs.testplan }}" --device-type "${{ inputs.machine }}" --dry-run-path "${JOBS_OUT_PATH}/${{ inputs.machine }}-${{ inputs.distro_name }}${{ inputs.kernel }}-${{ inputs.testplan }}" || true
+              lava-test-plans --dry-run --variables "${VARS_OUT_PATH}/gh-variables.ini" --test-plan "${GITHUB_REPOSITORY#*/}/${{ inputs.distro_name }}/${{ inputs.testplan }}" --device-type "projects/${GITHUB_REPOSITORY#*/}/devices/${{ inputs.machine }}" --dry-run-path "${JOBS_OUT_PATH}/${{ inputs.machine }}-${{ inputs.distro_name }}${{ inputs.kernel }}-${{ inputs.testplan }}" || true
               echo "MACHINE=${{ inputs.machine }}" >> $GITHUB_ENV
           fi
 
