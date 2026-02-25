@@ -1,0 +1,2 @@
+COMPATIBLE_MACHINE:qcm6490 = "qcm6490"
+OPTEEMACHINE:qcm6490 = "qcom-kodiak"
