@@ -4,7 +4,7 @@
 # SPDX-License-Identifier: BSD-3-Clause-Clear
 #
 
-inherit dtb-fit-image
+inherit_defer ${@bb.utils.contains('QCOM_DTB_DEFAULT', 'multi-dtb', 'dtb-fit-image', '', d)}
 
 DTBBIN_DEPLOYDIR = "${WORKDIR}/qcom_dtbbin_deploy-${PN}"
 DTBBIN_SIZE ?= "4096"
@@ -26,9 +26,11 @@ do_qcom_dtbbin_deploy() {
         rm -rf ${DTBBIN_DEPLOYDIR}/$dtb_base_name
     done
 
-    # Generate an image with qclinuxfitImage (multi-dtb image) alongside individual DTB images.
-    mkfs.vfat -S ${QCOM_VFAT_SECTOR_SIZE} -C ${DTBBIN_DEPLOYDIR}/dtb-multi-dtb-image.vfat ${DTBBIN_SIZE}
-    mcopy -i "${DTBBIN_DEPLOYDIR}/dtb-multi-dtb-image.vfat" -vsmpQ ${DEPLOY_DIR_IMAGE}/qclinuxfitImage ::/qclinux_fit.img
+    if ${@bb.utils.contains('QCOM_DTB_DEFAULT', 'multi-dtb', 'true', 'false', d)}; then
+        # Generate an image with qclinuxfitImage (multi-dtb image) alongside individual DTB images.
+        mkfs.vfat -S ${QCOM_VFAT_SECTOR_SIZE} -C ${DTBBIN_DEPLOYDIR}/dtb-multi-dtb-image.vfat ${DTBBIN_SIZE}
+        mcopy -i "${DTBBIN_DEPLOYDIR}/dtb-multi-dtb-image.vfat" -vsmpQ ${DEPLOY_DIR_IMAGE}/qclinuxfitImage ::/qclinux_fit.img
+    fi
 }
 addtask qcom_dtbbin_deploy after do_populate_sysroot do_packagedata before do_deploy
 
