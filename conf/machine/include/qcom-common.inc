@@ -38,6 +38,9 @@ QCOM_BOOTIMG_PAGE_SIZE ?= "4096"
 # Default vfat sector size to 4096, compatible with UFS
 QCOM_VFAT_SECTOR_SIZE ??= "4096"
 
+# Default dtb image for the boot firmware (fit-based)
+QCOM_DTB_DEFAULT ??= "multi-dtb"
+
 # Default serial console for QCOM devices
 SERIAL_CONSOLES ?= "115200;ttyMSM0"
 
