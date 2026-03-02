@@ -1,1 +1,26 @@
+FILESEXTRAPATHS:prepend := "${THISDIR}/${PN}:"
+
 DEFAULTBACKEND:qcom ?= "drm"
+
+SRC_URI:append:qcom = " \
+    file://additional-devices.conf \
+    file://weston-start.sh \
+"
+
+do_compile:append:qcom() {
+    sed -i -e 's:@bindir@:${bindir}:g' ${WORKDIR}/sources/additional-devices.conf
+    sed -i -e 's:@bindir@:${bindir}:g' ${WORKDIR}/sources/weston-start.sh
+}
+
+do_install:append:qcom() {
+    install -d ${D}${systemd_system_unitdir}/weston.service.d
+    install -m 0644 ${WORKDIR}/sources/additional-devices.conf \
+        ${D}${systemd_system_unitdir}/weston.service.d/additional-devices.conf
+
+    install -d ${D}${bindir}
+    install -m 0755 ${WORKDIR}/sources/weston-start.sh \
+        ${D}${bindir}/weston-start.sh
+}
+
+FILES:${PN} += "${systemd_system_unitdir}/weston.service.d/additional-devices.conf"
+FILES:${PN} += "${bindir}/weston-start.sh"
