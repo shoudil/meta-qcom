@@ -109,10 +109,10 @@ jobs:
             dirname: ""
             yamlfile: ""
           - type: 6.18
-            dirname: "+linux-qcom-6.18"
+            dirname: "_linux-qcom-6.18"
             yamlfile: ":ci/linux-qcom-6.18.yml"
           - type: rt-6.18
-            dirname: "+linux-qcom-rt-6.18"
+            dirname: "_linux-qcom-rt-6.18"
             yamlfile: ":ci/linux-qcom-rt-6.18.yml"
     name: ${{ matrix.machine }}/${{ matrix.distro.name }}${{ matrix.kernel.dirname }}
     steps:
@@ -164,10 +164,10 @@ jobs:
             dirname: ""
             yamlfile: ""
           - type: 6.18
-            dirname: "+linux-qcom-6.18"
+            dirname: "_linux-qcom-6.18"
             yamlfile: ":ci/linux-qcom-6.18.yml"
           - type: rt-6.18
-            dirname: "+linux-qcom-rt-6.18"
+            dirname: "_linux-qcom-rt-6.18"
             yamlfile: ":ci/linux-qcom-rt-6.18.yml"
         include:
           # Additional builds for specific machines
@@ -177,7 +177,7 @@ jobs:
                 yamlfile: ':ci/qcom-distro-prop-image.yml'
             kernel:
                 type: additional
-                dirname: "+linux-yocto-dev"
+                dirname: "_linux-yocto-dev"
                 yamlfile: ":ci/linux-yocto-dev.yml"
           - machine: iq-9075-evk
             distro:
@@ -185,7 +185,7 @@ jobs:
                 yamlfile: ':ci/qcom-distro-prop-image.yml'
             kernel:
                 type: qcom-next-rt
-                dirname: "+linux-qcom-next-rt"
+                dirname: "_linux-qcom-next-rt"
                 yamlfile: ":ci/linux-qcom-next-rt.yml"
           - machine: iq-9075-evk
             distro:

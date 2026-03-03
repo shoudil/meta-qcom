@@ -32,12 +32,12 @@ jobs:
           - name: qcom-distro
         kernel:
           - ""
-          - +linux-qcom-6.18
+          - _linux-qcom-6.18
         exclude:
           - distro: poky-altcfg
-            kernel: +linux-qcom-6.18
+            kernel: _linux-qcom-6.18
           - machine: qcom-armv7a
-            kernel: +linux-qcom-6.18
+            kernel: _linux-qcom-6.18
     steps:
       - uses: actions/checkout@v4
         with:
@@ -152,10 +152,10 @@ jobs:
           - name: qcom-distro
         kernel:
           - ""
-          - +linux-qcom-6.18
+          - _linux-qcom-6.18
         exclude:
           - distro: poky-altcfg
-            kernel: +linux-qcom-6.18
+            kernel: _linux-qcom-6.18
     steps:
       - id: print-condition
         name: "Print condition"
