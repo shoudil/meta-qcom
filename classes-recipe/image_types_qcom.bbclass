@@ -10,9 +10,6 @@ QCOM_BOOT_FIRMWARE ?= ""
 QCOM_ESP_IMAGE ?= "${@bb.utils.contains("MACHINE_FEATURES", "efi", "esp-qcom-image", "", d)}"
 QCOM_ESP_FILE ?= "${@'${DEPLOY_DIR_IMAGE}/${QCOM_ESP_IMAGE}-${MACHINE}${IMAGE_NAME_SUFFIX}.vfat' if d.getVar('QCOM_ESP_IMAGE') else ''}"
 
-# When not specified, assume the board supports FIT-based
-# multi-DTB and mention this as the default DTB to be flashed.
-QCOM_DTB_DEFAULT ?= "multi-dtb"
 QCOM_DTB_FILE ?= "dtb.bin"
 
 QCOM_BOOT_FILES_SUBDIR ?= ""
