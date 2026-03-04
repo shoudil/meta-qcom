@@ -12,7 +12,7 @@ REQUIRED_DISTRO_FEATURES = "opengl"
 
 SRC_URI = "git://github.com/qualcomm/gst-plugins-imsdk;branch=main;protocol=https"
 
-SRCREV = "6a084f46f7e0215ca14927586d8b5166db8d0c00"
+SRCREV = "268dc4daa7fb3813bdfd481ff15e38f8d844105c"
 PV = "0.0+git"
 
 DEPENDS += "\
