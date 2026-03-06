@@ -5,9 +5,9 @@ validate sensor services functionality through the Sensinghub Interface."
 LICENSE = "LICENSE.qcom-2"
 LIC_FILES_CHKSUM = "file://LICENSE.qcom-2;md5=f33ba334514c4dfabc6ab7377babb377"
 
-PBT_BUILD_DATE = "260209"
+PBT_BUILD_DATE = "260309.1"
 SRC_URI = "https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/sensors.lnx.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/qcom-sensors-prebuilts_${PV}_armv8a.tar.gz"
-SRC_URI[sha256sum] = "02a14811570b30464efb9d0dcdf709ce930bfc24bf95aa9ceedede66484abd61"
+SRC_URI[sha256sum] = "62d2128709ce5f2c99e618965301c823fc9fa5c5caf6c7989186c2358888f8af"
 
 S = "${UNPACKDIR}"
 
@@ -39,6 +39,8 @@ do_install() {
     oe_libinstall -C ${S}/usr/lib -so libsnsdiaglog ${D}${libdir}
     oe_libinstall -C ${S}/usr/lib -so libUSTANative ${D}${libdir}
     oe_libinstall -C ${S}/usr/lib -so libSEESalt ${D}${libdir}
+    oe_libinstall -C ${S}/usr/lib -so libsns_direct_channel_stub ${D}${libdir}
+    oe_libinstall -C ${S}/usr/lib -so libsns_remote_proc_state_stub ${D}${libdir}
 
     # Install registry and Service files
     install -m 0644 ${S}/etc/sensors/sns_reg_config ${D}${sysconfdir}/sensors/
