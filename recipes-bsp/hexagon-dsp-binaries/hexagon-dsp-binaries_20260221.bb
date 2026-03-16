@@ -247,6 +247,8 @@ INSANE_SKIP:${PN}-thundercomm-rb5-cdsp = "arch libdir file-rdeps textrel"
 INSANE_SKIP:${PN}-thundercomm-rb5-sdsp = "arch libdir file-rdeps textrel"
 INSANE_SKIP:${PN}-thundercomm-rubikpi3-adsp = "arch libdir file-rdeps textrel"
 
+SKIP_FILEDEPS:${PN}-qcom-glymur-crd-adsp = "1"
+SKIP_FILEDEPS:${PN}-qcom-glymur-crd-cdsp = "1"
 SKIP_FILEDEPS:${PN}-qcom-hamoa-iot-evk-adsp = "1"
 SKIP_FILEDEPS:${PN}-qcom-kaanapali-mtp-adsp = "1"
 SKIP_FILEDEPS:${PN}-qcom-kaanapali-mtp-cdsp = "1"
