@@ -12,7 +12,7 @@ SRC_URI = " \
 "
 
 do_install:append() {
-      install -m 0644 ${WORKDIR}/sources/kgsl.rules -D ${D}${nonarch_base_libdir}/udev/rules.d/kgsl.rules
+      install -m 0644 ${UNPACKDIR}/kgsl.rules -D ${D}${nonarch_base_libdir}/udev/rules.d/kgsl.rules
 }
 
 KERNEL_MODULE_PROBECONF += "msm_kgsl"
