@@ -4,10 +4,6 @@ header:
 repos:
   meta-arm:
     url: https://git.yoctoproject.org/meta-arm
-    patches:
-      plain:
-        repo: meta-qcom
-        path: 0001-meta-arm-layers-update-for-wrynose-release-series.patch
     layers:
       meta-arm:
       meta-arm-toolchain:
