@@ -3,7 +3,7 @@ inputs:
   pattern:
     description: File pattern to download
     required: true
-  gh_token:
+  github-token:
     description: "Github token. It's required to download artifacts from the workflow"
     required: true
 
@@ -13,12 +13,23 @@ runs:
     - name: 'Download build URLs'
       uses: actions/download-artifact@v7
       with:
-        github-token: ${{ inputs.gh_token }}
+        github-token: ${{ inputs.github-token }}
         pattern: ${{ inputs.pattern }}
         path: urlfiles
         merge-multiple: true
 
+    - name: Detect whether any artifacts were downloaded
+      id: has_artifacts
+      shell: bash
+      run: |
+        if [ -d "urlfiles" ]; then
+            echo "found=true" >> "$GITHUB_OUTPUT"
+        else
+            echo "found=false" >> "$GITHUB_OUTPUT"
+        fi
+
     - name: "Print output"
+      if: steps.has_artifacts.outputs.found == 'true'
       shell: python
       id: print-output
       run: |
