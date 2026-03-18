@@ -1,0 +1,157 @@
+From 84d86ca892dae239c0e5acc9a26486be15a185b0 Mon Sep 17 00:00:00 2001
+From: Khem Raj <raj.khem@gmail.com>
+Date: Tue, 17 Mar 2026 16:59:34 -0700
+Subject: [PATCH] layers: update for wrynose release series
+
+Drop walnascar from supported release series
+
+Upstream-Status: Pending
+
+Signed-off-by: Khem Raj <raj.khem@gmail.com>
+Signed-off-by: Jose Quaresma <jose.quaresma@oss.qualcomm.com>
+---
+ meta-filesystems/conf/layer.conf | 2 +-
+ meta-gnome/conf/layer.conf       | 2 +-
+ meta-initramfs/conf/layer.conf   | 2 +-
+ meta-multimedia/conf/layer.conf  | 2 +-
+ meta-networking/conf/layer.conf  | 2 +-
+ meta-oe/conf/layer.conf          | 2 +-
+ meta-perl/conf/layer.conf        | 2 +-
+ meta-python/conf/layer.conf      | 2 +-
+ meta-webserver/conf/layer.conf   | 2 +-
+ meta-xfce/conf/layer.conf        | 2 +-
+ 10 files changed, 10 insertions(+), 10 deletions(-)
+
+diff --git a/meta-filesystems/conf/layer.conf b/meta-filesystems/conf/layer.conf
+index f3525365e7..dd4cb81272 100644
+--- a/meta-filesystems/conf/layer.conf
++++ b/meta-filesystems/conf/layer.conf
+@@ -15,7 +15,7 @@ LAYERVERSION_filesystems-layer = "1"
+ 
+ LAYERDEPENDS_filesystems-layer = "core openembedded-layer networking-layer"
+ 
+-LAYERSERIES_COMPAT_filesystems-layer = "walnascar whinlatter"
++LAYERSERIES_COMPAT_filesystems-layer = "whinlatter wrynose"
+ 
+ BBFILES_DYNAMIC += " \
+     meta-python:${LAYERDIR}/dynamic-layers/meta-python/recipes-*/*/*.bb \
+diff --git a/meta-gnome/conf/layer.conf b/meta-gnome/conf/layer.conf
+index faacba478e..4094e5194e 100644
+--- a/meta-gnome/conf/layer.conf
++++ b/meta-gnome/conf/layer.conf
+@@ -17,7 +17,7 @@ LAYERVERSION_gnome-layer = "1"
+ 
+ LAYERDEPENDS_gnome-layer = "core openembedded-layer networking-layer meta-python"
+ 
+-LAYERSERIES_COMPAT_gnome-layer = "walnascar whinlatter"
++LAYERSERIES_COMPAT_gnome-layer = "whinlatter wrynose"
+ 
+ SIGGEN_EXCLUDE_SAFE_RECIPE_DEPS += "\
+   faenza-icon-theme->gdk-pixbuf \
+diff --git a/meta-initramfs/conf/layer.conf b/meta-initramfs/conf/layer.conf
+index 6d495a6fb3..b52f3fde80 100644
+--- a/meta-initramfs/conf/layer.conf
++++ b/meta-initramfs/conf/layer.conf
+@@ -16,7 +16,7 @@ BBFILE_PATTERN_meta-initramfs := "^${LAYERDIR}/"
+ BBFILE_PRIORITY_meta-initramfs = "5"
+ LAYERDEPENDS_meta-initramfs = "core"
+ 
+-LAYERSERIES_COMPAT_meta-initramfs = "walnascar whinlatter"
++LAYERSERIES_COMPAT_meta-initramfs = "whinlatter wrynose"
+ 
+ SIGGEN_EXCLUDE_SAFE_RECIPE_DEPS += " \
+   dracut->virtual/kernel \
+diff --git a/meta-multimedia/conf/layer.conf b/meta-multimedia/conf/layer.conf
+index a01984888d..c96fbcb27c 100644
+--- a/meta-multimedia/conf/layer.conf
++++ b/meta-multimedia/conf/layer.conf
+@@ -31,7 +31,7 @@ LAYERVERSION_multimedia-layer = "1"
+ 
+ LAYERDEPENDS_multimedia-layer = "core openembedded-layer meta-python"
+ 
+-LAYERSERIES_COMPAT_multimedia-layer = "walnascar whinlatter"
++LAYERSERIES_COMPAT_multimedia-layer = "whinlatter wrynose"
+ 
+ # List of known non-reproducible package of the meta-multimedia layer
+ # Please keep this list sorted
+diff --git a/meta-networking/conf/layer.conf b/meta-networking/conf/layer.conf
+index 58126a575f..18256167a3 100644
+--- a/meta-networking/conf/layer.conf
++++ b/meta-networking/conf/layer.conf
+@@ -15,7 +15,7 @@ LAYERVERSION_networking-layer = "1"
+ 
+ LAYERDEPENDS_networking-layer = "core meta-python openembedded-layer"
+ 
+-LAYERSERIES_COMPAT_networking-layer = "walnascar whinlatter"
++LAYERSERIES_COMPAT_networking-layer = "whinlatter wrynose"
+ 
+ LICENSE_PATH += "${LAYERDIR}/licenses"
+ 
+diff --git a/meta-oe/conf/layer.conf b/meta-oe/conf/layer.conf
+index 186ff9a488..c6974f6dfe 100644
+--- a/meta-oe/conf/layer.conf
++++ b/meta-oe/conf/layer.conf
+@@ -48,7 +48,7 @@ LAYERVERSION_openembedded-layer = "1"
+ 
+ LAYERDEPENDS_openembedded-layer = "core"
+ 
+-LAYERSERIES_COMPAT_openembedded-layer = "walnascar whinlatter"
++LAYERSERIES_COMPAT_openembedded-layer = "whinlatter wrynose"
+ 
+ LICENSE_PATH += "${LAYERDIR}/licenses"
+ 
+diff --git a/meta-perl/conf/layer.conf b/meta-perl/conf/layer.conf
+index 7ae1a39fcd..41ff0fefc2 100644
+--- a/meta-perl/conf/layer.conf
++++ b/meta-perl/conf/layer.conf
+@@ -15,7 +15,7 @@ LAYERVERSION_perl-layer = "1"
+ 
+ LAYERDEPENDS_perl-layer = "core openembedded-layer"
+ 
+-LAYERSERIES_COMPAT_perl-layer = "walnascar whinlatter"
++LAYERSERIES_COMPAT_perl-layer = "whinlatter wrynose"
+ 
+ # List of known non-reproducible package of the meta-perl layer
+ # Please keep this list sorted
+diff --git a/meta-python/conf/layer.conf b/meta-python/conf/layer.conf
+index 202c66561f..ea51fa93ad 100644
+--- a/meta-python/conf/layer.conf
++++ b/meta-python/conf/layer.conf
+@@ -14,7 +14,7 @@ LAYERVERSION_meta-python = "1"
+ 
+ LAYERDEPENDS_meta-python = "core (>= 12) openembedded-layer"
+ 
+-LAYERSERIES_COMPAT_meta-python = "walnascar whinlatter"
++LAYERSERIES_COMPAT_meta-python = "whinlatter wrynose"
+ 
+ LICENSE_PATH += "${LAYERDIR}/licenses"
+ 
+diff --git a/meta-webserver/conf/layer.conf b/meta-webserver/conf/layer.conf
+index dcaae5cca8..0c48efc465 100644
+--- a/meta-webserver/conf/layer.conf
++++ b/meta-webserver/conf/layer.conf
+@@ -17,7 +17,7 @@ LAYERVERSION_webserver = "1"
+ 
+ LAYERDEPENDS_webserver = "core openembedded-layer"
+ 
+-LAYERSERIES_COMPAT_webserver = "walnascar whinlatter"
++LAYERSERIES_COMPAT_webserver = "whinlatter wrynose"
+ 
+ LICENSE_PATH += "${LAYERDIR}/licenses"
+ 
+diff --git a/meta-xfce/conf/layer.conf b/meta-xfce/conf/layer.conf
+index e8109725d3..a8b96969b1 100644
+--- a/meta-xfce/conf/layer.conf
++++ b/meta-xfce/conf/layer.conf
+@@ -19,7 +19,7 @@ LAYERDEPENDS_xfce-layer += "multimedia-layer"
+ LAYERDEPENDS_xfce-layer += "meta-python"
+ LAYERDEPENDS_xfce-layer += "networking-layer"
+ 
+-LAYERSERIES_COMPAT_xfce-layer = "walnascar whinlatter"
++LAYERSERIES_COMPAT_xfce-layer = "whinlatter wrynose"
+ 
+ SIGGEN_EXCLUDE_SAFE_RECIPE_DEPS += "\
+   openzone->gdk-pixbuf \
+-- 
+2.53.0
+

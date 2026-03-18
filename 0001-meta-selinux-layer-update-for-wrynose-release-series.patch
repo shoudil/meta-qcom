@@ -1,0 +1,28 @@
+From d040e7d4846fe16130a207193c7f6baac09e1aac Mon Sep 17 00:00:00 2001
+From: Jose Quaresma <jose.quaresma@oss.qualcomm.com>
+Date: Wed, 18 Mar 2026 10:20:30 +0000
+Subject: [PATCH] layers: update for wrynose release series
+
+Upstream-Status: Submitted [ https://lists.yoctoproject.org/g/yocto-patches/message/3510 ]
+
+Signed-off-by: Jose Quaresma <jose.quaresma@oss.qualcomm.com>
+---
+ conf/layer.conf | 2 +-
+ 1 file changed, 1 insertion(+), 1 deletion(-)
+
+diff --git a/conf/layer.conf b/conf/layer.conf
+index 6ec4380..74702af 100644
+--- a/conf/layer.conf
++++ b/conf/layer.conf
+@@ -17,7 +17,7 @@ BBFILE_PRIORITY_selinux = "5"
+ # cause compatibility issues with other layers
+ LAYERVERSION_selinux = "1"
+ 
+-LAYERSERIES_COMPAT_selinux = "whinlatter"
++LAYERSERIES_COMPAT_selinux = "whinlatter wrynose"
+ 
+ LAYERDEPENDS_selinux = " \
+     core \
+-- 
+2.53.0
+

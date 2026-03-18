@@ -1,0 +1,53 @@
+From deac07d5f27674d39e9e629ca9fbdc2af2e25fd4 Mon Sep 17 00:00:00 2001
+From: Jose Quaresma <jose.quaresma@oss.qualcomm.com>
+Date: Wed, 18 Mar 2026 12:23:48 +0000
+Subject: [PATCH] layers: update for wrynose release series
+
+Upstream-Status: Submitted [https://lists.yoctoproject.org/g/meta-arm/message/6961]
+
+Signed-off-by: Jose Quaresma <jose.quaresma@oss.qualcomm.com>
+---
+ meta-arm-bsp/conf/layer.conf       | 2 +-
+ meta-arm-toolchain/conf/layer.conf | 2 +-
+ meta-arm/conf/layer.conf           | 2 +-
+ 3 files changed, 3 insertions(+), 3 deletions(-)
+
+diff --git a/meta-arm-bsp/conf/layer.conf b/meta-arm-bsp/conf/layer.conf
+index ecb91b08..58ab6b87 100644
+--- a/meta-arm-bsp/conf/layer.conf
++++ b/meta-arm-bsp/conf/layer.conf
+@@ -9,7 +9,7 @@ BBFILE_COLLECTIONS += "meta-arm-bsp"
+ BBFILE_PATTERN_meta-arm-bsp = "^${LAYERDIR}/"
+ BBFILE_PRIORITY_meta-arm-bsp = "5"
+ 
+-LAYERSERIES_COMPAT_meta-arm-bsp = "whinlatter"
++LAYERSERIES_COMPAT_meta-arm-bsp = "whinlatter wrynose"
+ 
+ LAYERDEPENDS_meta-arm-bsp = "core meta-arm"
+ # This won't be used by layerindex-fetch, but works everywhere else
+diff --git a/meta-arm-toolchain/conf/layer.conf b/meta-arm-toolchain/conf/layer.conf
+index 8bffff41..b51fc107 100644
+--- a/meta-arm-toolchain/conf/layer.conf
++++ b/meta-arm-toolchain/conf/layer.conf
+@@ -9,4 +9,4 @@ BBFILE_PATTERN_arm-toolchain := "^${LAYERDIR}/"
+ BBFILE_PRIORITY_arm-toolchain = "5"
+ 
+ LAYERDEPENDS_arm-toolchain = "core"
+-LAYERSERIES_COMPAT_arm-toolchain = "whinlatter"
++LAYERSERIES_COMPAT_arm-toolchain = "whinlatter wrynose"
+diff --git a/meta-arm/conf/layer.conf b/meta-arm/conf/layer.conf
+index 9d18c7c4..bfcd569d 100644
+--- a/meta-arm/conf/layer.conf
++++ b/meta-arm/conf/layer.conf
+@@ -13,7 +13,7 @@ LAYERDEPENDS_meta-arm = " \
+     core \
+     arm-toolchain \
+ "
+-LAYERSERIES_COMPAT_meta-arm = "whinlatter"
++LAYERSERIES_COMPAT_meta-arm = "whinlatter wrynose"
+ 
+ # runfvp --console needs telnet, so pull this in for testimage.
+ HOSTTOOLS_NONFATAL += "telnet"
+-- 
+2.53.0
+
