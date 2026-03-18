@@ -4,8 +4,8 @@ LIC_FILES_CHKSUM = "file://${UNPACKDIR}/LICENSE.${BPN};md5=6e1bae7ef13289c332a27
 
 include firmware-qcom-boot-common.inc
 
-FW_ARTIFACTORY = "softwarecenter.qualcomm.com/download/software/chip/ubuntu_qualcomm_iot-spf-1-0/ubuntu-qualcomm-iot-spf-1-0_test_device_public"
-FW_BUILD_ID = "r1.0.r1_${PV}/hamoa_iot-ubun-1-0-r1"
+FW_ARTIFACTORY = "softwarecenter.qualcomm.com/nexus/generic/product/chip/software-product-family/Ubuntu_Qualcomm_IoT.SPF.1.0/ubuntu_qualcomm_iot.spf.1.0-test-device-public"
+FW_BUILD_ID = "r1.0.r1_${PV}/HAMOA_IOT.UBUN.1.0.R1"
 FW_BIN_PATH = "common/build/bin"
 BOOTBINARIES = "HAMOA_bootbinaries"
 
