@@ -12,11 +12,6 @@ repos:
 
   meta-openembedded:
     url: https://github.com/openembedded/meta-openembedded
-    patches:
-      plain:
-        repo: meta-qcom
-        path: 0001-meta-openembedded-layers-update-for-wrynose-release-series.patch
-
     layers:
       meta-filesystems:
       meta-gnome:
