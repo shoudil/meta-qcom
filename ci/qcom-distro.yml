@@ -32,10 +32,6 @@ repos:
   meta-selinux:
     branch: master
     url: https://git.yoctoproject.org/meta-selinux
-    patches:
-      plain:
-        repo: meta-qcom
-        path: 0001-meta-selinux-layer-update-for-wrynose-release-series.patch
 
   meta-updater:
     branch: master
