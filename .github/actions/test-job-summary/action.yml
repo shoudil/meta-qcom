@@ -36,7 +36,7 @@ runs:
       - name: Publish Test Job Details
         shell: bash
         run: |
-          INPUT=$(for TESTJOB in $(find ${{ github.workspace }} -name "${{ inputs.prefix }}.json")
+          INPUT=$(for TESTJOB in $(find ${{ github.workspace }} -name "${INPUTS_PREFIX}.json")
           do
               JOB_ID=$(cat "${TESTJOB}" | jq ".id")
               JOB_URL="https://lava.infra.foundries.io/results/$JOB_ID"
@@ -78,27 +78,27 @@ runs:
 
           # Print header row
           printf "| %s |" "Test"
-          printf "| %s |" "Test" >> ${{inputs.summary_file_name}}
+          printf "| %s |" "Test" >> ${INPUTS_SUMMARY_FILE_NAME}
           for D in $DEVICES; do
             printf " %s |" "$D"
-            printf " %s |" "$D" >> ${{inputs.summary_file_name}}
+            printf " %s |" "$D" >> ${INPUTS_SUMMARY_FILE_NAME}
           done
           echo
-          echo >> ${{inputs.summary_file_name}}
+          echo >> ${INPUTS_SUMMARY_FILE_NAME}
 
           ## Print separator
           printf "| ---- |"
-          printf "| ---- |" >> ${{inputs.summary_file_name}}
+          printf "| ---- |" >> ${INPUTS_SUMMARY_FILE_NAME}
           for _ in $DEVICES; do
             printf " ---- |"
-            printf " ---- |" >> ${{inputs.summary_file_name}}
+            printf " ---- |" >> ${INPUTS_SUMMARY_FILE_NAME}
           done
           echo
-          echo >> ${{inputs.summary_file_name}}
+          echo >> ${INPUTS_SUMMARY_FILE_NAME}
 
           for R in $RESULTS; do
             printf "| %s |" "$R"
-            printf "| %s |" "$R" >> ${{inputs.summary_file_name}}
+            printf "| %s |" "$R" >> ${INPUTS_SUMMARY_FILE_NAME}
 
             for D in $DEVICES; do
               VALUE=$(echo "$INPUT" | jq -r --arg d "$D" --arg r "$R" '.[$d][$r].result // ""')
@@ -108,15 +108,15 @@ runs:
               if [ "${VALUE}" = "skip" ]; then CHECKMARK=":warning:"; fi
               if [ -z "${VALUE}" ]; then CHECKMARK=":no_entry_sign:"; fi
               printf " %s [%s](%s) |" "$CHECKMARK" "$VALUE" "$URL"
-              printf " %s [%s](%s) |" "$CHECKMARK" "$VALUE" "$URL" >> ${{inputs.summary_file_name}}
+              printf " %s [%s](%s) |" "$CHECKMARK" "$VALUE" "$URL" >> ${INPUTS_SUMMARY_FILE_NAME}
             done
-            echo >> ${{inputs.summary_file_name}}
+            echo >> ${INPUTS_SUMMARY_FILE_NAME}
           done
-          echo "### All jobs summary" >> ${{inputs.summary_file_name}}
-          echo "" >> ${{inputs.summary_file_name}}
-          echo "| Job ID | Device | State | Health |" >> ${{inputs.summary_file_name}}
-          echo "| ---- | ---- | ---- | ---- |" >> ${{inputs.summary_file_name}}
-          for TESTJOB in $(find ${{ github.workspace }} -name "${{ inputs.prefix }}.json")
+          echo "### All jobs summary" >> ${INPUTS_SUMMARY_FILE_NAME}
+          echo "" >> ${INPUTS_SUMMARY_FILE_NAME}
+          echo "| Job ID | Device | State | Health |" >> ${INPUTS_SUMMARY_FILE_NAME}
+          echo "| ---- | ---- | ---- | ---- |" >> ${INPUTS_SUMMARY_FILE_NAME}
+          for TESTJOB in $(find ${{ github.workspace }} -name "${INPUTS_PREFIX}.json")
           do
               JOB_ID=$(cat "${TESTJOB}" | jq ".id")
               JOB_URL="https://lava.infra.foundries.io/results/$JOB_ID"
@@ -124,8 +124,11 @@ runs:
               JOB_HEALTH=$(echo "$JOB_DETAILS" | jq -r ".health")
               JOB_STATE=$(echo "$JOB_DETAILS" | jq -r ".state")
               JOB_DEVICE_TYPE=$(echo "$JOB_DETAILS" | jq -r ".requested_device_type")
-              echo "| [$JOB_ID]($JOB_URL) | $JOB_DEVICE_TYPE | $JOB_STATE | $JOB_HEALTH |" >> ${{inputs.summary_file_name}}
+              echo "| [$JOB_ID]($JOB_URL) | $JOB_DEVICE_TYPE | $JOB_STATE | $JOB_HEALTH |" >> ${INPUTS_SUMMARY_FILE_NAME}
           done
+        env:
+          INPUTS_PREFIX: ${{ inputs.prefix }}
+          INPUTS_SUMMARY_FILE_NAME: ${{inputs.summary_file_name}}
       - name: Upload summary
         id: upload-summary
         uses: actions/upload-artifact@v6
