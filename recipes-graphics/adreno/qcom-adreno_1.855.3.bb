@@ -6,15 +6,15 @@ DESCRIPTION = "Collection of prebuilt User Mode libraries to support OpenGL ES, 
 
 LICENSE = "LICENSE.qcom-2"
 LIC_FILES_CHKSUM = "file://NO.LOGIN.BINARY.LICENSE.QTI.pdf;md5=4ceffe94cb40cdce6d2f4fb93cc063d1 \
-                    file://NOTICE;md5=18837ae43f290ad72cdcccead4d7700a "
+                    file://NOTICE;md5=8a8bfc3e11e68334dc7e9d2daf1e93e3 "
 
 # no top-level dir in the archive, unpack to subdir to prevent UNPACKDIR pollution
 SRC_URI = "https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/gfx-adreno.le.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/${BPN}_${PV}_armv8a.tar.gz;subdir=${BP}"
-PBT_BUILD_DATE = "260304"
-SRC_URI[sha256sum] = "8e0b463519321613fa96f057c7cd7f67fd72b22dd0feb3129ffaab1400f17065"
+PBT_BUILD_DATE = "260318"
+SRC_URI[sha256sum] = "f211be698ebbcefa2e4afcdfc7a1529e6a9bc628d47bcab9234fe29aceb4008e"
 
 # These are listed here in order to identify RDEPENDS
-DEPENDS += " glib-2.0 libdmabufheap libdrm virtual/libgbm msm-gbm-backend \
+DEPENDS += " glib-2.0 libdrm virtual/libgbm msm-gbm-backend \
              ${@bb.utils.contains('DISTRO_FEATURES', 'glvnd', 'libglvnd', '', d)} \
              ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'wayland', '', d)} \
              ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'libxcb libx11 xcb-util-image', '', d)}"
