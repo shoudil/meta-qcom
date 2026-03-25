@@ -10,7 +10,10 @@ inherit cmake features_check pkgconfig
 
 REQUIRED_DISTRO_FEATURES = "opengl"
 
-SRC_URI = "git://github.com/qualcomm/gst-plugins-imsdk;protocol=https;nobranch=1;tag=${PV}"
+SRC_URI = " \
+    git://github.com/qualcomm/gst-plugins-imsdk;protocol=https;nobranch=1;tag=${PV} \
+    file://0001-gst-plugins-drop-using-imported-include-dirs.patch \
+"
 
 SRCREV = "538ab4e1ab048e619b08f82f8a737621f60d6d32"
 
