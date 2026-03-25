@@ -108,22 +108,10 @@ jobs:
             yamlfile: ""
           - name: qcom-distro
             yamlfile: ':ci/qcom-distro-prop-image.yml'
-          - name: qcom-distro-catchall
-            yamlfile: ':ci/qcom-distro-catchall.yml'
-          - name: debug
-            yamlfile: ':ci/qcom-distro-prop-image.yml:ci/debug.yml'
-          - name: performance
-            yamlfile: ':ci/qcom-distro-prop-image.yml:ci/performance.yml'
         kernel:
           - type: default
             dirname: ""
             yamlfile: ""
-          - type: 6.18
-            dirname: "_linux-qcom-6.18"
-            yamlfile: ":ci/linux-qcom-6.18.yml"
-          - type: rt-6.18-distro-kvm
-            dirname: "_linux-qcom-rt-6.18_qcom-distro-kvm"
-            yamlfile: ":ci/linux-qcom-rt-6.18.yml:ci/qcom-distro-kvm.yml"
     name: ${{ matrix.machine }}/${{ matrix.distro.name }}${{ matrix.kernel.dirname }}
     steps:
       - uses: actions/checkout@v6
@@ -158,10 +146,12 @@ jobs:
           - iq-x7181-evk
           - kaanapali-mtp
           - qcm6490-idp
+          - qcom-armv8a
           - qcs615-ride
           - qcs8300-ride-sx
           - qcs9100-ride-sx
           - rb1-core-kit
+          - rb3gen2-core-kit
           - sm8750-mtp
         distro:
           - name: nodistro
@@ -184,6 +174,28 @@ jobs:
           - type: rt-6.18-distro-kvm
             dirname: "_linux-qcom-rt-6.18_qcom-distro-kvm"
             yamlfile: ":ci/linux-qcom-rt-6.18.yml:ci/qcom-distro-kvm.yml"
+        exclude:
+          # Exclude jobs from compile_warm_up
+          - machine: qcom-armv8a
+            distro:
+                name: nodistro
+            kernel:
+                type: default
+          - machine: qcom-armv8a
+            distro:
+                name: qcom-distro
+            kernel:
+                type: default
+          - machine: rb3gen2-core-kit
+            distro:
+                name: nodistro
+            kernel:
+                type: default
+          - machine: rb3gen2-core-kit
+            distro:
+                name: qcom-distro
+            kernel:
+                type: default
         include:
           # Additional builds for specific machines
           - machine: qcom-armv8a
