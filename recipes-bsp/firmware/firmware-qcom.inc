@@ -71,3 +71,9 @@ do_install:append() {
 INHIBIT_PACKAGE_DEBUG_SPLIT = "1"
 INHIBIT_PACKAGE_STRIP = "1"
 INHIBIT_DEFAULT_DEPS = "1"
+
+# These pkgs are empty and when present will be pulled into SDK
+# by default and cause license conflits, so don't generate them.
+PACKAGES:remove = "${PN}-dbg"
+PACKAGES:remove = "${PN}-dev"
+PACKAGES:remove = "${PN}-staticdev"
