@@ -82,10 +82,14 @@ runs:
 
         if [ "${INPUTS_MACHINE}" = "qcom-armv8a" ]; then
           $KAS_CONTAINER build ci/mirror.yml:ci/${INPUTS_MACHINE}.yml${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML}:ci/initramfs-test.yml
+          ci/kas-container-shell-helper.sh ci/yocto-pybootchartgui.sh
+          mv $KAS_WORK_DIR/build/buildchart.svg buildchart-initramfs-test.svg
 
           # SDK only with the default kernel
           if [ "${INPUTS_SDK}" = "1" ] && [ "${INPUTS_KERNEL_YAML}" = "" ] ; then
             $KAS_CONTAINER build ci/mirror.yml:ci/${INPUTS_MACHINE}.yml${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML} --task populate_sdk
+            ci/kas-container-shell-helper.sh ci/yocto-pybootchartgui.sh
+            mv $KAS_WORK_DIR/build/buildchart.svg buildchart-sdk.svg
           fi
         fi
       env:
@@ -98,8 +102,7 @@ runs:
       with:
         name: buildchart-${{ inputs.distro_name }}${{ inputs.kernel_dirname }}-${{ inputs.machine }}
         path: |
-          buildchart.svg
-          buildchart-world.svg
+          buildchart*
 
     - uses: actions/upload-artifact@v6
       with:
