@@ -41,62 +41,58 @@ runs:
         echo "KAS_CONTAINER=$KAS_CONTAINER" >> $GITHUB_ENV
         chmod +x $KAS_CONTAINER
 
-    - name: Setup build variables and sstate-cache
+    - name: Setup build variables
       shell: bash
       run: |
         # use a monthly sstate cache folder
         echo "DL_DIR=${INPUTS_CACHE_DIR}/downloads" >> $GITHUB_ENV
         echo "SSTATE_DIR=${INPUTS_CACHE_DIR}/sstate-cache-$(date '+%Y-%m')" >> $GITHUB_ENV
-        echo "KAS_WORK_DIR=$PWD/../kas" >> $GITHUB_ENV
+        echo "KAS_WORK_DIR=${PWD}/../kas" >> $GITHUB_ENV
+        echo "KAS_YAMLS=ci/mirror.yml:ci/${INPUTS_MACHINE}.yml${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML}" >> $GITHUB_ENV
+        echo "INPUTS_CACHE_DIR=${INPUTS_CACHE_DIR}" >> $GITHUB_ENV
+        echo "INPUTS_MACHINE=${INPUTS_MACHINE}" >> $GITHUB_ENV
+        echo "INPUTS_DISTRO_YAML=${INPUTS_DISTRO_YAML}" >> $GITHUB_ENV
+        echo "INPUTS_KERNEL_YAML=${INPUTS_KERNEL_YAML}" >> $GITHUB_ENV
+        echo "INPUTS_SDK=${INPUTS_SDK}" >> $GITHUB_ENV
       env:
         INPUTS_CACHE_DIR: ${{inputs.cache_dir}}
+        INPUTS_MACHINE: ${{ inputs.machine }}
+        INPUTS_DISTRO_YAML: ${{ inputs.distro_yaml }}
+        INPUTS_KERNEL_YAML: ${{ inputs.kernel_yaml }}
+        INPUTS_SDK: ${{ inputs.sdk }}
 
     - name: Dump kas-build yaml
       shell: bash
       run: |
         mkdir $KAS_WORK_DIR
-        $KAS_CONTAINER dump --resolve-env --resolve-local --resolve-refs \
-          ci/mirror.yml:ci/${INPUTS_MACHINE}.yml${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML} > kas-build.yml
-      env:
-        INPUTS_MACHINE: ${{ inputs.machine }}
-        INPUTS_DISTRO_YAML: ${{ inputs.distro_yaml }}
-        INPUTS_KERNEL_YAML: ${{ inputs.kernel_yaml }}
+        $KAS_CONTAINER dump --resolve-env --resolve-local --resolve-refs ${KAS_YAMLS} > kas-build.yml
 
     - name: Kas qcom world build
       shell: bash
       run: |
-        $KAS_CONTAINER build ci/mirror.yml:ci/${INPUTS_MACHINE}.yml${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML}:ci/world.yml
+        $KAS_CONTAINER build ${KAS_YAMLS}:ci/world.yml
         ci/kas-container-shell-helper.sh ci/yocto-pybootchartgui.sh
         mv $KAS_WORK_DIR/build/buildchart.svg buildchart-world.svg
-      env:
-        INPUTS_MACHINE: ${{ inputs.machine }}
-        INPUTS_DISTRO_YAML: ${{ inputs.distro_yaml }}
-        INPUTS_KERNEL_YAML: ${{ inputs.kernel_yaml }}
 
     - name: Kas build images
       shell: bash
       run: |
-        $KAS_CONTAINER build ci/mirror.yml:ci/${INPUTS_MACHINE}.yml${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML}
+        $KAS_CONTAINER build ${KAS_YAMLS}
         ci/kas-container-shell-helper.sh ci/yocto-pybootchartgui.sh
         mv $KAS_WORK_DIR/build/buildchart.svg .
 
         if [ "${INPUTS_MACHINE}" = "qcom-armv8a" ]; then
-          $KAS_CONTAINER build ci/mirror.yml:ci/${INPUTS_MACHINE}.yml${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML}:ci/initramfs-test.yml
+          $KAS_CONTAINER build ${KAS_YAMLS}:ci/initramfs-test.yml
           ci/kas-container-shell-helper.sh ci/yocto-pybootchartgui.sh
           mv $KAS_WORK_DIR/build/buildchart.svg buildchart-initramfs-test.svg
 
           # SDK only with the default kernel
           if [ "${INPUTS_SDK}" = "1" ] && [ "${INPUTS_KERNEL_YAML}" = "" ] ; then
-            $KAS_CONTAINER build ci/mirror.yml:ci/${INPUTS_MACHINE}.yml${INPUTS_DISTRO_YAML}${INPUTS_KERNEL_YAML} --task populate_sdk
+            $KAS_CONTAINER build ${KAS_YAMLS} --task populate_sdk
             ci/kas-container-shell-helper.sh ci/yocto-pybootchartgui.sh
             mv $KAS_WORK_DIR/build/buildchart.svg buildchart-sdk.svg
           fi
         fi
-      env:
-        INPUTS_MACHINE: ${{ inputs.machine }}
-        INPUTS_DISTRO_YAML: ${{ inputs.distro_yaml }}
-        INPUTS_KERNEL_YAML: ${{ inputs.kernel_yaml }}
-        INPUTS_SDK: ${{ inputs.sdk }}
 
     - uses: actions/upload-artifact@v6
       with:
