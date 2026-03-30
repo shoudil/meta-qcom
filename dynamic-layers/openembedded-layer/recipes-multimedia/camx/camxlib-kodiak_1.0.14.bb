@@ -28,19 +28,19 @@ DEPENDS += "glib-2.0 fastrpc protobuf-camx libxml2 virtual/egl virtual/libgles2 
 COMPATIBLE_MACHINE = "^$"
 COMPATIBLE_MACHINE:aarch64 = "(.*)"
 
-# Disable configure and compile steps since this recipe uses prebuilt binaries.
-do_configure[noexec] = "1"
-do_compile[noexec] = "1"
-
 do_install() {
     install -d ${D}${libdir}
     install -d ${D}${datadir}/doc/${BPN}
     install -d ${D}${datadir}/doc/camx-kodiak
     install -d ${D}${datadir}/doc/chicdk-kodiak
-    install -d ${D}${bindir}
 
     cp -r ${S}/usr/lib/* ${D}${libdir}
-    cp -r ${S}/usr/bin/* ${D}${bindir}
+
+    # Install bin files only if /usr/bin exists in ${S}
+    if [ -d "${S}${bindir}" ]; then
+        install -d ${D}${bindir}
+        cp -r ${S}/usr/bin/* ${D}${bindir}
+    fi
 
     # Remove unnecessary development symlinks (.so) from the staged image
     rm -f ${D}${libdir}/camx/kodiak/*${SOLIBSDEV}
@@ -51,11 +51,17 @@ do_install() {
     install -m 0644 ${S}/usr/share/doc/${BPN}/NOTICE ${D}${datadir}/doc/${BPN}
     install -m 0644 ${S}/usr/share/doc/${BPN}/LICENSE.QCOM-2.txt ${D}${datadir}/doc/${BPN}
 
-    install -m 0644 ${S}/usr/share/doc/camx-kodiak/NOTICE ${D}${datadir}/doc/camx-kodiak
-    install -m 0644 ${S}/usr/share/doc/${BPN}/LICENSE.QCOM-2.txt ${D}${datadir}/doc/camx-kodiak
+    # install camx docs only if /usr/share/doc/camx-kodiak exists in ${S}
+    if [ -d "${S}/usr/share/doc/camx-kodiak" ]; then
+        install -m 0644 ${S}/usr/share/doc/camx-kodiak/NOTICE ${D}${datadir}/doc/camx-kodiak
+        install -m 0644 ${S}/usr/share/doc/${BPN}/LICENSE.QCOM-2.txt ${D}${datadir}/doc/camx-kodiak
+    fi
 
-    install -m 0644 ${S}/usr/share/doc/chicdk-kodiak/NOTICE ${D}${datadir}/doc/chicdk-kodiak
-    install -m 0644 ${S}/usr/share/doc/${BPN}/LICENSE.QCOM-2.txt ${D}${datadir}/doc/chicdk-kodiak
+    # install chicdk docs only if /usr/share/doc/chicdk-kodiak exists in ${S}
+    if [ -d "${S}/usr/share/doc/chicdk-kodiak" ]; then
+        install -m 0644 ${S}/usr/share/doc/chicdk-kodiak/NOTICE ${D}${datadir}/doc/chicdk-kodiak
+        install -m 0644 ${S}/usr/share/doc/${BPN}/LICENSE.QCOM-2.txt ${D}${datadir}/doc/chicdk-kodiak
+    fi
 }
 
 PACKAGE_BEFORE_PN += "camx-kodiak chicdk-kodiak"
