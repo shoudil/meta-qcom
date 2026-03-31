@@ -7,4 +7,5 @@ header:
 
 local_conf_header:
   ci: |
+    BB_SIGNATURE_HANDLER = "OEBasicHash"
     INHERIT:remove = "rm_work"
