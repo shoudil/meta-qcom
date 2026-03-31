@@ -55,11 +55,13 @@ do_install() {
     install -m 0644 ${S}/usr/share/doc/${BPN}/LICENSE.QCOM-2.txt \
         ${D}${datadir}/doc/${BPN}
 
-    # camx docs
-    install -m 0644 ${S}/usr/share/doc/camx-${PLATFORM}/NOTICE \
-        ${D}${datadir}/doc/camx-${PLATFORM}
-    install -m 0644 ${S}/usr/share/doc/${BPN}/LICENSE.QCOM-2.txt \
-        ${D}${datadir}/doc/camx-${PLATFORM}
+    # install camx docs only if /usr/share/doc/camx-${PLATFORM} exists in ${S}
+    if [ -d "${S}/usr/share/doc/camx-${PLATFORM}" ]; then
+        install -m 0644 ${S}/usr/share/doc/camx-${PLATFORM}/NOTICE \
+            ${D}${datadir}/doc/camx-${PLATFORM}
+        install -m 0644 ${S}/usr/share/doc/${BPN}/LICENSE.QCOM-2.txt \
+            ${D}${datadir}/doc/camx-${PLATFORM}
+    fi
 
     # install chicdk docs only if /usr/share/doc/chicdk-${PLATFORM} exists in ${S}
     if [ -d "${S}/usr/share/doc/chicdk-${PLATFORM}" ]; then
