@@ -86,12 +86,6 @@ runs:
         mv $KAS_WORK_DIR/build/buildchart.svg .
 
         if [ "${INPUTS_MACHINE}" = "qcom-armv8a" ]; then
-          $KAS_CONTAINER build ${KAS_YAMLS}:ci/initramfs-test.yml
-          $KAS_CONTAINER shell ${KAS_YAMLS}:ci/initramfs-test.yml \
-            -c "buildstats-summary --sort duration --highlight 0 --shortest 300"
-          ci/kas-container-shell-helper.sh ci/yocto-pybootchartgui.sh
-          mv $KAS_WORK_DIR/build/buildchart.svg buildchart-initramfs-test.svg
-
           # SDK only with the default kernel
           if [ "${INPUTS_SDK}" = "1" ] && [ "${INPUTS_KERNEL_YAML}" = "" ] ; then
             $KAS_CONTAINER build ${KAS_YAMLS} --task populate_sdk
