@@ -101,8 +101,8 @@ jobs:
       fail-fast: true
       matrix:
         machine:
-          - rb3gen2-core-kit
           - qcom-armv8a
+          - rb3gen2-core-kit
         distro:
           - name: nodistro
             yamlfile: ""
