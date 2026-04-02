@@ -2,6 +2,10 @@ inherit allarch
 
 FILES:${PN} += "${nonarch_base_libdir}/firmware/"
 
+# Firmware files are pre-compiled, pre-stripped, and not target architecture executables.
+# Skipping QA checks: 'already-stripped', 'arch' because:
+# - Firmware is not AArch64 ELF (arch check fails)
+# - file is Pre-stripped  (already-stripped)
 INSANE_SKIP:${PN} += "arch already-stripped"
 
 # Default settings
