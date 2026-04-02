@@ -28,7 +28,8 @@ DEPENDS += "glib-2.0 fastrpc protobuf-camx libxml2 virtual/egl virtual/libgles2 
 COMPATIBLE_MACHINE = "^$"
 COMPATIBLE_MACHINE:aarch64 = "(.*)"
 
-do_install() {
+# Use do_install:append to preserve cmake_do_install
+do_install:append() {
     install -d ${D}${libdir}
     install -d ${D}${datadir}/doc/${BPN}
     install -d ${D}${datadir}/doc/camx-kodiak
