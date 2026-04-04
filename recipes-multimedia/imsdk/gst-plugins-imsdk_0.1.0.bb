@@ -49,3 +49,7 @@ RDEPENDS:${PN}-qtimltflite += "tensorflow-lite"
 
 # The Smart Video Encoder plugin loads the libVideoCtrl library at runtime using dlopen(). To ensure runtime availability, added runtime dependency on 'smart-venc-ctrl-algo'.
 RDEPENDS:${PN}-qtismartvencbin += "smart-venc-ctrl-algo"
+
+# The MQTT adaptor loads the mosquitto library at runtime using dlopen(). MQTT server also needed to exercise the use-case.
+# To ensure runtime availability, added runtime dependency on 'mosquitto'.
+RDEPENDS:libgstqtimqttadaptor += "mosquitto"
