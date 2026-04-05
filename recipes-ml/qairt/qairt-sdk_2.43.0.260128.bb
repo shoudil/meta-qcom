@@ -54,6 +54,7 @@ COMPATIBLE_MACHINE:aarch64 = "(.*)"
 do_install() {
     install -d ${D}${includedir}
     install -d ${D}${libdir}
+    install -d ${D}${datadir}/qcom/qcs615/Qualcomm/QCS615-RIDE/dsp/cdsp
     install -d ${D}${datadir}/qcom/qcm6490/Thundercomm/RB3gen2/dsp/cdsp
     install -d ${D}${datadir}/qcom/sa8775p/Qualcomm/SA8775P-RIDE/dsp/cdsp
     install -d ${D}${datadir}/qcom/qcs8300/Qualcomm/QCS8300-RIDE/dsp/cdsp
@@ -65,6 +66,7 @@ do_install() {
     # These installation paths for the Hexagon libraries were decided based on
     # the recommendations from FastRPC team and taking FastCV as a reference.
     # They may change later, so keep the PACKAGES entries generic.
+    cp -r ${S}/lib/hexagon-v66/unsigned/* ${D}${datadir}/qcom/qcs615/Qualcomm/QCS615-RIDE/dsp/cdsp
     cp -r ${S}/lib/hexagon-v68/unsigned/* ${D}${datadir}/qcom/qcm6490/Thundercomm/RB3gen2/dsp/cdsp
     cp -r ${S}/lib/hexagon-v73/unsigned/* ${D}${datadir}/qcom/sa8775p/Qualcomm/SA8775P-RIDE/dsp/cdsp
     cp -r ${S}/lib/hexagon-v75/unsigned/* ${D}${datadir}/qcom/qcs8300/Qualcomm/QCS8300-RIDE/dsp/cdsp
@@ -101,24 +103,28 @@ SOLIBS = ".so"
 FILES_SOLIBSDEV = ""
 
 PACKAGES += "\
+    ${PN}-hexagon-v66 \
     ${PN}-hexagon-v68 \
     ${PN}-hexagon-v73 \
     ${PN}-hexagon-v75 \
 "
 
+FILES:${PN}-hexagon-v66 += "${datadir}/qcom/qcs615/Qualcomm/QCS615-RIDE/dsp/cdsp"
 FILES:${PN}-hexagon-v68 += "${datadir}/qcom/qcm6490/Thundercomm/RB3gen2/dsp/cdsp"
 FILES:${PN}-hexagon-v73 += "${datadir}/qcom/sa8775p/Qualcomm/SA8775P-RIDE/dsp/cdsp"
 FILES:${PN}-hexagon-v75 += "${datadir}/qcom/qcs8300/Qualcomm/QCS8300-RIDE/dsp/cdsp"
 
 RDEPENDS:${PN} += "fastrpc"
-RRECOMMENDS:${PN} += "${PN}-hexagon-v68 ${PN}-hexagon-v73 ${PN}-hexagon-v75"
+RRECOMMENDS:${PN} += "${PN}-hexagon-v66 ${PN}-hexagon-v68 ${PN}-hexagon-v73 ${PN}-hexagon-v75"
 
 # File based runtime depends are not applicable for Hexagon libraries.
+SKIP_FILEDEPS:${PN}-hexagon-v66 = "1"
 SKIP_FILEDEPS:${PN}-hexagon-v68 = "1"
 SKIP_FILEDEPS:${PN}-hexagon-v73 = "1"
 SKIP_FILEDEPS:${PN}-hexagon-v75 = "1"
 
 # Skip QA checks that don’t apply to prebuilt Hexagon DSP/HTP libraries.
+INSANE_SKIP:${PN}-hexagon-v66 += "arch libdir ldflags file-rdeps"
 INSANE_SKIP:${PN}-hexagon-v68 += "arch libdir ldflags file-rdeps"
 INSANE_SKIP:${PN}-hexagon-v73 += "arch libdir ldflags file-rdeps"
 INSANE_SKIP:${PN}-hexagon-v75 += "arch libdir ldflags file-rdeps"
