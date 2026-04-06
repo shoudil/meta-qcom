@@ -5,9 +5,9 @@ validate sensor services functionality through the Sensinghub Interface."
 LICENSE = "LICENSE.qcom-2"
 LIC_FILES_CHKSUM = "file://LICENSE.qcom-2;md5=f33ba334514c4dfabc6ab7377babb377"
 
-PBT_BUILD_DATE = "260325.1"
+PBT_BUILD_DATE = "260402"
 SRC_URI = "https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/sensors.lnx.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/qcom-sensors-prebuilts_${PV}_armv8a.tar.gz"
-SRC_URI[sha256sum] = "f25586fa6d6a11de90efbab43e31644fed432b2a56e9e7f2a342c9a04f51c0cc"
+SRC_URI[sha256sum] = "12acdab39fe79bfc9c00697f5d7d3a766d9f6192f0fc74cfab3242528d40e967"
 
 S = "${UNPACKDIR}"
 
