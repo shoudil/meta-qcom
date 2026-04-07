@@ -3,10 +3,11 @@ HOMEPAGE = "https://github.com/qualcomm-linux/camera-driver"
 LICENSE = "GPL-2.0-with-Linux-syscall-note"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=b234ee4d69f5fce4486a80fdaf4a4263"
 
-SRC_URI = "git://github.com/qualcomm-linux/camera-driver.git;protocol=https;branch=camera-kernel.qclinux.0.0"
+SRC_URI = " \
+    git://github.com/qualcomm-linux/camera-driver.git;protocol=https;branch=camera-kernel.qclinux.0.0;tag=v${PV} \
+"
 
-PV = "0.0+git"
-SRCREV = "c62c54bb9c04efe5afb91576be55797aadf635f8"
+SRCREV = "3dac889d25682686d5d6990b0a62e4cd699c8cd9"
 
 inherit module
 
