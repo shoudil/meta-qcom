@@ -10,8 +10,8 @@ LIC_FILES_CHKSUM = "file://NO.LOGIN.BINARY.LICENSE.QTI.pdf;md5=4ceffe94cb40cdce6
 
 # no top-level dir in the archive, unpack to subdir to prevent UNPACKDIR pollution
 SRC_URI = "https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/gfx-adreno.le.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/${BPN}_${PV}_armv8a.tar.gz;subdir=${BP}"
-PBT_BUILD_DATE = "260318"
-SRC_URI[sha256sum] = "f211be698ebbcefa2e4afcdfc7a1529e6a9bc628d47bcab9234fe29aceb4008e"
+PBT_BUILD_DATE = "260407"
+SRC_URI[sha256sum] = "ac4fb526e1b5fbd607e96919ac4af65c34c15603e21e58b5527ea1d70152091c"
 
 # These are listed here in order to identify RDEPENDS
 DEPENDS += " glib-2.0 libdrm virtual/libgbm msm-gbm-backend \
