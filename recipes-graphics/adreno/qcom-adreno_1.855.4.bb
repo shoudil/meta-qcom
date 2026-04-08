@@ -56,11 +56,11 @@ do_install () {
     install -d ${D}/${libdir}
     cp -r ${S}/usr/lib/* ${D}/${libdir}/
 
-    if not ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'true', 'false', d)}; then
+    if ! ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'true', 'false', d)}; then
         rm ${D}/${libdir}/libeglSubDriverX11.so*
     fi
 
-    if not ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'true', 'false', d)}; then
+    if ! ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'true', 'false', d)}; then
         rm ${D}/${libdir}/libeglSubDriverWayland.so*
     fi
 
