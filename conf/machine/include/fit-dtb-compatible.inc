@@ -24,7 +24,7 @@ FIT_DTB_COMPATIBLE[lemans-evk+lemans-el2] = " \
     qcom,qcs9075-iot-el2kvm \
     qcom,qcs9075-socv2.0-iot-el2kvm \
 "
-FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-camx+lemans-el2] = " \
+FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-camx+lemans-el2+lemans-camx-el2] = " \
     qcom,qcs9075-iot-camx-el2kvm \
     qcom,qcs9075-socv2.0-iot-camx-el2kvm \
 "
