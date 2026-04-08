@@ -1,0 +1,74 @@
+From d900160bb34504e7d628f5f7d81bc5e64de842ad Mon Sep 17 00:00:00 2001
+From: Jose Quaresma <jose.quaresma@oss.qualcomm.com>
+Date: Wed, 8 Apr 2026 12:27:57 +0100
+Subject: [PATCH] wic: move to files/wic
+
+Upstream-Status: Submitted [https://lists.yoctoproject.org/g/meta-arm/message/7008]
+
+Signed-off-by: Jose Quaresma <jose.quaresma@oss.qualcomm.com>
+---
+ .../{ => files}/wic/corstone1000-flash-firmware-fvp.wks.in        | 0
+ .../{ => files}/wic/corstone1000-flash-firmware-mps3.wks.in       | 0
+ meta-arm-bsp/{ => files}/wic/efi-disk-esp-only.wks.in             | 0
+ meta-arm-bsp/{ => files}/wic/efi-disk-no-swap.wks.in              | 0
+ meta-arm/{ => files}/wic/efi-disk.wks.in                          | 0
+ meta-arm/{ => files}/wic/qemu-efi-disk.wks.in                     | 0
+ meta-arm/{ => files}/wic/qemuarm.cfg                              | 0
+ meta-arm/{ => files}/wic/qemuarm.wks                              | 0
+ meta-arm/{ => files}/wic/qemuarm64.cfg                            | 0
+ meta-arm/{ => files}/wic/qemuarm64.wks                            | 0
+ 10 files changed, 0 insertions(+), 0 deletions(-)
+ rename meta-arm-bsp/{ => files}/wic/corstone1000-flash-firmware-fvp.wks.in (100%)
+ rename meta-arm-bsp/{ => files}/wic/corstone1000-flash-firmware-mps3.wks.in (100%)
+ rename meta-arm-bsp/{ => files}/wic/efi-disk-esp-only.wks.in (100%)
+ rename meta-arm-bsp/{ => files}/wic/efi-disk-no-swap.wks.in (100%)
+ rename meta-arm/{ => files}/wic/efi-disk.wks.in (100%)
+ rename meta-arm/{ => files}/wic/qemu-efi-disk.wks.in (100%)
+ rename meta-arm/{ => files}/wic/qemuarm.cfg (100%)
+ rename meta-arm/{ => files}/wic/qemuarm.wks (100%)
+ rename meta-arm/{ => files}/wic/qemuarm64.cfg (100%)
+ rename meta-arm/{ => files}/wic/qemuarm64.wks (100%)
+
+diff --git a/meta-arm-bsp/wic/corstone1000-flash-firmware-fvp.wks.in b/meta-arm-bsp/files/wic/corstone1000-flash-firmware-fvp.wks.in
+similarity index 100%
+rename from meta-arm-bsp/wic/corstone1000-flash-firmware-fvp.wks.in
+rename to meta-arm-bsp/files/wic/corstone1000-flash-firmware-fvp.wks.in
+diff --git a/meta-arm-bsp/wic/corstone1000-flash-firmware-mps3.wks.in b/meta-arm-bsp/files/wic/corstone1000-flash-firmware-mps3.wks.in
+similarity index 100%
+rename from meta-arm-bsp/wic/corstone1000-flash-firmware-mps3.wks.in
+rename to meta-arm-bsp/files/wic/corstone1000-flash-firmware-mps3.wks.in
+diff --git a/meta-arm-bsp/wic/efi-disk-esp-only.wks.in b/meta-arm-bsp/files/wic/efi-disk-esp-only.wks.in
+similarity index 100%
+rename from meta-arm-bsp/wic/efi-disk-esp-only.wks.in
+rename to meta-arm-bsp/files/wic/efi-disk-esp-only.wks.in
+diff --git a/meta-arm-bsp/wic/efi-disk-no-swap.wks.in b/meta-arm-bsp/files/wic/efi-disk-no-swap.wks.in
+similarity index 100%
+rename from meta-arm-bsp/wic/efi-disk-no-swap.wks.in
+rename to meta-arm-bsp/files/wic/efi-disk-no-swap.wks.in
+diff --git a/meta-arm/wic/efi-disk.wks.in b/meta-arm/files/wic/efi-disk.wks.in
+similarity index 100%
+rename from meta-arm/wic/efi-disk.wks.in
+rename to meta-arm/files/wic/efi-disk.wks.in
+diff --git a/meta-arm/wic/qemu-efi-disk.wks.in b/meta-arm/files/wic/qemu-efi-disk.wks.in
+similarity index 100%
+rename from meta-arm/wic/qemu-efi-disk.wks.in
+rename to meta-arm/files/wic/qemu-efi-disk.wks.in
+diff --git a/meta-arm/wic/qemuarm.cfg b/meta-arm/files/wic/qemuarm.cfg
+similarity index 100%
+rename from meta-arm/wic/qemuarm.cfg
+rename to meta-arm/files/wic/qemuarm.cfg
+diff --git a/meta-arm/wic/qemuarm.wks b/meta-arm/files/wic/qemuarm.wks
+similarity index 100%
+rename from meta-arm/wic/qemuarm.wks
+rename to meta-arm/files/wic/qemuarm.wks
+diff --git a/meta-arm/wic/qemuarm64.cfg b/meta-arm/files/wic/qemuarm64.cfg
+similarity index 100%
+rename from meta-arm/wic/qemuarm64.cfg
+rename to meta-arm/files/wic/qemuarm64.cfg
+diff --git a/meta-arm/wic/qemuarm64.wks b/meta-arm/files/wic/qemuarm64.wks
+similarity index 100%
+rename from meta-arm/wic/qemuarm64.wks
+rename to meta-arm/files/wic/qemuarm64.wks
+-- 
+2.53.0
+
