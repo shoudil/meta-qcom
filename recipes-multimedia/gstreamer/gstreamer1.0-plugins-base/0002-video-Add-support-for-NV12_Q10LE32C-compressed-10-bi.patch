@@ -7,12 +7,15 @@ Subject: [PATCH] video: Add support for NV12_Q10LE32C (compressed 10-bit)
 Upstream-Status: Denied [Same reason as 8-bit compressed format, https://gitlab.freedesktop.org/gstreamer/gstreamer/-/merge_requests/9712]
 
 Signed-off-by: Hui Liu <huliu@qti.qualcomm.com>
+Signed-off-by: Bala Sai Kosuri <bkosuri@qti.qualcomm.com>
 ---
- gst-libs/gst/video/video-format.c | 23 +++++++++++++++++++++
- gst-libs/gst/video/video-format.h | 10 ++++++++-
- gst-libs/gst/video/video-info.c   | 34 +++++++++++++++++++++++++++++++
- tests/check/libs/video.c          |  4 ++++
- 4 files changed, 70 insertions(+), 1 deletion(-)
+ gst-libs/gst/video/video-format.c   | 23 +++++++++++++++++++
+ gst-libs/gst/video/video-format.h   | 10 ++++++++-
+ gst-libs/gst/video/video-info.c     | 34 +++++++++++++++++++++++++++++
+ tests/check/elements/videoconvert.c |  3 +++
+ tests/check/elements/videoscale.c   |  1 +
+ tests/check/libs/video.c            |  9 ++++++--
+ 6 files changed, 77 insertions(+), 3 deletions(-)
 
 diff --git a/gst-libs/gst/video/video-format.c b/gst-libs/gst/video/video-format.c
 index b28abc3..61a9912 100644
@@ -67,10 +70,10 @@ index 6593f8a..6c4d61d 100644
 --- a/gst-libs/gst/video/video-format.h
 +++ b/gst-libs/gst/video/video-format.h
 @@ -175,6 +175,7 @@ G_BEGIN_DECLS
-  * @GST_VIDEO_FORMAT_Y416_BE: packed 4:4:4:4 YUV, 16 bits per channel(U-Y-V-A) (Since: 1.26)
-  * @GST_VIDEO_FORMAT_GRAY10_LE16: 10-bit grayscale, packed into 16bit words (6 bits padding) (Since: 1.26)
+  * @GST_VIDEO_FORMAT_BGR10x2_LE: packed 4:4:4 RGB (B-G-R-x), 10 bits for R/G/B channel and MSB 2 bits for padding (Since: 1.28)
+  * @GST_VIDEO_FORMAT_RGB10x2_LE: packed 4:4:4 RGB (R-G-B-x), 10 bits for R/G/B channel and MSB 2 bits for padding (Since: 1.28)
   * @GST_VIDEO_FORMAT_NV12_Q08C: Qualcomm NV12 8bit compressed format
-+ * @GST_VIDEO_FORMAT_NV12_Q10LE32C: Qualcomm NV12 10-bit compressed format.
++ * @GST_VIDEO_FORMAT_NV12_Q10LE32C: Qualcomm NV12 10bit compressed format
   *
   * Enum value describing the most common video formats.
   *
@@ -142,10 +145,48 @@ index f86b9b3..0e31528 100644
      case GST_VIDEO_FORMAT_ENCODED:
      case GST_VIDEO_FORMAT_DMA_DRM:
        break;
+diff --git a/tests/check/elements/videoconvert.c b/tests/check/elements/videoconvert.c
+index 4668a9b..a600e8b 100644
+--- a/tests/check/elements/videoconvert.c
++++ b/tests/check/elements/videoconvert.c
+@@ -79,6 +79,9 @@ check_pad_template (GstPadTemplate * tmpl)
+     if (i == GST_VIDEO_FORMAT_NV12_Q08C)
+       continue;
+ 
++    if (i == GST_VIDEO_FORMAT_NV12_Q10LE32C)
++      continue;
++
+     if (!formats_supported[i]) {
+       g_error ("videoconvert doesn't support format '%s'",
+           gst_video_format_to_string ((GstVideoFormat) i));
+diff --git a/tests/check/elements/videoscale.c b/tests/check/elements/videoscale.c
+index 5edca5a..4d6bbbb 100644
+--- a/tests/check/elements/videoscale.c
++++ b/tests/check/elements/videoscale.c
+@@ -123,6 +123,7 @@ check_pad_template (GstPadTemplate * tmpl)
+         case GST_VIDEO_FORMAT_MT2110T:
+         case GST_VIDEO_FORMAT_MT2110R:
+         case GST_VIDEO_FORMAT_NV12_Q08C:
++        case GST_VIDEO_FORMAT_NV12_Q10LE32C:
+           GST_LOG ("Ignoring lack of support for format %s", fmt_str);
+           break;
+         default:
 diff --git a/tests/check/libs/video.c b/tests/check/libs/video.c
 index 5f8af9d..dd3d696 100644
 --- a/tests/check/libs/video.c
 +++ b/tests/check/libs/video.c
+@@ -389,8 +389,9 @@ GST_START_TEST (test_video_formats_all)
+     fail_if (gst_video_format_from_string (fmt_str) ==
+         GST_VIDEO_FORMAT_UNKNOWN);
+   }
+-  /* Take into account GST_VIDEO_FORMAT_ENCODED, UNKNOWN, DMA_DRM and NV12_Q08C */
+-  fail_unless_equals_int (num, GST_VIDEO_FORMAT_LAST - 4);
++  /* Take into account GST_VIDEO_FORMAT_ENCODED, UNKNOWN, DMA_DRM, NV12_Q08C
++   * and NV12_Q10LE32C. */
++  fail_unless_equals_int (num, GST_VIDEO_FORMAT_LAST - 5);
+ 
+   gst_caps_unref (caps);
+ }
 @@ -2188,6 +2188,9 @@ GST_START_TEST (test_video_pack_unpack2)
      if (format == GST_VIDEO_FORMAT_NV12_Q08C)
        continue;
