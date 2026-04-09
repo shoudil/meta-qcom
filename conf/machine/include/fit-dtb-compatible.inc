@@ -56,6 +56,10 @@ FIT_DTB_COMPATIBLE[qcs6490-rb3gen2] = " \
     qcom,qcs5430-iot \
     qcom,qcs6490-iot \
 "
+FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-staging] = " \
+    qcom,qcs5430-iot-staging \
+    qcom,qcs6490-iot-staging \
+"
 FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-industrial-mezzanine] = " \
     qcom,qcs5430-iot-subtype9 \
     qcom,qcs6490-iot-subtype9 \
