@@ -1,14 +1,14 @@
 SUMMARY = "MSM GBM backend library"
-DESCRIPTION = "Mesa GBM backend for MSM, built from Codelinaro repository"
-HOMEPAGE = "https://git.codelinaro.org/clo/le/display/libgbm"
+DESCRIPTION = "Mesa GBM backend for MSM"
+HOMEPAGE = "https://github.com/qualcomm-linux/gbm-msm-backend"
 
 LICENSE = "BSD-3-Clause-Clear"
 LIC_FILES_CHKSUM = "file://src/gbm_msm.h;md5=8c54773149e04ded5c0c3e293bb13509"
 
-PV = "0.1+git"
-SRCREV = "d2f771e8c80698a18b16f14ea60d5d55abede683"
+PV = "1.2.5"
+SRCREV = "e421a87ff0d4420cf6642958d5d11f09c66957c1"
 
-SRC_URI = "git://git.codelinaro.org/clo/le/display/libgbm.git;protocol=https;branch=display.qclinux.1.0.r1-rel \
+SRC_URI = "git://github.com/qualcomm-linux/gbm-msm-backend.git;protocol=https;branch=main \
            file://0002-QCOM-libgbm-use-sysconfdir-to-install-configuration-.patch \
            file://0003-QCOM-libgbm-set-install-paths-for-backend-library-co.patch "
 
