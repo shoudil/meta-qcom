@@ -24,13 +24,14 @@ board-specific GPIO toggles.  Convert the CONFIG_TC956X_PLATFORM_SUPPORT
 
 Upstream-Status: Submitted [https://github.com/TC956X/TC9564_Host_Driver/pull/6]
 Signed-off-by: Mohd Ayaan Anwar <mohd.anwar@oss.qualcomm.com>
+Signed-off-by: Ricardo Salveti <ricardo.salveti@oss.qualcomm.com>
 ---
  drivers/net/ethernet/toshiba/tc956x/Makefile  |   3 +
- .../net/ethernet/toshiba/tc956x/tc956x_gpio.c |  57 ++++
+ .../net/ethernet/toshiba/tc956x/tc956x_gpio.c |  67 +++++
  .../net/ethernet/toshiba/tc956x/tc956x_qcom.c | 258 ++++++++++++++++++
  .../net/ethernet/toshiba/tc956x/tc956xmac.h   |   8 +-
  .../ethernet/toshiba/tc956x/tc956xmac_main.c  |  39 ---
- 5 files changed, 324 insertions(+), 41 deletions(-)
+ 5 files changed, 334 insertions(+), 41 deletions(-)
  create mode 100644 drivers/net/ethernet/toshiba/tc956x/tc956x_gpio.c
  create mode 100644 drivers/net/ethernet/toshiba/tc956x/tc956x_qcom.c
 
@@ -53,7 +54,7 @@ new file mode 100644
 index 0000000..2300b5d
 --- /dev/null
 +++ b/drivers/net/ethernet/toshiba/tc956x/tc956x_gpio.c
-@@ -0,0 +1,57 @@
+@@ -0,0 +1,67 @@
 +// SPDX-License-Identifier: GPL-2.0-only
 +// Copyright (c) Qualcomm Technologies, Inc. and/or its subsidiaries.
 +
@@ -61,6 +62,7 @@ index 0000000..2300b5d
 + * tc956x_gpio.c - Minimal GPIO controller driver for  QPS615 PHY reset lines.
 +*/
 +
++#include <linux/version.h>
 +#include <linux/gpio/driver.h>
 +
 +#include "tc956xmac.h"
@@ -84,12 +86,21 @@ index 0000000..2300b5d
 +					   offset, value ? 1 : 0);
 +}
 +
++#if LINUX_VERSION_CODE < KERNEL_VERSION(6, 17, 0)
++static void tc956x_gpio_set(struct gpio_chip *chip, unsigned int offset,
++			    int value)
++{
++	tc956x_GPIO_OutputConfigPin(to_tc956x_gpio(chip)->priv,
++				    offset, value ? 1 : 0);
++}
++#else
 +static int tc956x_gpio_set(struct gpio_chip *chip, unsigned int offset,
 +			    int value)
 +{
 +	return tc956x_GPIO_OutputConfigPin(to_tc956x_gpio(chip)->priv,
 +					   offset, value ? 1 : 0);
 +}
++#endif
 +
 +int tc956x_gpio_register(struct tc956xmac_priv *priv)
 +{
