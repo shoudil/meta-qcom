@@ -1,12 +1,12 @@
 PLATFORM = "lemans"
-PBT_BUILD_DATE = "260324"
+PBT_BUILD_DATE = "260403"
 
 require common.inc
 
-SRC_URI[camxlib.sha256sum]     = "568d7dde1bcd6391391c42aa62db9abb8ad645a36dcb7053fd94a91c82a08596"
-SRC_URI[camx.sha256sum]        = "45802dbf8f69b1731ac74588264566f1165ab554b7a9dafd7ec4d142cc409ee3"
-SRC_URI[chicdk.sha256sum]      = "714fe40e3e20dfee2642f91f0d9ff4e25d9c3fd4d7351451952cfc2dc5628b9a"
-SRC_URI[camxcommon.sha256sum]  = "5d4436269aa4f426251b9054aeae0f4f0e784c278a5420d067a23d81b50a5c3c"
+SRC_URI[camxlib.sha256sum]     = "c3a2899a19078c0ced7ae6ec4605b84834eae33893820f05a34e864f198bdfc9"
+SRC_URI[camx.sha256sum]        = "91bfc42dad35adef895656dfef48f4eacb4059e49b813dec9cbece9a4b30a309"
+SRC_URI[chicdk.sha256sum]      = "4c83df2a4690759979087d112633d43420599ab4906f233109591528107d4769"
+SRC_URI[camxcommon.sha256sum]  = "89ee02d0b4bd09dcca091be2f2339ff50b6a34fc50ca51c612b0e633768a956d"
 
 DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'qcom-adreno virtual/libopencl1', '', d)}"
 
