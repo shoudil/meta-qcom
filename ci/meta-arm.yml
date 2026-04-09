@@ -4,10 +4,6 @@ header:
 repos:
   meta-arm:
     url: https://git.yoctoproject.org/meta-arm
-    patches:
-      plain:
-        repo: meta-qcom
-        path: patches/0001-wic-move-to-files-wic.patch
     layers:
       meta-arm:
       meta-arm-toolchain:
