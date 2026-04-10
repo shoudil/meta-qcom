@@ -27,6 +27,7 @@ PACKAGECONFIG[base]         = "-DENABLE_GST_PLUGIN_BASE=ON, -DENABLE_GST_PLUGIN_
 PACKAGECONFIG[camera-base]  = "-DENABLE_GST_PLUGIN_CAMERA_BASE=ON, -DENABLE_GST_PLUGIN_CAMERA_BASE=OFF, camera-service"
 PACKAGECONFIG[messaging]    = "-DENABLE_GST_MESSAGING_PLUGINS=1, -DENABLE_GST_MESSAGING_PLUGINS=0, librdkafka mosquitto"
 PACKAGECONFIG[ml]           = "-DENABLE_GST_ML_PLUGINS=1, -DENABLE_GST_ML_PLUGINS=0, cairo json-glib opencv"
+PACKAGECONFIG[python-apps]  = "-DENABLE_GST_PYTHON_EXAMPLES=1, -DENABLE_GST_PYTHON_EXAMPLES=0"
 PACKAGECONFIG[qairt]        = "-DENABLE_GST_QAIRT_PLUGINS=1 -DENABLE_GST_PLUGIN_MLTOOLS=1, -DENABLE_GST_QAIRT_PLUGINS=0 -DENABLE_GST_PLUGIN_MLTOOLS=0, qairt-sdk, qairt-sdk"
 PACKAGECONFIG[qmmfsrc]      = "-DENABLE_GST_PLUGIN_QMMFSRC=1 -DVHDR_MODES_ENABLE=ON -DEIS_MODES_ENABLE=ON -DFEATURE_OFFLINE_IFE_SUPPORT=ON, -DENABLE_GST_PLUGIN_QMMFSRC=0 -DVHDR_MODES_ENABLE=OFF -DEIS_MODES_ENABLE=OFF -DFEATURE_OFFLINE_IFE_SUPPORT=OFF, camera-service"
 PACKAGECONFIG[redissink]    = "-DENABLE_GST_PLUGIN_REDISSINK=1, -DENABLE_GST_PLUGIN_REDISSINK=0, hiredis"
@@ -46,3 +47,5 @@ RDEPENDS:${PN}-qtismartvencbin += "smart-venc-ctrl-algo"
 # The MQTT adaptor loads the mosquitto library at runtime using dlopen(). MQTT server also needed to exercise the use-case.
 # To ensure runtime availability, added runtime dependency on 'mosquitto'.
 RDEPENDS:libgstqtimqttadaptor += "mosquitto"
+
+RDEPENDS:${PN}-apps += "${@bb.utils.contains('PACKAGECONFIG', 'python-apps', 'python3-core gstreamer1.0-python python3-pygobject gtk+3 python3-opencv', '', d)}"
