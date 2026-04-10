@@ -41,6 +41,8 @@ EXTRA_OECMAKE = " \
 
 PACKAGE_BEFORE_PN += "${PN}-qteesupplicant"
 
+PACKAGES += "${PN}-ta"
+
 SYSTEMD_PACKAGES = "${PN}-qteesupplicant"
 SYSTEMD_SERVICE:${PN}-qteesupplicant = "qteesupplicant.service sfsconfig.service"
 
@@ -52,7 +54,9 @@ do_install:append() {
        rm ${D}${nonarch_base_libdir}/qtee-tas/NO.LOGIN.BINARY.LICENSE.QTI.pdf
 }
 
-FILES:${PN} += "${nonarch_base_libdir}/qtee-tas"
+FILES:${PN}-ta += "${nonarch_base_libdir}/qtee-tas"
+RDEPENDS:${PN} = "${PN}-ta"
+INSANE_SKIP:${PN}-ta += "arch"
 
 FILES:${PN}-qteesupplicant = "${bindir}/qtee_supplicant \
                               ${nonarch_libdir}/udev/rules.d/99-qcomtee-udev.rules \
