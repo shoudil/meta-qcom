@@ -36,7 +36,7 @@ index c580565..2542efb 100644
 +++ b/gst-libs/gst/wayland/gstwldisplay.c
 @@ -767,3 +767,19 @@ gst_wl_display_has_own_display (GstWlDisplay * self)
  
-   return priv->own_display;
+   return output;
  }
 +
 +void
@@ -60,7 +60,7 @@ index b2f0ca3..a4b3803 100644
 +++ b/gst-libs/gst/wayland/gstwldisplay.h
 @@ -121,4 +121,7 @@ struct wp_single_pixel_buffer_manager_v1 * gst_wl_display_get_single_pixel_buffe
  GST_WL_API
- gboolean gst_wl_display_has_own_display (GstWlDisplay * self);
+ GstWlOutput * gst_wl_display_get_output_by_name (GstWlDisplay * self, const gchar * output_name);
  
 +GST_WL_API
 +void gst_wl_display_force_release_buffers (GstWlDisplay * self);
