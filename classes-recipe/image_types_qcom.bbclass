@@ -102,7 +102,8 @@ create_qcomflash_pkg() {
                 -name 'logfs_*.bin' -o \
                 -name 'qsahara_*.xml' -o \
                 -name 'sec.dat' -o \
-                -name 'soccp*.bin'` ; do
+                -name 'soccp*.bin' -o \
+                -name 'xbl_config_devprg.elf'` ; do
             install -m 0644 ${bfw} .
         done
 
