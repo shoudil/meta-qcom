@@ -31,3 +31,4 @@ B = "${S}/drivers/net/ethernet/toshiba/tc956x"
 # Therefore, pf=1 needs to be set while compiling for non-SRIOV VF config.
 EXTRA_OEMAKE += "KCFLAGS='-DTC956X -DCONFIG_TC956X_PLATFORM_SUPPORT -DTC956X_SRIOV_PF' pf=1"
 
+RDEPENDS:${PN} += "qps615-firmware"
