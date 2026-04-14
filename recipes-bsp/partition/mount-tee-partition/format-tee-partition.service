@@ -5,8 +5,6 @@
 [Unit]
 Description=Create ext4 filesystem on persist partition if missing
 DefaultDependencies=no
-Requires=dev-disk-by\x2dpartlabel-persist.device
-After=dev-disk-by\x2dpartlabel-persist.device
 ConditionPathExists=/dev/disk/by-partlabel/persist
 Before=var-lib-tee.mount
 ConditionPathIsMountPoint=!/var/lib/tee
@@ -15,6 +13,3 @@ ConditionPathIsMountPoint=!/var/lib/tee
 Type=oneshot
 ExecStart=@sbindir@/check-tee-partition-fs.sh
 RemainAfterExit=yes
-
-[Install]
-WantedBy=local-fs-pre.target
