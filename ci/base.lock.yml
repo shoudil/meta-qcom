@@ -9,7 +9,7 @@ overrides:
         meta-arm:
             commit: d987a5945802dcbbc06be91a0d34f00431ea840e
         meta-openembedded:
-            commit: 96a803a50d55a455b0584d8a81168351d0f8c697
+            commit: d2e6069771e435231a220a8ecac20c0e7ceff037
         meta-virtualization:
             commit: 4e6c583591c1da7e898254dd33eca5cc04c739a9
         meta-audioreach:
@@ -17,6 +17,6 @@ overrides:
         meta-selinux:
             commit: 4904b87b12c51a68efc5b9cd45c7b519fdc48af1
         meta-updater:
-            commit: bcea37a06cb8b17ddcd7f3209b4a3c5643fee4d5
+            commit: 2f51f8d7fe658a49d0991ddd0d0af7ff1535c6b4
         meta-security:
             commit: 8028c573db6923525c2918724f2bd36d4a420e0b
