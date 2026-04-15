@@ -8,6 +8,7 @@ SRC_URI = " \
     file://var-lib-tee.mount \
     file://check-tee-partition-fs.sh \
     file://format-tee-partition.service \
+    file://persist.rules \
 "
 
 inherit features_check systemd
@@ -28,6 +29,8 @@ do_install() {
             ${D}${systemd_system_unitdir}/format-tee-partition.service
     sed -i -e "s,@sbindir@,${sbindir},g" \
             ${D}${systemd_system_unitdir}/format-tee-partition.service
+    install -Dm 0644 ${UNPACKDIR}/persist.rules \
+            ${D}${nonarch_base_libdir}/udev/rules.d/99-persist.rules
 }
 
 PACKAGES = "${PN}"
