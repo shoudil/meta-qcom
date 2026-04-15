@@ -6,6 +6,7 @@ DESCRIPTION = "Hexagon DSP binaries for SM8450 HDK board"
 
 DSPSO_SOC = "sm8450"
 DSPSO_DEVICE = "SM8450-HDK"
+DSPSO_DEVICE_MODEL = "Qualcomm Technologies, Inc. SM8450 HDK"
 
 LICENSE = "CLOSED"
 DEPENDS = "firmware-${DSP_PKG_NAME}"

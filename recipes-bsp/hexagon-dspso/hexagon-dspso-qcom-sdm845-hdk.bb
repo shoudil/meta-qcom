@@ -7,6 +7,9 @@ DESCRIPTION = "Hexagon DSP binaries for SDM845 HDK (aka HDK845) board"
 DSPSO_SOC = "sdm845"
 DSPSO_DEVICE = "SDM845-HDK"
 
+# Config for SDM845-HDK is a part of the main repo
+DSPSO_CONFIG = "hexagon-dsp-binaries-conf"
+
 LICENSE = "CLOSED"
 DEPENDS = "firmware-${DSP_PKG_NAME}"
 S = "${UNPACKDIR}"
@@ -15,4 +18,6 @@ require hexagon-dspso.inc
 
 # Only package SLPI binaries, ADSP and CDSP are provided by
 # hexagon-dsp-binaries
-PACKAGES = "hexagon-dsp-binaries-${DSP_PKG_NAME}-sdsp"
+PACKAGES = " \
+    hexagon-dsp-binaries-${DSP_PKG_NAME}-sdsp \
+"

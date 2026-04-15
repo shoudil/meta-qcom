@@ -6,6 +6,7 @@ DESCRIPTION = "Hexagon DSP binaries for QAR2130P device"
 
 DSPSO_SOC = "sar2130p"
 DSPSO_DEVICE = "QAR2130P"
+DSPSO_DEVICE_MODEL = "Qualcomm Snapdragon AR2 Gen1 Smart Viewer Development Kit"
 
 LICENSE = "CLOSED"
 DEPENDS = "firmware-${DSP_PKG_NAME}"

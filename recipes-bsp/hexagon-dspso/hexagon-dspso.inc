@@ -15,20 +15,30 @@ SRC_URI += "${DSPSO_URI}"
 DSP_PKG_NAME ?= "${@d.getVar("PN").split("hexagon-dspso-")[-1]}"
 
 DSP_QCOM_BASE_PATH = "${datadir}/qcom"
-DSP_QCOM_PATH = "${DSP_QCOM_BASE_PATH}/${DSPSO_SOC}/${DSPSO_VENDOR}/${DSPSO_DEVICE}"
+DSP_QCOM_CONF_D_PATH = "${DSP_QCOM_BASE_PATH}/conf.d"
+DSP_QCOM_SUBPATH = "${DSPSO_SOC}/${DSPSO_VENDOR}/${DSPSO_DEVICE}"
+DSP_QCOM_PATH = "${DSP_QCOM_BASE_PATH}/${DSP_QCOM_SUBPATH}"
+
+DSPSO_CONFIG ?= "hexagon-dsp-binaries-${DSP_PKG_NAME}-config"
 
 DEPENDS += "e2fsprogs-native"
 
 inherit allarch
 
 PACKAGES = " \
+    hexagon-dsp-binaries-${DSP_PKG_NAME}-config \
     hexagon-dsp-binaries-${DSP_PKG_NAME}-adsp \
     hexagon-dsp-binaries-${DSP_PKG_NAME}-cdsp \
     hexagon-dsp-binaries-${DSP_PKG_NAME}-sdsp \
 "
 
+RDEPENDS:hexagon-dsp-binaries-${DSP_PKG_NAME}-adsp = "${DSPSO_CONFIG}"
+RDEPENDS:hexagon-dsp-binaries-${DSP_PKG_NAME}-cdsp = "${DSPSO_CONFIG}"
+RDEPENDS:hexagon-dsp-binaries-${DSP_PKG_NAME}-sdsp = "${DSPSO_CONFIG}"
+
 FILES:hexagon-dsp-binaries-${DSP_PKG_NAME}-adsp = "${DSP_QCOM_PATH}/dsp/adsp"
 FILES:hexagon-dsp-binaries-${DSP_PKG_NAME}-cdsp = "${DSP_QCOM_PATH}/dsp/cdsp"
+FILES:hexagon-dsp-binaries-${DSP_PKG_NAME}-config = "${DSP_QCOM_CONF_D_PATH}"
 FILES:hexagon-dsp-binaries-${DSP_PKG_NAME}-sdsp = "${DSP_QCOM_PATH}/dsp/sdsp"
 
 ALLOW_EMPTY:hexagon-dsp-binaries-${DSP_PKG_NAME}-adsp = "1"
@@ -67,15 +77,30 @@ handle_dspso_image() {
     done
 }
 
+generate_config() {
+    if [ -n "${DSPSO_DEVICE_MODEL}" ] ; then
+        cat >> ${B}/${BPN}.yaml << EOF
+machines:
+  ${DSPSO_DEVICE_MODEL}:
+    DSP_LIBRARY_PATH: ${DSP_QCOM_SUBPATH}
+EOF
+    fi
+}
+
 do_compile:prepend() {
     if [ -z "${DSPSO_URI}" ] ; then
         bbwarn "${PN}: not packaging DSPSO firmware. Please provide DSPSO_URI"
     else
         handle_dspso_image ${UNPACKDIR}/${@get_dspso_path(d.getVar("DSPSO_URI"))}
     fi
+    generate_config
 }
 
 do_install:prepend() {
+    if [ -f "${B}/${BPN}.yaml" ] ; then
+        install -d ${D}${DSP_QCOM_CONF_D_PATH}
+        install -m 0644 ${B}/${BPN}.yaml ${D}${DSP_QCOM_CONF_D_PATH}
+    fi
     ls ${B}/dspso-adsp/* && mkdir -p ${D}${DSP_QCOM_PATH}/dsp/adsp && install -m 0644 ${B}/dspso-adsp/* ${D}${DSP_QCOM_PATH}/dsp/adsp
     ls ${B}/dspso-cdsp/* && mkdir -p ${D}${DSP_QCOM_PATH}/dsp/cdsp && install -m 0644 ${B}/dspso-cdsp/* ${D}${DSP_QCOM_PATH}/dsp/cdsp
     ls ${B}/dspso-sdsp/* && mkdir -p ${D}${DSP_QCOM_PATH}/dsp/sdsp && install -m 0644 ${B}/dspso-sdsp/* ${D}${DSP_QCOM_PATH}/dsp/sdsp
