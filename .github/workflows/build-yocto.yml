@@ -283,6 +283,14 @@ jobs:
                 type: default
                 dirname: ""
                 yamlfile: ""
+          - machine: rb3gen2-core-kit
+            distro:
+                name: nodistro
+                yamlfile: ':ci/meta-arm.yml:ci/capsule.yml:ci/capsule-test-keys.yml'
+            kernel:
+                type: capsule
+                dirname: "_capsule"
+                yamlfile: ""
     name: ${{ matrix.machine }}/${{ matrix.distro.name }}${{ matrix.kernel.dirname }}
     steps:
       - name: checkout
