@@ -12,6 +12,7 @@ RRECOMMENDS:${PN}-firmware = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'linux-firmware-ath11k-wcn6855 linux-firmware-ath12k-wcn7850', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'linux-firmware-qca-qca2066 linux-firmware-qca-qca61x4-usb linux-firmware-qca-wcn685x linux-firmware-qca-wcn7850', '', d)} \
     camxfirmware-monaco \
+    linux-firmware-lt8713sx \
     linux-firmware-qcom-qcs8300-audio \
     linux-firmware-qcom-qcs8300-compute \
     linux-firmware-qcom-qcs8300-generalpurpose \
