@@ -17,6 +17,7 @@ RRECOMMENDS:${PN}-firmware = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'wifi', 'linux-firmware-ath11k-wcn6750 linux-firmware-qcom-qcm6490-wifi', '', d)} \
     ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'linux-firmware-qca-wcn6750', '', d)} \
     camxfirmware-kodiak \
+    linux-firmware-lt9611uxc \
     linux-firmware-qcom-qcm6490-audio \
     linux-firmware-qcom-qcm6490-compute \
     linux-firmware-qcom-qcm6490-qupv3fw \
