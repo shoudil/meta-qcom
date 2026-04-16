@@ -16,8 +16,6 @@ permissions:
 jobs:
   build-nightly:
     uses: ./.github/workflows/build-yocto.yml
-    with:
-      sdk: "0" # temporarily until we can split IMSDK correctly
   test-nightly:
     uses: ./.github/workflows/test.yml
     needs: build-nightly

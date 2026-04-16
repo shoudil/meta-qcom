@@ -12,9 +12,6 @@ inputs:
     required: true
   cache_dir:
     required: true
-  sdk:
-    required: false
-    default: "0"
 outputs:
   url:
     description: Location of the published binaries
@@ -87,7 +84,7 @@ runs:
 
         if [ "${INPUTS_MACHINE}" = "qcom-armv8a" ]; then
           # SDK only with the default kernel
-          if [ "${INPUTS_SDK}" = "1" ] && [ "${INPUTS_KERNEL_YAML}" = "" ] ; then
+          if [ "${INPUTS_KERNEL_YAML}" = "" ] ; then
             $KAS_CONTAINER build ${KAS_YAMLS} --task populate_sdk
             $KAS_CONTAINER shell ${KAS_YAMLS} \
               -c "buildstats-summary --sort duration --highlight 0 --shortest 300"
