@@ -87,7 +87,7 @@ FIT_DTB_COMPATIBLE[qcs9100-ride-r3+sa8775p-ride-camx] = " \
     qcom,qcs9100-qam-r2.0 \
     qcom,qcs9100-socv2.0-qam-r2.0-camx \
 "
-FIT_DTB_COMPATIBLE[qcs9100-ride-r3+fdt-lemans-el2] = " \
+FIT_DTB_COMPATIBLE[qcs9100-ride-r3+lemans-el2] = " \
     qcom,qcs9100-qam-r2.0-el2kvm \
     qcom,qcs9100-socv2.0-qam-r2.0-el2kvm \
 "
