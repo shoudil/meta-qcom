@@ -32,9 +32,14 @@ FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-ifp-mezzanine] = " \
     qcom,qcs9075-iot-subtype1 \
     qcom,qcs9075v2-iot-subtype1 \
 "
+FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-ifp-mezzanine+lemans-evk-staging] = " \
+    qcom,qcs9075-iot-subtype1-staging \
+    qcom,qcs9075v2-iot-subtype1-staging \
+"
 FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-camera-imx577] = "qcom,qcs8275-iot"
 FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-camx] = "qcom,qcs8275-iot-camx"
 FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-ifp-mezzanine] = "qcom,qcs8275-iot-subtype3"
+FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-ifp-mezzanine+monaco-evk-staging] = "qcom,qcs8275-iot-subtype3-staging"
 FIT_DTB_COMPATIBLE[purwa-iot-evk] = "qcom,purwa-evk"
 FIT_DTB_COMPATIBLE[qcm6490-idp] = "qcom,qcm6490-idp"
 FIT_DTB_COMPATIBLE[qcom-apq8064-asus-nexus7-flo] = "qcom,apq8064"
@@ -50,6 +55,10 @@ FIT_DTB_COMPATIBLE[qcs615-ride] = " \
 FIT_DTB_COMPATIBLE[qcs6490-rb3gen2] = " \
     qcom,qcs5430-iot \
     qcom,qcs6490-iot \
+"
+FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-staging] = " \
+    qcom,qcs5430-iot-staging \
+    qcom,qcs6490-iot-staging \
 "
 FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-industrial-mezzanine] = " \
     qcom,qcs5430-iot-subtype9 \
