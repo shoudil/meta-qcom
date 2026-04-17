@@ -13,12 +13,6 @@ python split_imsdk_module_packages () {
     do_split_packages(d, imsdk_root, r'([^/]+)/modules/[^/]+\.so', d.expand('${PN}-%s-modules'), 'IMSDK runtime modules for %s plugin', recursive=True, extra_depends='', match_path=True)
 }
 
-PACKAGES += "${PN}-configs ${PN}-media"
+PACKAGES += "${PN}-configs"
 
 FILES:${PN}-configs = "${sysconfdir}/configs/"
-
-FILES:${PN}-media = " \
-    ${datadir}/qdemo/* \
-"
-
-RDEPENDS:${PN}-apps += "${PN}-media"
