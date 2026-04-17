@@ -13,7 +13,7 @@ LICENSE = " \
 LIC_FILES_CHKSUM = "\
     file://LICENSE.qcom;md5=56e86b6c508490dadc343f39468b5f5e \
     file://LICENSE.qcom-2;md5=165287851294f2fb8ac8cbc5e24b02b0 \
-    file://WHENCE;md5=9603239eb0b1d63311cde830244d2d3f \
+    file://WHENCE;md5=e0b6d021dc7e50f8fc99d89a7916e548 \
     file://conf.d/hexagon-dsp-binaries-qualcomm-iq9075-evk.yaml;endline=2;md5=077232564320a8fce4ea446daad3d726 \
 "
 NO_GENERIC_LICENSE[dspso-qcom] = "LICENSE.qcom"
@@ -27,7 +27,7 @@ SRC_URI = " \
     file://0001-qcm6490-update-dynamic-dsp-modules-for-RB3gen2-QCM64.patch \
 "
 
-SRCREV = "251d038e2c2fef7e0f58060177f8ddd669afa012"
+SRCREV = "123bddd9cc886b61ece87d7d63b9ceed0654d3a1"
 
 inherit allarch
 
