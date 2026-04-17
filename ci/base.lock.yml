@@ -20,3 +20,5 @@ overrides:
             commit: 7fbd0d7d73d4e252ee31e5260e547cbf17945a82
         meta-security:
             commit: 596b966a0d047c2f48cb768821558e918ae0c477
+        meta-dpdk:
+            commit: c4e58978ce61c47c2f54206e07f9ad46be2ed257
