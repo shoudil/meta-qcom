@@ -3,7 +3,7 @@ header:
 overrides:
     repos:
         oe-core:
-            commit: f235ffc43c7783a84e1ac0dce8489fcba8354e12
+            commit: 8c008f36d7af1e63cb3f4a2ba763efd1f1e5fe4d
         bitbake:
             commit: 5d722b5d65e4eef7befe6376983385421e993f86
         meta-arm:
