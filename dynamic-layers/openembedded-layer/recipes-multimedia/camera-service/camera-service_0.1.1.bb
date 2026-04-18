@@ -7,7 +7,7 @@ HOMEPAGE = "https://github.com/qualcomm/camera-service"
 
 SRC_URI = "git://github.com/qualcomm/camera-service;protocol=https;nobranch=1;tag=${PV}"
 
-SRCREV = "f6bb57c06fb1430f398e7f5aaf1a14726777dff9"
+SRCREV = "da1e17853fd675fed85984ecf19e22708a05a825"
 
 # Limit this recipe to ARMv8 (aarch64) only, because it depends
 # on camxcommon-headers which is explicitly restricted to ARMv8 (aarch64).
