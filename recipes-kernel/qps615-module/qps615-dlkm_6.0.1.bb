@@ -23,6 +23,7 @@ SRC_URI = "\
 	file://0010-net-ethernet-tc956x-Use-kvfree-instead-of-vfree.patch \
 	file://0011-net-ethernet-tc956x-Fix-module-auto-loading.patch \
 	file://0012-net-ethernet-tc956x-Add-Qualcomm-platform-driver-and.patch \
+	file://0013-net-ethernet-tc956x-Implement-phy-mode-DT-overlay-fo.patch \
 "
 
 B = "${S}/drivers/net/ethernet/toshiba/tc956x"
