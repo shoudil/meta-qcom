@@ -1,1 +1,1 @@
-PACKAGECONFIG:append = " ml messaging python-apps redissink"
+PACKAGECONFIG:append = " ml messaging python-apps redissink sample-apps"
