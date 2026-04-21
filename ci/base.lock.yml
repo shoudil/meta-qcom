@@ -19,4 +19,4 @@ overrides:
         meta-updater:
             commit: d713c99a9ddace090c0efc0ed57022185daa6fb2
         meta-security:
-            commit: 8028c573db6923525c2918724f2bd36d4a420e0b
+            commit: 596b966a0d047c2f48cb768821558e918ae0c477
