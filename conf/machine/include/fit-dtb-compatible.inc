@@ -20,7 +20,7 @@ FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-camx] = " \
     qcom,qcs9075-iot-camx \
     qcom,qcs9075-socv2.0-iot-camx \
 "
-FIT_DTB_COMPATIBLE[lemans-evk+lemans-el2] = " \
+FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-camera-csi1-imx577+lemans-el2] = " \
     qcom,qcs9075-iot-el2kvm \
     qcom,qcs9075-socv2.0-iot-el2kvm \
 "
@@ -36,7 +36,7 @@ FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-ifp-mezzanine+lemans-evk-staging] = " \
     qcom,qcs9075-iot-subtype1-staging \
     qcom,qcs9075v2-iot-subtype1-staging \
 "
-FIT_DTB_COMPATIBLE[monaco-evk+monaco-el2] = "qcom,qcs8275-iot-el2kvm"
+FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-camera-imx577+monaco-el2] = "qcom,qcs8275-iot-el2kvm"
 FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-camera-imx577] = "qcom,qcs8275-iot"
 FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-camx] = "qcom,qcs8275-iot-camx"
 FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-camx+monaco-el2+monaco-camx-el2] = "qcom,qcs8275-iot-camx-el2kvm"
