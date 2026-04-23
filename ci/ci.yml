@@ -9,4 +9,3 @@ local_conf_header:
   ci: |
     BB_SIGNATURE_HANDLER = "OEBasicHash"
     FIRMWARE_COMPRESSION:qcom-armv8a = "zst"
-    INHERIT:remove = "rm_work"
