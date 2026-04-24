@@ -5,7 +5,7 @@
 # SPDX-License-Identifier: MIT
 #
 
-QLI_MIRRORS_URI ?= "https://artifacts.codelinaro.org/aritfactory/qli-ci/downloads/${QLI_BASELINE}"
+QLI_MIRRORS_URI ?= "https://artifacts.codelinaro.org/artifactory/qli-ci/downloads/${QLI_BASELINE}"
 
 QLI_MIRRORS ?= " \
 svn://.*/.*     ${QLI_MIRRORS_URI}/ \
