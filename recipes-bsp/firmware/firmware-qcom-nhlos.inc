@@ -64,3 +64,7 @@ do_install:prepend() {
         done
     fi
 }
+
+# Make sure that there is nothing in the meta-package, all firmware must go to
+# a particular package.
+FILES:${PN} = ""
