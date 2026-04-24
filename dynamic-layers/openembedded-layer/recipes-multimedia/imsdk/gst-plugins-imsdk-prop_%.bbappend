@@ -1,1 +1,1 @@
-PACKAGECONFIG:append = " camera-base qmmfsrc"
+PACKAGECONFIG:append = " camera"
