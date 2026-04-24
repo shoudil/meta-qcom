@@ -85,7 +85,9 @@ runs:
         if [ "${INPUTS_MACHINE}" = "qcom-armv8a" ]; then
           # SDK only with the default kernel and qcom-distro
           if [ "${INPUTS_KERNEL_YAML}" = "" ] && [ "${INPUTS_DISTRO_YAML}" = ":ci/qcom-distro.yml" ] ; then
-            $KAS_CONTAINER build ${KAS_YAMLS} --task populate_sdk
+            $KAS_CONTAINER build ${KAS_YAMLS} --task populate_sdk \
+              --target qcom-multimedia-image \
+              --target qcom-multimedia-proprietary-image
             $KAS_CONTAINER shell ${KAS_YAMLS} \
               -c "buildstats-summary --sort duration --highlight 0 --shortest 300"
             ci/kas-container-shell-helper.sh ci/yocto-pybootchartgui.sh
