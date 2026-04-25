@@ -50,15 +50,21 @@ do_compile:prepend() {
 }
 
 do_install:prepend() {
-    install -d ${D}${FW_QCOM_PATH}
+    if [ -n "${NHLOS_URI}${PROPRIETARY_URI}" ] ; then
+        install -d ${D}${FW_QCOM_PATH}
 
-    for fw in ${FW_QCOM_LIST} ; do
-        if [ -r ${S}/proprietary/$fw ] ; then
-            install -m 0644 ${S}/proprietary/$fw ${D}${FW_QCOM_PATH}
-        elif [ -r ${B}/$fw ] ; then
-            install -m 0644 ${B}/$fw ${D}${FW_QCOM_PATH}
-        elif [ -r ${B}/firmware/image/$fw ] ; then
-            install -m 0644 ${B}/firmware/image/$fw ${D}${FW_QCOM_PATH}
-        fi
-    done
+        for fw in ${FW_QCOM_LIST} ; do
+            if [ -r ${S}/proprietary/$fw ] ; then
+                install -m 0644 ${S}/proprietary/$fw ${D}${FW_QCOM_PATH}
+            elif [ -r ${B}/$fw ] ; then
+                install -m 0644 ${B}/$fw ${D}${FW_QCOM_PATH}
+            elif [ -r ${B}/firmware/image/$fw ] ; then
+                install -m 0644 ${B}/firmware/image/$fw ${D}${FW_QCOM_PATH}
+            fi
+        done
+    fi
 }
+
+# Make sure that there is nothing in the meta-package, all firmware must go to
+# a particular package.
+FILES:${PN} = ""

@@ -40,5 +40,5 @@ do_install:prepend() {
     fi
 }
 
-FILES:linux-firmware-qcom-adreno-gmu-a621 += "${FW_QCOM_BASE_PATH}/a621_gmu.bin"
+FILES:linux-firmware-qcom-adreno-gmu-a621 += "${FW_QCOM_BASE_PATH}/a621_gmu.bin*"
 FILES:${PN} += "${nonarch_base_libdir}/firmware/ath12k"
