@@ -11,7 +11,10 @@ SRCREV = "a027d749f0ccc0559b3ebdaa22aca3833102c9e9"
 SRCBRANCH = "nobranch=1"
 
 SRC_URI = "git://github.com/qualcomm-linux/u-boot.git;${SRCBRANCH};protocol=https;name=uboot"
-SRC_URI += "file://disable-eficapsule-tool.cfg"
+SRC_URI += " \
+    file://disable-eficapsule-tool.cfg \
+    ${@bb.utils.contains('MACHINE_FEATURES', 'optee', 'file://tfa-optee.cfg', '', d)} \
+"
 
 python __anonymous() {
     ubootconfig = (d.getVar('UBOOT_CONFIG') or "").split()
