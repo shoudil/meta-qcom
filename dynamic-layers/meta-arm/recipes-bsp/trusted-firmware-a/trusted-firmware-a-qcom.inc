@@ -1,4 +1,4 @@
-DEPENDS += "qtestsign-native optee-os-qcom"
+DEPENDS += "qtestsign-native optee-os-qcom u-boot-qcom"
 
 SRC_URI += "git://github.com/coreboot/qc_blobs.git;protocol=https;name=qc_blobs;subdir=qc_blobs;branch=main"
 SRCREV_qc_blobs = "16207f367ddbf280a0c2c8a3d3ee454a59710a25"
@@ -9,17 +9,19 @@ LIC_FILES_CHKSUM:qcm6490 += "file://${UNPACKDIR}/qc_blobs/sc7280/qtiseclib/LICEN
 COMPATIBLE_MACHINE:qcm6490 = "qcm6490"
 TFA_PLATFORM:qcm6490 = "rb3gen2"
 
-TFA_UBOOT ?= "1"
 TFA_BUILD_TARGET = "bl2 fip"
 TFA_SPD = "opteed"
 
 EXTRA_OEMAKE:append = " \
     BL32=${RECIPE_SYSROOT}/${nonarch_base_libdir}/firmware/tee-raw.bin \
+    BL33=${DEPLOY_DIR_IMAGE}/u-boot.bin \
    "
 
 EXTRA_OEMAKE:append:qcm6490 = " \
     QTISECLIB_PATH=${UNPACKDIR}/qc_blobs/sc7280/qtiseclib/libqtisec.a \
    "
+
+do_compile[depends] += " u-boot-qcom:do_deploy"
 
 do_install:append:qcm6490() {
     export CRYPTOGRAPHY_OPENSSL_NO_LEGACY=1
