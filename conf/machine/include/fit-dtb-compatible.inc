@@ -48,6 +48,9 @@ FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-ifp-mezzanine] = "qcom,qcs8275-iot-subt
 FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-ifp-mezzanine+monaco-evk-staging] = "qcom,qcs8275-iot-subtype3-staging"
 FIT_DTB_COMPATIBLE[purwa-iot-evk] = "qcom,purwa-evk"
 FIT_DTB_COMPATIBLE[qcm6490-idp] = "qcom,qcm6490-idp"
+FIT_DTB_COMPATIBLE[qcm6490-idp+kodiak-el2] = " \
+    qcom,qcm6490-idp-el2kvm \
+"
 FIT_DTB_COMPATIBLE[qcom-apq8064-asus-nexus7-flo] = "qcom,apq8064"
 FIT_DTB_COMPATIBLE[qcom-apq8064-ifc6410] = "qcom,apq8064-ifc6410"
 FIT_DTB_COMPATIBLE[qcom-apq8074-dragonboard] = "qcom,apq8074-dragonboard"
