@@ -101,6 +101,7 @@ create_qcomflash_pkg() {
                 -name '*.mbn*' -o \
                 -name '*.melf*' -o \
                 -name '*.fv' -o \
+                -name '*.img' -o \
                 -name 'cdt_*.bin' -o \
                 -name 'logfs_*.bin' -o \
                 -name 'qsahara_*.xml' -o \
