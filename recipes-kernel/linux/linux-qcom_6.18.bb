@@ -14,8 +14,8 @@ PV = "${LINUX_VERSION}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-qcom-6.18:"
 
-# tag:qcom-6.18.y-20260511
-SRCREV ?= "b822a3cc2f27c8a8b35b580e063ce5e618d3c9bd"
+# tag:qcom-6.18.y-20260513
+SRCREV ?= "c9092c6055905903be100bb9e46483d9c523c51b"
 
 SRCBRANCH ?= "nobranch=1"
 SRCBRANCH:class-devupstream ?= "branch=qcom-6.18.y"
