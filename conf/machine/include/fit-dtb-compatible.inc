@@ -48,6 +48,9 @@ FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-ifp-mezzanine] = "qcom,qcs8275-iot-subt
 FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-ifp-mezzanine+monaco-evk-staging] = "qcom,qcs8275-iot-subtype3-staging"
 FIT_DTB_COMPATIBLE[purwa-iot-evk] = "qcom,purwa-evk"
 FIT_DTB_COMPATIBLE[qcm6490-idp] = "qcom,qcm6490-idp"
+FIT_DTB_COMPATIBLE[qcm6490-idp+kodiak-el2] = " \
+    qcom,qcm6490-idp-el2kvm \
+"
 FIT_DTB_COMPATIBLE[qcom-apq8064-asus-nexus7-flo] = "qcom,apq8064"
 FIT_DTB_COMPATIBLE[qcom-apq8064-ifc6410] = "qcom,apq8064-ifc6410"
 FIT_DTB_COMPATIBLE[qcom-apq8074-dragonboard] = "qcom,apq8074-dragonboard"
@@ -66,6 +69,10 @@ FIT_DTB_COMPATIBLE[qcs6490-rb3gen2] = " \
     qcom,qcs5430-iot \
     qcom,qcs6490-iot \
 "
+FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+kodiak-el2] = " \
+    qcom,qcs5430-iot-el2kvm \
+    qcom,qcs6490-iot-el2kvm \
+"
 FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-staging] = " \
     qcom,qcs5430-iot-staging \
     qcom,qcs6490-iot-staging \
@@ -74,6 +81,10 @@ FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-industrial-mezzanine] = " \
     qcom,qcs5430-iot-subtype9 \
     qcom,qcs6490-iot-subtype9 \
 "
+FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-industrial-mezzanine+kodiak-el2] = " \
+    qcom,qcs5430-iot-subtype9-el2kvm \
+    qcom,qcs6490-iot-subtype9-el2kvm \
+"
 FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-industrial-mezzanine+qcs6490-rb3gen2-industrial-mezzanine-staging] = " \
     qcom,qcs5430-iot-subtype9-staging \
     qcom,qcs6490-iot-subtype9-staging \
@@ -81,6 +92,10 @@ FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-industrial-mezzanine+qcs6490-
 FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-vision-mezzanine] = " \
     qcom,qcs5430-iot-subtype2 \
     qcom,qcs6490-iot-subtype2 \
+"
+FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-vision-mezzanine+kodiak-el2] = " \
+    qcom,qcs5430-iot-subtype2-el2kvm \
+    qcom,qcs6490-iot-subtype2-el2kvm \
 "
 FIT_DTB_COMPATIBLE[qcs6490-rb3gen2+qcs6490-rb3gen2-vision-mezzanine-camx] = " \
     qcom,qcs5430-iot-camx \
