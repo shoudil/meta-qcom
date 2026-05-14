@@ -817,3 +817,303 @@ class QcomFitImageIntegrationTests(OESelftestTestCase):
                 self.assertTrue(fdt.endswith('.dtb'),
                     f"Config {cname}: standalone fdt '{fdt}' must "
                     f"be a .dtb, not a .dtbo")
+
+
+class QcomFitImageMatrixTests(OESelftestTestCase):
+    """Matrix tests validating DTB/FIT coverage across machines/providers.
+
+    These tests avoid full image builds by using bitbake metadata expansion
+    (bitbake -e via get_bb_vars) plus kernel source unpack. This validates:
+      - KERNEL_DEVICETREE values resolve for each MACHINE/provider pair
+      - DTBs/DTBOs declared by machine metadata exist in kernel source trees
+      - LINUX_QCOM_KERNEL_DEVICETREE entries are present in qcom kernels
+      - Every FIT_DTB_COMPATIBLE key matches at least one MACHINE/provider DTB set
+    """
+
+    KERNEL_PROVIDER_YOCTO = "linux-yocto"
+    KERNEL_PROVIDERS_QCOM = ("linux-qcom-next", "linux-qcom")
+
+    _provider_outputs_cache = {}
+    _provider_machine_cache = {}
+    _available_providers_cache = None
+    _matrix_cache = None
+    _layer_dir_cache = None
+
+    @classmethod
+    def _layer_dir(cls):
+        """Return the meta-qcom layer directory using LAYERDIR_qcom from bitbake."""
+        if cls._layer_dir_cache is not None:
+            return cls._layer_dir_cache
+        bb_vars = get_bb_vars(["LAYERDIR_qcom"], "virtual/kernel")
+        layerdir = bb_vars.get("LAYERDIR_qcom")
+        if not layerdir:
+            raise AssertionError("LAYERDIR_qcom is not defined")
+        cls._layer_dir_cache = layerdir
+        return cls._layer_dir_cache
+
+    @staticmethod
+    def _dt_files(var_value):
+        return {os.path.basename(x) for x in (var_value or "").split() if x}
+
+    @staticmethod
+    def _dt_keys_from_files(files):
+        return {os.path.splitext(f)[0].replace(',', '_') for f in files}
+
+    def _machine_list(self):
+        machine_dir = os.path.join(self._layer_dir(), "conf", "machine")
+        machines = []
+        for name in sorted(os.listdir(machine_dir)):
+            if name.endswith(".conf"):
+                machines.append(name[:-5])  # strip ".conf"
+        return machines
+
+    def _fit_compatible_keys(self):
+        inc_path = os.path.join(
+            self._layer_dir(), "conf", "machine", "include",
+            "fit-dtb-compatible.inc")
+        key_re = re.compile(r'^\s*FIT_DTB_COMPATIBLE\[([^\]]+)\]\s*=')
+        keys = []
+        with open(inc_path) as f:
+            for line in f:
+                m = key_re.match(line)
+                if m:
+                    keys.append(m.group(1).strip())
+        return keys
+
+    @staticmethod
+    def _name_variants(name):
+        return {
+            name,
+            name.replace('_', ','),
+            name.replace(',', '_'),
+        }
+
+    def _has_dt_output(self, output_files, part_name, exts):
+        for variant in self._name_variants(part_name):
+            for ext in exts:
+                if f"{variant}{ext}" in output_files:
+                    return True
+        return False
+
+    def _provider_output_files(self, provider):
+        """Return set of DTB/DTBO output filenames available in provider source."""
+        if provider in self.__class__._provider_outputs_cache:
+            return self.__class__._provider_outputs_cache[provider]
+
+        machine = self._provider_machine(provider)
+        self.assertIsNotNone(machine,
+            f"Could not find a MACHINE compatible with provider {provider}")
+        postconfig = '\n'.join([
+            f'MACHINE = "{machine}"',
+            f'PREFERRED_PROVIDER_virtual/kernel = "{provider}"',
+        ])
+
+        # Lightweight: unpack kernel source once (no compile/image build).
+        bitbake("virtual/kernel -c unpack", postconfig=postconfig)
+        bb_vars = get_bb_vars(["S"], "virtual/kernel", postconfig=postconfig)
+        src_dir = bb_vars.get("S") or ""
+        self.assertTrue(src_dir and os.path.isdir(src_dir),
+            f"Could not resolve source directory (S) for {provider}")
+
+        # Search in architecture-specific directories for DTS/DTSO files.
+        arch_paths = (
+            os.path.join(src_dir, "arch", "arm64", "boot", "dts"),
+            os.path.join(src_dir, "arch", "arm", "boot", "dts"),
+        )
+
+        outputs = set()
+        for dts_dir in arch_paths:
+            if not os.path.isdir(dts_dir):
+                continue
+            for _, _, files in os.walk(dts_dir):
+                for fname in files:
+                    if fname.endswith(".dts"):
+                        outputs.add(os.path.splitext(fname)[0] + ".dtb")
+                    elif fname.endswith(".dtso"):
+                        outputs.add(os.path.splitext(fname)[0] + ".dtbo")
+
+        self.__class__._provider_outputs_cache[provider] = outputs
+        return outputs
+
+    def _provider_machine(self, provider):
+        if provider in self.__class__._provider_machine_cache:
+            return self.__class__._provider_machine_cache[provider]
+
+        for machine in self._machine_list():
+            try:
+                self._resolve_machine_provider(machine, provider)
+                self.__class__._provider_machine_cache[provider] = machine
+                return machine
+            except AssertionError:
+                continue
+
+        self.__class__._provider_machine_cache[provider] = None
+        return None
+
+    def _available_providers(self):
+        if self.__class__._available_providers_cache is not None:
+            return self.__class__._available_providers_cache
+
+        providers = []
+        for provider in (self.KERNEL_PROVIDER_YOCTO,) + self.KERNEL_PROVIDERS_QCOM:
+            result = runCmd(
+                f"bitbake-layers show-recipes {provider}",
+                ignore_status=True,
+                assert_error=False,
+            )
+            if f"{provider}:" in result.output:
+                providers.append(provider)
+
+        self.__class__._available_providers_cache = providers
+        return providers
+
+    def _resolve_machine_provider(self, machine, provider):
+        postconfig = '\n'.join([
+            f'MACHINE = "{machine}"',
+            f'PREFERRED_PROVIDER_virtual/kernel = "{provider}"',
+        ])
+        bb_vars = get_bb_vars(
+            ["KERNEL_DEVICETREE", "LINUX_QCOM_KERNEL_DEVICETREE"],
+            "virtual/kernel",
+            postconfig=postconfig,
+        )
+        dt_files = self._dt_files(bb_vars.get("KERNEL_DEVICETREE"))
+        extra_files = self._dt_files(bb_vars.get("LINUX_QCOM_KERNEL_DEVICETREE"))
+        return {
+            "machine": machine,
+            "provider": provider,
+            "dt_files": dt_files,
+            "dt_keys": self._dt_keys_from_files(dt_files),
+            "extra_files": extra_files,
+        }
+
+    def _resolve_qcom_provider(self, machine):
+        last_error = None
+        available = set(self._available_providers())
+        for provider in self.KERNEL_PROVIDERS_QCOM:
+            if provider not in available:
+                continue
+            try:
+                return self._resolve_machine_provider(machine, provider)
+            except AssertionError as exc:
+                last_error = exc
+        raise AssertionError(
+            f"Could not resolve qcom kernel provider for {machine}: {last_error}")
+
+    def _matrix(self):
+        if self.__class__._matrix_cache is not None:
+            return self.__class__._matrix_cache
+
+        matrix = []
+        for machine in self._machine_list():
+            try:
+                yocto = self._resolve_machine_provider(
+                    machine, self.KERNEL_PROVIDER_YOCTO)
+                matrix.append(yocto)
+            except AssertionError:
+                # Some machines are intentionally not compatible with
+                # linux-yocto; validate them through qcom kernels only.
+                pass
+            qcom = self._resolve_qcom_provider(machine)
+            matrix.append(qcom)
+        self.__class__._matrix_cache = matrix
+        return matrix
+
+    def test_machine_dtb_entries_exist_for_kernel_providers(self):
+        """Validate machine DTB metadata against linux-yocto and qcom kernels."""
+        available = set(self._available_providers())
+        qcom_available = [p for p in self.KERNEL_PROVIDERS_QCOM if p in available]
+        self.assertGreater(len(qcom_available), 0,
+            "No qcom kernel provider available (linux-qcom-next/linux-qcom)")
+
+        yocto_outputs = self._provider_output_files(self.KERNEL_PROVIDER_YOCTO)
+
+        qcom_outputs = {p: self._provider_output_files(p) for p in qcom_available}
+
+        errors = []
+        yocto_warnings = []
+        for machine in self._machine_list():
+            yocto = None
+            try:
+                yocto = self._resolve_machine_provider(
+                    machine, self.KERNEL_PROVIDER_YOCTO)
+            except AssertionError:
+                # Some machines are intentionally not compatible with
+                # linux-yocto; validate them through qcom kernels only.
+                yocto = None
+            qcom = self._resolve_qcom_provider(machine)
+
+            if yocto is not None:
+                yocto_base_files = yocto["dt_files"] - yocto["extra_files"]
+                missing_yocto = sorted(yocto_base_files - yocto_outputs)
+                if missing_yocto:
+                    yocto_warnings.append(
+                        f"{machine}/{self.KERNEL_PROVIDER_YOCTO}: missing DT files "
+                        f"in kernel source: {', '.join(missing_yocto)}")
+
+            missing_qcom = sorted(qcom["dt_files"] - qcom_outputs[qcom["provider"]])
+            if missing_qcom:
+                errors.append(
+                    f"{machine}/{qcom['provider']}: missing DT files in kernel "
+                    f"source: {', '.join(missing_qcom)}")
+
+            missing_extra = sorted(qcom["extra_files"] - qcom["dt_files"])
+            if missing_extra:
+                errors.append(
+                    f"{machine}/{qcom['provider']}: LINUX_QCOM_KERNEL_DEVICETREE "
+                    f"not present in KERNEL_DEVICETREE: {', '.join(missing_extra)}")
+
+            if yocto is not None:
+                yocto_base_files = yocto["dt_files"] - yocto["extra_files"]
+                yocto_present_base = yocto_base_files & yocto_outputs
+                missing_base = sorted(yocto_present_base - qcom["dt_files"])
+                if missing_base:
+                    errors.append(
+                        f"{machine}/{qcom['provider']}: missing linux-yocto base DT files: "
+                        f"{', '.join(missing_base)}")
+
+        for warning in yocto_warnings:
+            logging.warning(warning)
+
+        if errors:
+            self.fail("\n".join(errors))
+
+    def test_fit_dtb_compatible_keys_exist_in_kernel_sources(self):
+        """Every FIT_DTB_COMPATIBLE key must map to DT files in kernel sources."""
+        available = set(self._available_providers())
+
+        qcom_available = [p for p in self.KERNEL_PROVIDERS_QCOM if p in available]
+        self.assertGreater(
+            len(qcom_available), 0,
+            "No qcom kernel provider available (linux-qcom-next/linux-qcom)")
+
+        providers = [self.KERNEL_PROVIDER_YOCTO] + qcom_available
+        output_files = set()
+        for provider in providers:
+            output_files |= self._provider_output_files(provider)
+
+        fit_keys = self._fit_compatible_keys()
+        missing = []
+
+        for key in fit_keys:
+            parts = key.split('+')
+            base = parts[0]
+
+            # Single-part keys can be either .dtb or .dtbo naming styles.
+            if len(parts) == 1:
+                if not self._has_dt_output(output_files, base, (".dtb", ".dtbo")):
+                    missing.append(key)
+                continue
+
+            # Composite keys: first part must be base .dtb, rest are .dtbo overlays.
+            if not self._has_dt_output(output_files, base, (".dtb",)):
+                missing.append(key)
+                continue
+            if any(not self._has_dt_output(output_files, ovl, (".dtbo",))
+                   for ovl in parts[1:]):
+                missing.append(key)
+
+        if missing:
+            self.fail(
+                "FIT_DTB_COMPATIBLE entries missing DTB/DTBO files in kernel sources:\n"
+                + "\n".join(sorted(missing)))
