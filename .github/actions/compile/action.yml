@@ -12,10 +12,6 @@ inputs:
     required: true
   cache_dir:
     required: true
-outputs:
-  url:
-    description: Location of the published binaries
-    value: ${{ steps.upload_artifacts.outputs.url }}
 runs:
   using: "composite"
   steps:
