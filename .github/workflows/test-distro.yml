@@ -28,6 +28,10 @@ on:
         type: string
         description: "Ref in lava-test-plans repository: commit, tag or branch"
         required: true
+      testkit_ref:
+        type: string
+        description: "Ref in qcom-linux-testkit repository: CalVer tag or commit SHA"
+        required: true
       project_name:
         required: true
         type: string
@@ -62,6 +66,7 @@ jobs:
           project: ${{ inputs.project_name }}
           testplan: "${{ inputs.distro_name }}/boot"
           ref: ${{ inputs.lava_test_plans_ref }}
+          testkit_ref: ${{ inputs.testkit_ref }}
 
       - name: Print output ID
         env:
@@ -186,6 +191,7 @@ jobs:
           project: ${{ inputs.project_name }}
           testplan: "${{ inputs.distro_name }}/pre-merge"
           ref: ${{ inputs.lava_test_plans_ref }}
+          testkit_ref: ${{ inputs.testkit_ref }}
 
       - name: Print output ID
         env:

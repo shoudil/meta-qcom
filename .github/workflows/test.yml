@@ -13,6 +13,8 @@ on:
 env:
   # git sha, tag or branch in lava-test-plans repository
   LAVA_TEST_PLANS_REF: "b9de72b563d8b361b39075c6070d76010040660e"
+  # CalVer tag in qcom-linux-testkit repository (format: testkit-YYYY.MM.DD)
+  TESTKIT_REF: "testkit-2026.05.11"
 
 jobs:
   prepare-env:
@@ -25,6 +27,7 @@ jobs:
           echo "lava-test-plans ref: ${{ env.LAVA_TEST_PLANS_REF }}"
     outputs:
       lava-test-plans-ref: "${{ env.LAVA_TEST_PLANS_REF }}"
+      testkit-ref: "${{ env.TESTKIT_REF }}"
   test-nodistro:
     needs: [prepare-env]
     name: "Test nodistro"
@@ -36,6 +39,7 @@ jobs:
       project_name: "meta-qcom"
       distro_name: "nodistro"
       lava_test_plans_ref: "${{ needs.prepare-env.outputs.lava-test-plans-ref }}"
+      testkit_ref: "${{ needs.prepare-env.outputs.testkit-ref }}"
   test-qcom-distro:
     needs: [prepare-env]
     name: "Test qcom-distro"
@@ -48,6 +52,7 @@ jobs:
       project_name: "meta-qcom"
       distro_name: "qcom-distro"
       lava_test_plans_ref: "${{ needs.prepare-env.outputs.lava-test-plans-ref }}"
+      testkit_ref: "${{ needs.prepare-env.outputs.testkit-ref }}"
   test-qcom-distro_linux-qcom-6-18:
     needs: [prepare-env]
     name: "Test qcom-distro_linux-qcom-6.18"
@@ -61,6 +66,7 @@ jobs:
       distro_name: "qcom-distro"
       distro_suffix: "_linux-qcom-6.18"
       lava_test_plans_ref: "${{ needs.prepare-env.outputs.lava-test-plans-ref }}"
+      testkit_ref: "${{ needs.prepare-env.outputs.testkit-ref }}"
 
   collect-ids:
     name: "Collect Summary artifact IDs"
