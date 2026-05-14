@@ -9,36 +9,28 @@ FIT_DTB_COMPATIBLE[apq8096-db820c] = "qcom,apq8096-sbc"
 FIT_DTB_COMPATIBLE[glymur-crd] = "qcom,glymur-crd"
 FIT_DTB_COMPATIBLE[hamoa-iot-evk+hamoa-iot-evk-camera-imx577] = " \
     qcom,hamoa-evk \
-    qcom,hamoa-socv2.1-evk \
 "
 FIT_DTB_COMPATIBLE[hamoa-iot-evk+hamoa-evk-camx] = " \
     qcom,hamoa-evk-camx \
-    qcom,hamoa-socv2.1-evk-camx \
 "
 FIT_DTB_COMPATIBLE[kaanapali-mtp] = "qcom,kaanapali-mtp"
 FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-camera-csi1-imx577] = " \
     qcom,qcs9075-iot \
-    qcom,qcs9075-socv2.0-iot \
 "
 FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-camx] = " \
     qcom,qcs9075-iot-camx \
-    qcom,qcs9075-socv2.0-iot-camx \
 "
 FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-camera-csi1-imx577+lemans-el2] = " \
     qcom,qcs9075-iot-el2kvm \
-    qcom,qcs9075-socv2.0-iot-el2kvm \
 "
 FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-camx+lemans-el2+lemans-camx-el2] = " \
     qcom,qcs9075-iot-camx-el2kvm \
-    qcom,qcs9075-socv2.0-iot-camx-el2kvm \
 "
 FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-ifp-mezzanine] = " \
     qcom,qcs9075-iot-subtype1 \
-    qcom,qcs9075-socv2.0-iot-subtype1 \
 "
 FIT_DTB_COMPATIBLE[lemans-evk+lemans-evk-ifp-mezzanine+lemans-evk-staging] = " \
     qcom,qcs9075-iot-subtype1-staging \
-    qcom,qcs9075-socv2.0-iot-subtype1-staging \
 "
 FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-camera-imx577+monaco-el2] = "qcom,qcs8275-iot-el2kvm"
 FIT_DTB_COMPATIBLE[monaco-evk+monaco-evk-camera-imx577] = "qcom,qcs8275-iot"
@@ -59,11 +51,9 @@ FIT_DTB_COMPATIBLE[qcom-msm8974-lge-nexus5-hammerhead] = "qcom,msm8974"
 FIT_DTB_COMPATIBLE[qcs404-evb-4000] = "qcom,qcs404-evb-4000"
 FIT_DTB_COMPATIBLE[qcs615-ride] = " \
     qcom,qcs615-adp \
-    qcom,qcs615-socv1.1-adp \
 "
 FIT_DTB_COMPATIBLE[qcs615-ride+talos-el2] = " \
     qcom,qcs615-adp-el2kvm \
-    qcom,qcs615-socv1.1-adp-el2kvm \
 "
 FIT_DTB_COMPATIBLE[qcs6490-rb3gen2] = " \
     qcom,qcs5430-iot \
@@ -109,63 +99,49 @@ FIT_DTB_COMPATIBLE[qcs8300-ride+qcs8300-ride-camx] = "qcom,qcs8300-adp-camx"
 FIT_DTB_COMPATIBLE[qcs8300-ride+qcs8300-ride-camx+monaco-el2+monaco-camx-el2] = "qcom,qcs8300-adp-camx-el2kvm"
 FIT_DTB_COMPATIBLE[qcs9100-ride] = " \
     qcom,qcs9100-qam \
-    qcom,qcs9100-socv2.0-qam \
 "
 FIT_DTB_COMPATIBLE[qcs9100-ride+sa8775p-ride-camx] = " \
     qcom,qcs9100-qam-camx \
-    qcom,qcs9100-socv2.0-qam-camx \
 "
 FIT_DTB_COMPATIBLE[qcs9100-ride+lemans-el2] = " \
     qcom,qcs9100-qam-el2kvm \
-    qcom,qcs9100-socv2.0-qam-el2kvm \
 "
 FIT_DTB_COMPATIBLE[qcs9100-ride-r3] = " \
     qcom,qcs9100-qam-r2.0 \
-    qcom,qcs9100-socv2.0-qam-r2.0 \
 "
 FIT_DTB_COMPATIBLE[qcs9100-ride-r3+sa8775p-ride-camx] = " \
-    qcom,qcs9100-qam-r2.0 \
-    qcom,qcs9100-socv2.0-qam-r2.0-camx \
+    qcom,qcs9100-qam-r2.0-camx \
 "
 FIT_DTB_COMPATIBLE[qcs9100-ride-r3+lemans-el2] = " \
     qcom,qcs9100-qam-r2.0-el2kvm \
-    qcom,qcs9100-socv2.0-qam-r2.0-el2kvm \
 "
 FIT_DTB_COMPATIBLE[qrb2210-rb1] = "qcom,qrb2210-rb1"
 FIT_DTB_COMPATIBLE[qrb4210-rb2] = "qcom,qrb4210-rb2"
 FIT_DTB_COMPATIBLE[qrb5165-rb5] = "qcom,qrb5165-rb5"
 FIT_DTB_COMPATIBLE[sa8775p-ride] = " \
     qcom,sa8775p-qam \
-    qcom,sa8775p-socv2.0-qam \
 "
 FIT_DTB_COMPATIBLE[sa8775p-ride+lemans-el2] = " \
     qcom,sa8775p-qam-el2kvm \
-    qcom,sa8775p-socv2.0-qam-el2kvm \
 "
 FIT_DTB_COMPATIBLE[sa8775p-ride+sa8775p-ride-camx] = " \
     qcom,sa8775p-qam-camx \
-    qcom,sa8775p-socv2.0-qam-camx \
 "
 FIT_DTB_COMPATIBLE[sa8775p-ride+sa8775p-ride-camx+lemans-el2+lemans-camx-el2] = " \
     qcom,sa8775p-qam-camx-el2kvm \
-    qcom,sa8775p-socv2.0-qam-camx-el2kvm \
 "
 FIT_DTB_COMPATIBLE[sa8775p-ride-camx] = "qcom,sa8775p-qam-camx"
 FIT_DTB_COMPATIBLE[sa8775p-ride-r3] = " \
     qcom,sa8775p-qam-r2.0 \
-    qcom,sa8775p-socv2.0-qam-r2.0 \
 "
 FIT_DTB_COMPATIBLE[sa8775p-ride-r3+lemans-el2] = " \
     qcom,sa8775p-qam-r2.0-el2kvm \
-    qcom,sa8775p-socv2.0-qam-r2.0-el2kvm \
 "
 FIT_DTB_COMPATIBLE[sa8775p-ride-r3+sa8775p-ride-camx] = " \
     qcom,sa8775p-qam-r2.0-camx \
-    qcom,sa8775p-socv2.0-qam-r2.0-camx \
 "
 FIT_DTB_COMPATIBLE[sa8775p-ride-r3+sa8775p-ride-camx+lemans-el2+lemans-camx-el2] = " \
     qcom,sa8775p-qam-r2.0-camx-el2kvm \
-    qcom,sa8775p-socv2.0-qam-r2.0-camx-el2kvm \
 "
 FIT_DTB_COMPATIBLE[sdm845-db845c] = "qcom,sdm845"
 FIT_DTB_COMPATIBLE[sm8450-hdk] = "qcom,sm8450-hdk"
