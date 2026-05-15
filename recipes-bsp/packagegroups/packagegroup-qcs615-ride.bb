@@ -13,6 +13,7 @@ RRECOMMENDS:${PN}-firmware = " \
     ${@bb.utils.contains('DISTRO_FEATURES', 'bluetooth', 'linux-firmware-qca-qca6698', '', d)} \
     linux-firmware-qcom-qcs615-audio \
     linux-firmware-qcom-qcs615-compute \
+    linux-firmware-qcom-qcs615-qupv3fw \
     linux-firmware-qcom-venus-5.4 \
 "
 RDEPENDS:${PN}-hexagon-dsp-binaries = " \
