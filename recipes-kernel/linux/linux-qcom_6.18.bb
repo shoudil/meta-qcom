@@ -8,14 +8,14 @@ inherit kernel cml1
 
 COMPATIBLE_MACHINE = "(qcom)"
 
-LINUX_VERSION ?= "6.18.21"
+LINUX_VERSION ?= "6.18.25"
 
 PV = "${LINUX_VERSION}"
 
 FILESEXTRAPATHS:prepend := "${THISDIR}/linux-qcom-6.18:"
 
-# tag:qcom-6.18.y-20260513
-SRCREV ?= "c9092c6055905903be100bb9e46483d9c523c51b"
+# tag:qcom-6.18.y-20260515
+SRCREV ?= "9a4537ba60cc7332c642471323e32f85df771053"
 
 SRCBRANCH ?= "nobranch=1"
 SRCBRANCH:class-devupstream ?= "branch=qcom-6.18.y"
