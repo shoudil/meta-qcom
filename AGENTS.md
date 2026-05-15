@@ -1,0 +1,159 @@
+# Agent Guide for meta-qcom
+
+This file guides automation agents to run builds / checks the same way CI does:
+
+- use **kas-container** (isolated from host),
+- keep `DL_DIR` and `SSTATE_DIR` outside the repo so caches are shared,
+- run `yocto-patchreview` and `oe-selftest` routinely, and run
+  `yocto-check-layer` before opening/updating a PR, via the CI helper scripts.
+
+## Project Overview
+
+meta-qcom is an OpenEmbedded / Yocto Project hardware enablement layer for Qualcomm based platforms.
+
+## 1) Prerequisites
+
+1. `kas-container` available on PATH, or set `KAS_CONTAINER=/abs/path/to/kas-container`
+   (from [kas-container](https://github.com/siemens/kas/blob/master/kas-container)).
+2. Container runtime access (Docker/Podman backend used by `kas-container`).
+3. Work directories outside the repository for build outputs and shared caches.
+
+### Container runtime smoke test (required order)
+
+Run Docker first:
+
+```sh
+docker run --rm hello-world
+```
+
+Then check Podman:
+
+```sh
+if command -v podman >/dev/null 2>&1; then
+  podman run --rm hello-world
+else
+  echo "podman not installed; continue with Docker backend"
+fi
+```
+
+Notes:
+
+- Do not use `sudo` unless the host setup explicitly requires it.
+- Do not create or modify user groups as part of this workflow.
+- If Podman is unavailable, Docker-only operation is acceptable.
+
+## 2) Recommended environment
+
+```sh
+export REPO_DIR="$(pwd)"                               # meta-qcom checkout
+export CACHE_ROOT="/path/to/shared-cache"              # shared across runs/agents
+export DL_DIR="${CACHE_ROOT}/downloads"
+export SSTATE_DIR="${CACHE_ROOT}/sstate-cache"
+export KAS_WORK_DIR="/path/to/kas-work"                # outside repo to avoid polling the checkout
+mkdir -p "${DL_DIR}" "${SSTATE_DIR}" "${KAS_WORK_DIR}"
+```
+
+## 3) Build with kas-container (CI style)
+
+CI build composition pattern:
+`:ci/<machine>.yml[:distro.yml][:kernel.yml]`
+
+Example:
+
+```sh
+export KAS_YAMLS="ci/rb3gen2-core-kit.yml:ci/qcom-distro.yml"
+"${KAS_CONTAINER:-kas-container}" build "${KAS_YAMLS}"
+```
+
+## 4) Run routine checks via CI helper scripts
+
+For routine local validation, run:
+
+```sh
+ci/kas-container-shell-helper.sh ci/yocto-patchreview.sh
+ci/kas-container-shell-helper.sh ci/oe-selftest.sh
+```
+
+Run `yocto-check-layer` only before opening/updating a pull request:
+
+```sh
+ci/kas-container-shell-helper.sh ci/yocto-check-layer.sh
+```
+
+### oe-selftest details
+
+- Script: `ci/oe-selftest.sh`
+- Auto-discovers tests in `lib/oeqa/selftest/cases/` when no test list is given.
+- Honors `DL_DIR` and `SSTATE_DIR` from environment (recommended for shared cache).
+
+Run a subset:
+
+```sh
+"${KAS_CONTAINER:-kas-container}" shell ci/base.yml \
+  --command "/repo/ci/oe-selftest.sh /repo /work qcom_fitimage.QcomFitImageMatrixTests"
+```
+
+If passing explicit tests directly (without helper), call:
+
+```sh
+ci/oe-selftest.sh "$REPO_DIR" "$KAS_WORK_DIR" qcom_fitimage.QcomFitImageMatrixTests
+```
+
+## 5) Direct kas shell alternative (no helper wrapper)
+
+For one-off commands:
+
+```sh
+kas-container shell --skip repos_checkout ci/rb3gen2-core-kit.yml -c "bitbake <target>"
+kas-container shell --skip repos_checkout ci/rb3gen2-core-kit.yml -c "oe-selftest --run-tests qcom_fitimage"
+```
+
+Use the helper scripts for CI parity whenever possible.
+
+## 6) Pull request / contribution workflow
+
+Follow the repository `README.md` contribution flow:
+
+1. Target branch: **master**.
+2. Fork `qualcomm-linux/meta-qcom`, create a topic branch, implement changes.
+3. Rebase on latest upstream `master`.
+4. Open a GitHub pull request.
+5. Use PR discussion for review iteration.
+
+Important:
+
+- Follow Yocto submission guidance referenced in README:
+  [Preparing Changes for Submission](https://docs.yoctoproject.org/dev/contributor-guide/submit-changes.html#preparing-changes-for-submission)
+
+Before opening/updating a PR, run CI-equivalent checks in this order:
+
+```sh
+ci/kas-container-shell-helper.sh ci/yocto-patchreview.sh
+ci/kas-container-shell-helper.sh ci/yocto-check-layer.sh
+ci/kas-container-shell-helper.sh ci/oe-selftest.sh
+```
+
+## 7) Commit message best practices (project style)
+
+Use the style seen in recent history:
+
+- `component: imperative summary` (preferred when scoped), e.g.
+  - `ci/qcom-distro: Include meta-dpdk layer (#1902)`
+  - `fit-dtb-compatible: drop SoC version suffixes from compatible strings`
+  - `debug.yml: enable FTrace settings in kernel cmdline (#2155)`
+- Or concise imperative summary when cross-cutting, e.g.
+  - `Drop SoC version suffixes from FIT DTB compatible strings (#2159)`
+
+Guidelines:
+
+- Keep subject line short and specific; capture intent, not a file-by-file dump.
+- Use imperative mood (`Add`, `Update`, `Drop`, `Enable`, `Revert`).
+- Add a body for non-trivial changes explaining **why** and key design decisions.
+- Wrap body lines for readability (~72 chars).
+- Use consistent recipe bump wording for version updates, e.g.
+  `recipe-name: Update to vX.Y.Z`.
+- Include PR reference in subject when appropriate: `(#NNNN)`.
+- Avoid mixing unrelated changes in one commit; split logically.
+- Each patch must be logically coherent, self-contained, and independently buildable.
+- The tree must remain in a functional state after every commit.
+- Fixups within the same patch series are not allowed; changes should be corrected in the patch where they are introduced.
