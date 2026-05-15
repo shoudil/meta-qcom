@@ -15,6 +15,7 @@ RRECOMMENDS:${PN}-firmware = " \
     camxfirmware-talos \
     linux-firmware-qcom-qcs615-audio \
     linux-firmware-qcom-qcs615-compute \
+    linux-firmware-qcom-qcs615-qupv3fw \
     linux-firmware-qcom-venus-5.4 \
 "
 RRECOMMENDS:${PN}-hexagon-dsp-binaries = " \
