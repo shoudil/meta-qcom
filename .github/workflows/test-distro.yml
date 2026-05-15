@@ -24,6 +24,18 @@ on:
         required: false
         type: string
         description: "Suffix for the distro name"
+      lava_test_plans_ref:
+        type: string
+        description: "Ref in lava-test-plans repository: commit, tag or branch"
+        required: true
+      testkit_ref:
+        type: string
+        description: "Ref in qcom-linux-testkit repository: CalVer tag or commit SHA"
+        required: true
+      project_name:
+        required: true
+        type: string
+        description: "Name of the project in lava-test-plans"
     outputs:
       summary_id:
         description: "ID of the test summary artifact"
@@ -51,8 +63,10 @@ jobs:
           build_id: ${{ inputs.build_id }}
           gh_token: ${{ secrets.GITHUB_TOKEN }}
           prefix: boottest
-          project: "meta-qcom"
+          project: ${{ inputs.project_name }}
           testplan: "${{ inputs.distro_name }}/boot"
+          ref: ${{ inputs.lava_test_plans_ref }}
+          testkit_ref: ${{ inputs.testkit_ref }}
 
       - name: Print output ID
         env:
@@ -86,7 +100,7 @@ jobs:
         # of devices
         timeout-minutes: 120
         id: submit
-        uses: foundriesio/lava-action@v12
+        uses: foundriesio/lava-action@v13
         with:
           lava_token: ${{ secrets.LAVATOKEN }}
           lava_url: 'lava.infra.foundries.io'
@@ -98,7 +112,7 @@ jobs:
           save_job_details: true
           result_file_name: "${{ matrix.target.result_file }}"
           test_job_file_name_prefix: "${{ inputs.distro_name }}${{ inputs.distro_suffix }}-"
-      - uses: mwasilew/github-action-matrix-outputs-write@v2
+      - uses: qualcomm-linux/github-action-matrix-outputs-write@v3
         if: always()
         id: out
         with:
@@ -174,8 +188,10 @@ jobs:
           build_id: ${{ inputs.build_id }}
           gh_token: ${{ secrets.GITHUB_TOKEN }}
           prefix: premerge
-          project: "meta-qcom"
+          project: ${{ inputs.project_name }}
           testplan: "${{ inputs.distro_name }}/pre-merge"
+          ref: ${{ inputs.lava_test_plans_ref }}
+          testkit_ref: ${{ inputs.testkit_ref }}
 
       - name: Print output ID
         env:
@@ -203,7 +219,7 @@ jobs:
         # It may spend some time in LAVA queue as there is a limited number
         # of devices
         timeout-minutes: 120
-        uses: foundriesio/lava-action@v12
+        uses: foundriesio/lava-action@v13
         with:
           lava_token: ${{ secrets.LAVATOKEN }}
           lava_url: 'lava.infra.foundries.io'
