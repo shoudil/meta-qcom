@@ -57,7 +57,7 @@ INITRAMFS_MAXSIZE = "655360"
 INITRAMFS_MAXSIZE:pn-initramfs-kerneltest-full-image = "983040"
 
 # Use systemd-boot as the EFI bootloader
-EFI_PROVIDER = "systemd-boot"
+EFI_PROVIDER ?= "systemd-boot"
 
 # Unified Kernel Image (UKI) name
 EFI_LINUX_IMG ?= "linux-${MACHINE}.efi"
