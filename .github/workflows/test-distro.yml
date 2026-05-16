@@ -128,7 +128,7 @@ jobs:
     outputs:
       boot_result: "${{ steps.print-boot-result.outputs.boot_result }}"
     steps:
-      - uses: mwasilew/github-action-matrix-outputs-read@2b2498aa0fc6c565e02af0f3a3c5b7e1b6ae07f4
+      - uses: qualcomm-linux/github-action-matrix-outputs-read@2b2498aa0fc6c565e02af0f3a3c5b7e1b6ae07f4
         id: read
         with:
           matrix-step-name: "submit-boot-job-${{ inputs.distro_name }}${{ inputs.distro_suffix }}"
