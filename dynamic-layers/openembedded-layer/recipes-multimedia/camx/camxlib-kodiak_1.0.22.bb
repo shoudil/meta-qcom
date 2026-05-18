@@ -8,15 +8,15 @@ LICENSE = "LICENSE.qcom-2"
 LIC_FILES_CHKSUM = "file://usr/share/doc/${BPN}/LICENSE.QCOM-2.txt;md5=165287851294f2fb8ac8cbc5e24b02b0 \
                     file://usr/share/doc/${BPN}/NOTICE;md5=04facc2e07e3d41171a931477be0c690"
 
-PBT_BUILD_DATE = "260512.2"
+PBT_BUILD_DATE = "260515"
 SRC_URI = " \
    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/${BPN}_${PV}_armv8-2a.tar.gz;name=camxlib \
    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/camx-kodiak_${PV}_armv8-2a.tar.gz;name=camx \
    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/chicdk-kodiak_${PV}_armv8-2a.tar.gz;name=chicdk \
    "
-SRC_URI[camxlib.sha256sum] = "2edfdff2ff6ee08d2c1ff5f7b807235ec4916091337f1467cb40e61337d22017"
-SRC_URI[camx.sha256sum] = "04de35828b2d151564df1088c4a6f60b221620dc1b6439776d1eaae2cc44a773"
-SRC_URI[chicdk.sha256sum] = "0650383e28123b51aea279a8dc84d5f09dd9c1be0aef6032820536315041eb6e"
+SRC_URI[camxlib.sha256sum] = "51cc525d7cf9572b890ea9576fcb1a97fb3d7670f1ff4db368c365fa07dcde60"
+SRC_URI[camx.sha256sum] = "2477d93fc5da81806086d252624787b5d6c330cfbfcdcf9373330381179005a0"
+SRC_URI[chicdk.sha256sum] = "d328d0889417c28bc2ff88a20a7ddf020e0123db1a05399a977a8490798c9256"
 
 S = "${UNPACKDIR}"
 
