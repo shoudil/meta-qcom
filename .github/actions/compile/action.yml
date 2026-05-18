@@ -12,10 +12,6 @@ inputs:
     required: true
   cache_dir:
     required: true
-outputs:
-  url:
-    description: Location of the published binaries
-    value: ${{ steps.upload_artifacts.outputs.url }}
 runs:
   using: "composite"
   steps:
@@ -50,13 +46,11 @@ runs:
         echo "INPUTS_MACHINE=${INPUTS_MACHINE}" >> $GITHUB_ENV
         echo "INPUTS_DISTRO_YAML=${INPUTS_DISTRO_YAML}" >> $GITHUB_ENV
         echo "INPUTS_KERNEL_YAML=${INPUTS_KERNEL_YAML}" >> $GITHUB_ENV
-        echo "INPUTS_SDK=${INPUTS_SDK}" >> $GITHUB_ENV
       env:
         INPUTS_CACHE_DIR: ${{inputs.cache_dir}}
         INPUTS_MACHINE: ${{ inputs.machine }}
         INPUTS_DISTRO_YAML: ${{ inputs.distro_yaml }}
         INPUTS_KERNEL_YAML: ${{ inputs.kernel_yaml }}
-        INPUTS_SDK: ${{ inputs.sdk }}
 
     - name: Dump kas-build yaml
       shell: bash
