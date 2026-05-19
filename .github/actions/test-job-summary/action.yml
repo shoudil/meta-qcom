@@ -53,26 +53,33 @@ runs:
               JOB_HEALTH=$(echo "$JOB_DETAILS" | jq -r ".health")
               JOB_STATE=$(echo "$JOB_DETAILS" | jq -r ".state")
               JOB_DEVICE_TYPE=$(echo "$JOB_DETAILS" | jq -r ".requested_device_type")
+              JOB_TITLE=$(echo "$JOB_DETAILS" | jq -r ".description")
+              JOB_TYPE="test"
+              if echo "${JOB_TITLE}" | grep -q "boot"; then
+                  JOB_TYPE="boot"
+              fi
               # get suites and results
               JOB_SUITES=$(curl -s "https://lava.infra.foundries.io/api/v0.2/jobs/$JOB_ID/suites/")
               TEST_RESULTS=$(for SUITE in $(echo "$JOB_SUITES" | jq -r -c ".results[]")
               do
-                  if [ "${JOB_STATE}" = "Finished" ] && [ ${JOB_HEALTH} = "Complete" ]; then
-                      SUITE_NAME=$(echo "$SUITE" | jq -r ".name")
-                      SUITE_ID=$(echo "$SUITE" | jq -r ".id")
-                      SUITE_TESTS=$(curl -s "https://lava.infra.foundries.io/api/v0.2/jobs/$JOB_ID/suites/$SUITE_ID/tests/")
-                      if [ "$SUITE_NAME" != "lava" ]; then
-                          echo "$SUITE_TESTS" | jq ".results[] | {(.name): {result: .result, url: .resource_uri}} | to_entries | .[]"
-                      else
-                          TEST_NAME="boot"
-                          TEST_URL="${JOB_URL}"
-                          TEST_RESULT_OBJ=$(jq --arg url "$TEST_URL" --arg result "pass" -n -c '$ARGS.named')
-                          jq -n -c --arg key "$TEST_NAME" --argjson value "$TEST_RESULT_OBJ" '$ARGS.named'
+                  if [ "${JOB_TYPE}" = "test" ]; then
+                      if [ "${JOB_STATE}" = "Finished" ] && [ ${JOB_HEALTH} = "Complete" ]; then
+                          SUITE_NAME=$(echo "$SUITE" | jq -r ".name")
+                          SUITE_ID=$(echo "$SUITE" | jq -r ".id")
+                          SUITE_TESTS=$(curl -s "https://lava.infra.foundries.io/api/v0.2/jobs/$JOB_ID/suites/$SUITE_ID/tests/")
+                          if [ "$SUITE_NAME" != "lava" ]; then
+                              echo "$SUITE_TESTS" | jq ".results[] | {(.name): {result: .result, url: .resource_uri}} | to_entries | .[]"
+                          fi
                       fi
                   else
+                      if [ "${JOB_STATE}" = "Finished" ] && [ ${JOB_HEALTH} = "Complete" ]; then
+                          TEST_RESULT_BOOT="pass"
+                      else
+                          TEST_RESULT_BOOT="fail"
+                      fi
                       TEST_NAME="boot"
                       TEST_URL="${JOB_URL}"
-                      TEST_RESULT_OBJ=$(jq --arg url "$TEST_URL" --arg result "fail" -n -c '$ARGS.named')
+                      TEST_RESULT_OBJ=$(jq --arg url "$TEST_URL" --arg result "$TEST_RESULT_BOOT" -n -c '$ARGS.named')
                       jq -n -c --arg key "$TEST_NAME" --argjson value "$TEST_RESULT_OBJ" '$ARGS.named'
                   fi
               done | jq -s -c --sort-keys 'from_entries')
