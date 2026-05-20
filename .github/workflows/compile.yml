@@ -5,6 +5,18 @@ on:
         required: false
         type: boolean
         default: true
+      sdk:
+        required: false
+        type: boolean
+        default: false
+      target:
+        required: false
+        type: boolean
+        default: true
+      world:
+        required: false
+        type: boolean
+        default: true
       machine:
         required: true
         type: string
@@ -81,6 +93,7 @@ jobs:
           $KAS_CONTAINER dump --resolve-env --resolve-local --resolve-refs ${KAS_YAMLS} > kas-build.yml
 
       - name: Kas build world
+        if:  inputs.world
         shell: bash
         run: |
           $KAS_CONTAINER build ${KAS_YAMLS}:ci/world.yml
@@ -89,6 +102,7 @@ jobs:
           mv $KAS_WORK_DIR/build/buildstats* .
 
       - name: Kas build images
+        if:  inputs.target
         shell: bash
         run: |
           $KAS_CONTAINER build ${KAS_YAMLS}
@@ -96,19 +110,15 @@ jobs:
           mv $KAS_WORK_DIR/build/buildstats* .
 
       - name: Kas build SDK
+        if:  inputs.sdk
         shell: bash
         run: |
-          if [ "${INPUTS_MACHINE}" = "qcom-armv8a" ]; then
-            # SDK only with the default kernel and qcom-distro
-            if [ "${INPUTS_KERNEL_YAML}" = "" ] && [ "${INPUTS_DISTRO_YAML}" = ":ci/qcom-distro.yml" ] ; then
-              $KAS_CONTAINER build ${KAS_YAMLS} --task populate_sdk \
-                --target qcom-multimedia-image \
-                --target qcom-multimedia-proprietary-image
-              ci/kas-container-shell-helper.sh ci/yocto-buildstats.sh
-              rename.ul -av buildstats buildstats-sdk $KAS_WORK_DIR/build/buildstats*
-              mv $KAS_WORK_DIR/build/buildstats* .
-            fi
-          fi
+          $KAS_CONTAINER build ${KAS_YAMLS} --task populate_sdk \
+            --target qcom-multimedia-image \
+            --target qcom-multimedia-proprietary-image
+          ci/kas-container-shell-helper.sh ci/yocto-buildstats.sh
+          rename.ul -av buildstats buildstats-sdk $KAS_WORK_DIR/build/buildstats*
+          mv $KAS_WORK_DIR/build/buildstats* .
 
       - uses: actions/upload-artifact@v6
         with:
