@@ -9,7 +9,7 @@ DEPENDS = "qrtr zstd"
 
 inherit systemd meson pkgconfig
 
-SRCREV = "443c82aadae2862dc7c12af48ac0b900f4bb0fe7"
+SRCREV = "b6bb92d40cfffe28621abcf7bfaa6d99beea46cb"
 SRC_URI = "git://github.com/linux-msm/${BPN}.git;branch=master;protocol=https;tag=v${PV} \
 "
 
