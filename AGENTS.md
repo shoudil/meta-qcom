@@ -44,12 +44,14 @@ Notes:
 
 ## 2) Recommended environment
 
+If `KAS_WORK_DIR`, `DL_DIR`, and `SSTATE_DIR` are already set in the environment, use them
+directly — do not override them. Only set defaults when they are absent:
+
 ```sh
 export REPO_DIR="$(pwd)"                               # meta-qcom checkout
-export CACHE_ROOT="/path/to/shared-cache"              # shared across runs/agents
-export DL_DIR="${CACHE_ROOT}/downloads"
-export SSTATE_DIR="${CACHE_ROOT}/sstate-cache"
-export KAS_WORK_DIR="/path/to/kas-work"                # outside repo to avoid polling the checkout
+export KAS_WORK_DIR="${KAS_WORK_DIR:-/path/to/kas-work}"      # outside repo to avoid polling the checkout
+export DL_DIR="${DL_DIR:-/path/to/shared-cache/downloads}"
+export SSTATE_DIR="${SSTATE_DIR:-/path/to/shared-cache/sstate-cache}"
 mkdir -p "${DL_DIR}" "${SSTATE_DIR}" "${KAS_WORK_DIR}"
 ```
 
