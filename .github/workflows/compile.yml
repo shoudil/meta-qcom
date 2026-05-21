@@ -17,6 +17,9 @@ on:
         required: false
         type: boolean
         default: true
+      name:
+        required: true
+        type: string
       machine:
         required: true
         type: string
@@ -43,7 +46,7 @@ jobs:
   reusable_compile_job:
     if: inputs.enabled
     runs-on: [self-hosted, qcom-u2404, amd64]
-    name: ${{ inputs.machine }}/${{ inputs.distro_name }}${{ inputs.kernel_dirname }}
+    name: ${{ inputs.name }}
     steps:
       - uses: actions/checkout@v6
         with:
