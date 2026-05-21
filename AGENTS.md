@@ -146,6 +146,21 @@ Use the style seen in recent history:
 - Or concise imperative summary when cross-cutting, e.g.
   - `Drop SoC version suffixes from FIT DTB compatible strings (#2159)`
 
+Every commit **must** include a `Signed-off-by` trailer using the identity from
+the local git configuration:
+
+```sh
+git commit -s   # or pass --signoff; fetches user.name / user.email from git config
+```
+
+If committing programmatically, append the trailer explicitly:
+
+```text
+Signed-off-by: $(git config user.name) <$(git config user.email)>
+```
+
+Never fabricate a name or email; always read from `git config`.
+
 Guidelines:
 
 - Keep subject line short and specific; capture intent, not a file-by-file dump.
