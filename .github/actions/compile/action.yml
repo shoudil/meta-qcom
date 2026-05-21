@@ -62,19 +62,16 @@ runs:
       shell: bash
       run: |
         $KAS_CONTAINER build ${KAS_YAMLS}:ci/world.yml
-        $KAS_CONTAINER shell ${KAS_YAMLS}:ci/world.yml \
-          -c "buildstats-summary --sort duration --highlight 0 --shortest 300"
-        ci/kas-container-shell-helper.sh ci/yocto-pybootchartgui.sh
-        mv $KAS_WORK_DIR/build/buildchart.svg buildchart-world.svg
+        ci/kas-container-shell-helper.sh ci/yocto-buildstats.sh
+        rename.ul -va buildstats buildstats-world $KAS_WORK_DIR/build/buildstats*
+        mv $KAS_WORK_DIR/build/buildstats* .
 
     - name: Kas build images
       shell: bash
       run: |
         $KAS_CONTAINER build ${KAS_YAMLS}
-        $KAS_CONTAINER shell ${KAS_YAMLS} \
-          -c "buildstats-summary --sort duration --highlight 0 --shortest 300"
-        ci/kas-container-shell-helper.sh ci/yocto-pybootchartgui.sh
-        mv $KAS_WORK_DIR/build/buildchart.svg .
+        ci/kas-container-shell-helper.sh ci/yocto-buildstats.sh
+        mv $KAS_WORK_DIR/build/buildstats* .
 
         if [ "${INPUTS_MACHINE}" = "qcom-armv8a" ]; then
           # SDK only with the default kernel and qcom-distro
@@ -82,18 +79,17 @@ runs:
             $KAS_CONTAINER build ${KAS_YAMLS} --task populate_sdk \
               --target qcom-multimedia-image \
               --target qcom-multimedia-proprietary-image
-            $KAS_CONTAINER shell ${KAS_YAMLS} \
-              -c "buildstats-summary --sort duration --highlight 0 --shortest 300"
-            ci/kas-container-shell-helper.sh ci/yocto-pybootchartgui.sh
-            mv $KAS_WORK_DIR/build/buildchart.svg buildchart-sdk.svg
+            ci/kas-container-shell-helper.sh ci/yocto-buildstats.sh
+            rename.ul -av buildstats buildstats-sdk $KAS_WORK_DIR/build/buildstats*
+            mv $KAS_WORK_DIR/build/buildstats* .
           fi
         fi
 
     - uses: actions/upload-artifact@v6
       with:
-        name: buildchart-${{ inputs.distro_name }}${{ inputs.kernel_dirname }}-${{ inputs.machine }}
+        name: buildstats-${{ inputs.distro_name }}${{ inputs.kernel_dirname }}-${{ inputs.machine }}
         path: |
-          buildchart*
+          buildstats*
 
     - uses: actions/upload-artifact@v6
       with:
@@ -114,7 +110,7 @@ runs:
         # Files without links: *.vfat, *.elf, *.efi, efi.stub, fit *.its, qcom-metadata.dtb and qclinuxfitImage
         # Copy *.efi, *.efi and *.vfat as they are useful for debugging
         find $deploy_dir/ -maxdepth 1 -type f \( -name \*.efi -o -name \*.elf -o -name dtb-\*.vfat \) -exec cp {} $uploads_dir/ \;
-        cp buildchart.svg kas-build.yml $uploads_dir/
+        cp buildstats* kas-build.yml $uploads_dir/
         if [ -d $deploy_dir/../../sdk ]; then
           cp $deploy_dir/../../sdk/* $uploads_dir/
         fi
