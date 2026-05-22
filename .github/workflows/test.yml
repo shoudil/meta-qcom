@@ -40,9 +40,9 @@ jobs:
       distro_name: "nodistro"
       lava_test_plans_ref: "${{ needs.prepare-env.outputs.lava-test-plans-ref }}"
       testkit_ref: "${{ needs.prepare-env.outputs.testkit-ref }}"
-  test-qcom-distro:
+  test-qcom-distro_linux-qcom-next:
     needs: [prepare-env]
-    name: "Test qcom-distro"
+    name: "Test qcom-distro_linux-qcom-next"
     uses: ./.github/workflows/test-distro.yml
     secrets: inherit
     with:
@@ -51,11 +51,12 @@ jobs:
       devices_premerge: "glymur-crd,iq-8275-evk,iq-9075-evk,kaanapali-mtp,qcm6490-idp,qcs615-ride,rb3gen2-core-kit,qcs8300-ride-sx,qcs9100-ride-sx,rb1-core-kit"
       project_name: "meta-qcom"
       distro_name: "qcom-distro"
+      distro_suffix: "_linux-qcom-next"
       lava_test_plans_ref: "${{ needs.prepare-env.outputs.lava-test-plans-ref }}"
       testkit_ref: "${{ needs.prepare-env.outputs.testkit-ref }}"
-  test-qcom-distro_linux-qcom-6-18:
+  test-qcom-distro:
     needs: [prepare-env]
-    name: "Test qcom-distro_linux-qcom-6.18"
+    name: "Test qcom-distro"
     uses: ./.github/workflows/test-distro.yml
     secrets: inherit
     with:
@@ -64,13 +65,12 @@ jobs:
       devices_premerge: "iq-8275-evk,iq-9075-evk,qcm6490-idp,qcs615-ride,rb3gen2-core-kit,qcs8300-ride-sx,qcs9100-ride-sx,rb1-core-kit"
       project_name: "meta-qcom"
       distro_name: "qcom-distro"
-      distro_suffix: "_linux-qcom-6.18"
       lava_test_plans_ref: "${{ needs.prepare-env.outputs.lava-test-plans-ref }}"
       testkit_ref: "${{ needs.prepare-env.outputs.testkit-ref }}"
 
   collect-ids:
     name: "Collect Summary artifact IDs"
-    needs: [test-nodistro, test-qcom-distro, test-qcom-distro_linux-qcom-6-18]
+    needs: [test-nodistro, test-qcom-distro, test-qcom-distro_linux-qcom-next]
     if: |
       always()
       && contains(needs.*.result, 'success')
@@ -85,4 +85,4 @@ jobs:
       - name: Summary IDs
         id: generate-summary
         run: |
-          echo "artifact_ids=${{ needs.test-nodistro.outputs.summary_id }},${{ needs.test-qcom-distro.outputs.summary_id }},${{ needs.test-qcom-distro_linux-qcom-6-18.outputs.summary_id }}" >> $GITHUB_OUTPUT
+          echo "artifact_ids=${{ needs.test-nodistro.outputs.summary_id }},${{ needs.test-qcom-distro.outputs.summary_id }},${{ needs.test-qcom-distro_linux-qcom-next.outputs.summary_id }}" >> $GITHUB_OUTPUT
