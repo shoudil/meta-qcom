@@ -880,6 +880,25 @@ class QcomFitImageMatrixTests(OESelftestTestCase):
                     keys.append(m.group(1).strip())
         return keys
 
+    def _fit_compatible_map(self):
+        """Parse fit-dtb-compatible.inc and return {key: list[compat_str]}.
+
+        Handles both single-line and backslash-continued multi-line values.
+        """
+        inc_path = os.path.join(
+            self._layer_dir(), "conf", "machine", "include",
+            "fit-dtb-compatible.inc")
+        with open(inc_path) as f:
+            content = f.read()
+        content = content.replace('\\\n', ' ')
+        result = {}
+        for m in re.finditer(
+                r'FIT_DTB_COMPATIBLE\[([^\]]+)\]\s*=\s*"([^"]*)"', content):
+            key = m.group(1).strip()
+            vals = m.group(2).split()
+            result[key] = vals
+        return result
+
     @staticmethod
     def _name_variants(name):
         return {
@@ -1117,3 +1136,60 @@ class QcomFitImageMatrixTests(OESelftestTestCase):
             self.fail(
                 "FIT_DTB_COMPATIBLE entries missing DTB/DTBO files in kernel sources:\n"
                 + "\n".join(sorted(missing)))
+
+    def test_fit_dtb_compatible_no_duplicate_keys(self):
+        """Each FIT_DTB_COMPATIBLE key must be defined exactly once.
+
+        Bitbake silently overwrites a flag variable when the same key is
+        assigned twice, dropping the first set of compatible strings without
+        any warning.
+        """
+        inc_path = os.path.join(
+            self._layer_dir(), "conf", "machine", "include",
+            "fit-dtb-compatible.inc")
+        key_re = re.compile(r'^\s*FIT_DTB_COMPATIBLE\[([^\]]+)\]\s*=')
+        seen = {}
+        with open(inc_path) as f:
+            for lineno, line in enumerate(f, 1):
+                m = key_re.match(line)
+                if m:
+                    key = m.group(1).strip()
+                    seen.setdefault(key, []).append(lineno)
+
+        duplicates = {k: lines for k, lines in seen.items() if len(lines) > 1}
+        if duplicates:
+            msgs = [
+                f"  '{k}' defined at lines: {', '.join(str(l) for l in lines)}"
+                for k, lines in sorted(duplicates.items())
+            ]
+            self.fail(
+                "Duplicate FIT_DTB_COMPATIBLE keys in fit-dtb-compatible.inc:\n"
+                + "\n".join(msgs))
+
+    def test_fit_dtb_compatible_no_duplicate_values(self):
+        """Each compatible string must appear in exactly one FIT_DTB_COMPATIBLE entry.
+
+        When the same compatible string is listed under multiple keys the UEFI
+        firmware may match the wrong DTB configuration at boot, because it
+        scans entries in ITS order and stops at the first hit.
+        """
+        compat_map = self._fit_compatible_map()
+
+        compat_to_keys = {}
+        for key, compats in compat_map.items():
+            for compat in compats:
+                compat_to_keys.setdefault(compat, []).append(key)
+
+        duplicates = {
+            compat: keys
+            for compat, keys in compat_to_keys.items()
+            if len(keys) > 1
+        }
+        if duplicates:
+            msgs = [
+                f"  '{compat}' in keys: {', '.join(sorted(keys))}"
+                for compat, keys in sorted(duplicates.items())
+            ]
+            self.fail(
+                "Duplicate compatible strings in fit-dtb-compatible.inc:\n"
+                + "\n".join(msgs))
