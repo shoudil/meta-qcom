@@ -197,8 +197,6 @@ FIT_DTB_COMPATIBLE[sa8775p-ride+sa8775p-ride-camx+lemans-el2+lemans-camx-el2] = 
 FIT_DTB_COMPATIBLE[sa8775p-ride+sa8775p-ride-camx+lemans-el2+lemans-camx-el2+lemans-staging] = " \
     qcom,sa8775p-qam-camx-el2kvm-staging \
 "
-FIT_DTB_COMPATIBLE[sa8775p-ride-camx] = "qcom,sa8775p-qam-camx"
-FIT_DTB_COMPATIBLE[sa8775p-ride-camx+lemans-staging] = "qcom,sa8775p-qam-camx-staging"
 FIT_DTB_COMPATIBLE[sa8775p-ride-r3] = " \
     qcom,sa8775p-qam-r2.0 \
 "
