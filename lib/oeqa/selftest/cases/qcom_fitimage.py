@@ -890,6 +890,11 @@ class QcomFitImageMatrixTests(OESelftestTestCase):
             self._layer_dir(), "conf", "machine", "include",
             "fit-dtb-compatible.inc")
 
+    def _linux_qcom_fit_compat_inc(self):
+        return os.path.join(
+            self._layer_dir(), "conf", "machine", "include",
+            "fit-dtb-compatible-linux-qcom.inc")
+
     @staticmethod
     def _parse_fit_compatible_map(inc_path):
         """Parse a fit-dtb-compatible*.inc file into {encoded_compat: dtb_combo}.
@@ -913,7 +918,7 @@ class QcomFitImageMatrixTests(OESelftestTestCase):
         return result
 
     def _fit_compatible_map(self):
-        """Return the FIT_DTB_COMPATIBLE map from fit-dtb-compatible.inc.
+        """Return the base FIT_DTB_COMPATIBLE map (fit-dtb-compatible.inc only).
 
         Returns {encoded_compat: dtb_combo_str}.
         """
@@ -1120,10 +1125,10 @@ class QcomFitImageMatrixTests(OESelftestTestCase):
     def test_fit_dtb_compatible_combos_exist_in_kernel_sources(self):
         """Every FIT_DTB_COMPATIBLE value must name DT files present in kernel sources.
 
-        All entries are checked against the union of linux-yocto and qcom kernel
-        sources.  Combos that reference linux-qcom-only overlays (camx, staging)
-        are silently skipped by the bbclass for non-qcom kernels, so checking
-        against the union is sufficient here.
+        Base file entries are checked against the union of linux-yocto and qcom
+        kernel sources.  Entries from fit-dtb-compatible-linux-qcom.inc are
+        checked against qcom kernel sources only (they reference
+        LINUX_QCOM_KERNEL_DEVICETREE overlays not available in linux-yocto).
         """
         available = set(self._available_providers())
 
@@ -1136,20 +1141,33 @@ class QcomFitImageMatrixTests(OESelftestTestCase):
         for provider in [self.KERNEL_PROVIDER_YOCTO] + qcom_available:
             all_outputs |= self._provider_output_files(provider)
 
-        missing = []
-        for encoded_key, combo_val in self._fit_compatible_map().items():
-            parts = combo_val.split()
-            base = parts[0]
-            if len(parts) == 1:
-                if not self._has_dt_output(all_outputs, base, (".dtb", ".dtbo")):
-                    missing.append(f"{encoded_key} -> {combo_val}")
-                continue
-            if not self._has_dt_output(all_outputs, base, (".dtb",)):
-                missing.append(f"{encoded_key} -> {combo_val}")
-                continue
-            if any(not self._has_dt_output(all_outputs, ovl, (".dtbo",))
-                   for ovl in parts[1:]):
-                missing.append(f"{encoded_key} -> {combo_val}")
+        qcom_outputs = set()
+        for provider in qcom_available:
+            qcom_outputs |= self._provider_output_files(provider)
+
+        def _check_combos(compat_map, output_files, label):
+            missing = []
+            for encoded_key, combo_val in compat_map.items():
+                parts = combo_val.split()
+                base = parts[0]
+                if len(parts) == 1:
+                    if not self._has_dt_output(output_files, base, (".dtb", ".dtbo")):
+                        missing.append(f"{encoded_key} -> {combo_val}  [{label}]")
+                    continue
+                if not self._has_dt_output(output_files, base, (".dtb",)):
+                    missing.append(f"{encoded_key} -> {combo_val}  [{label}]")
+                    continue
+                if any(not self._has_dt_output(output_files, ovl, (".dtbo",))
+                       for ovl in parts[1:]):
+                    missing.append(f"{encoded_key} -> {combo_val}  [{label}]")
+            return missing
+
+        missing = _check_combos(self._fit_compatible_map(), all_outputs, "base")
+
+        qcom_inc = self._linux_qcom_fit_compat_inc()
+        if os.path.exists(qcom_inc):
+            qcom_map = self._parse_fit_compatible_map(qcom_inc)
+            missing += _check_combos(qcom_map, qcom_outputs, "linux-qcom")
 
         if missing:
             self.fail(
@@ -1157,31 +1175,35 @@ class QcomFitImageMatrixTests(OESelftestTestCase):
                 + "\n".join(sorted(missing)))
 
     def test_fit_dtb_compatible_no_duplicate_keys(self):
-        """Each FIT_DTB_COMPATIBLE key must be defined exactly once.
+        """Each FIT_DTB_COMPATIBLE key must be defined exactly once per file.
 
         Bitbake silently overwrites a flag variable when the same key is
         assigned twice, dropping the first set of compatible strings without
         any warning.
         """
-        inc_path = self._fit_compatible_inc()
-        key_re = re.compile(r'^\s*FIT_DTB_COMPATIBLE\[([^\]]+)\]\s*=')
-        seen = {}
-        with open(inc_path) as f:
-            for lineno, line in enumerate(f, 1):
-                m = key_re.match(line)
-                if m:
-                    key = m.group(1).strip()
-                    seen.setdefault(key, []).append(lineno)
+        errors = []
+        for inc_path in (self._fit_compatible_inc(), self._linux_qcom_fit_compat_inc()):
+            if not os.path.exists(inc_path):
+                continue
+            key_re = re.compile(r'^\s*FIT_DTB_COMPATIBLE\[([^\]]+)\]\s*=')
+            seen = {}
+            with open(inc_path) as f:
+                for lineno, line in enumerate(f, 1):
+                    m = key_re.match(line)
+                    if m:
+                        key = m.group(1).strip()
+                        seen.setdefault(key, []).append(lineno)
 
-        duplicates = {k: lines for k, lines in seen.items() if len(lines) > 1}
-        if duplicates:
-            msgs = [
-                f"  '{k}' defined at lines: {', '.join(str(l) for l in lines)}"
-                for k, lines in sorted(duplicates.items())
-            ]
+            fname = os.path.basename(inc_path)
+            for k, lines in sorted(seen.items()):
+                if len(lines) > 1:
+                    errors.append(
+                        f"  '{k}' in {fname} defined at lines: "
+                        f"{', '.join(str(l) for l in lines)}")
+
+        if errors:
             self.fail(
-                "Duplicate FIT_DTB_COMPATIBLE keys in fit-dtb-compatible.inc:\n"
-                + "\n".join(msgs))
+                "Duplicate FIT_DTB_COMPATIBLE keys:\n" + "\n".join(errors))
 
     def test_fit_dtb_compatible_compat_key_format(self):
         """Each FIT_DTB_COMPATIBLE key must be an encoded compatible string.
@@ -1192,9 +1214,14 @@ class QcomFitImageMatrixTests(OESelftestTestCase):
         can decode it back to a valid 'qcom,…' compatible string.
         """
         errors = []
-        for encoded_key in self._parse_fit_compatible_map(self._fit_compatible_inc()):
-            if not encoded_key.startswith("qcom_"):
-                errors.append(f"  '{encoded_key}': must start with 'qcom_'")
+        for inc_path in (self._fit_compatible_inc(), self._linux_qcom_fit_compat_inc()):
+            if not os.path.exists(inc_path):
+                continue
+            fname = os.path.basename(inc_path)
+            for encoded_key in self._parse_fit_compatible_map(inc_path):
+                if not encoded_key.startswith("qcom_"):
+                    errors.append(
+                        f"  '{encoded_key}' in {fname}: must start with 'qcom_'")
 
         if errors:
             self.fail(
