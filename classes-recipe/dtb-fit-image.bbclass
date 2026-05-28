@@ -7,7 +7,12 @@
 inherit kernel-arch
 
 require conf/image-fitimage.conf
-require conf/machine/include/fit-dtb-compatible.inc
+
+# Selects which FIT_DTB_COMPATIBLE include to load.  Defaults to the base
+# file; set to fit-dtb-compatible-linux-qcom.inc in linux-qcom* kernel
+# recipes to extend with linux-qcom-only overlay entries.
+LINUX_QCOM_FIT_DTB_COMPATIBLE ?= "conf/machine/include/fit-dtb-compatible.inc"
+require ${LINUX_QCOM_FIT_DTB_COMPATIBLE}
 
 DEPENDS += "\
     u-boot-tools-native \
