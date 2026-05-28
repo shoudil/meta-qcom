@@ -15,3 +15,4 @@ FILES:${PN}-media = " \
 "
 
 RDEPENDS:${PN}-apps += "${@bb.utils.contains('PACKAGECONFIG', 'python-apps', '${PN}-media', '', d)}"
+RDEPENDS:${PN}-dev += "${@bb.utils.contains('PACKAGECONFIG', 'ml', 'libeigen-dev', '', d)}"
