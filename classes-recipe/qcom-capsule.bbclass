@@ -200,6 +200,57 @@ python generate_fvupdate() {
 
 do_compile[prefuncs] += "generate_fvupdate"
 
+# Inject the OEM root certificate into xbl_config.elf.
+# Dumps the config sections, auto-detects the post-DDR DTB (or uses
+# XBLCONFIG_DTB / XBLCONFIG_DTB_SECTION overrides), patches QcCapsuleRootCert
+# in that DTB, and repacks the updated DTB back into xbl_config.elf in place.
+# $1 - path to xbl_config.elf (modified in place on success)
+patch_xblconfig_cert() {
+    local xbl_config="$1"
+    local staged_dir
+    staged_dir=$(dirname "${xbl_config}")
+
+    XBL_DUMP_LOG="${CAPSULE_DIR}/xbl_dump.log"
+    qcom-capsule-tool parse-config \
+        "${xbl_config}" dump \
+        --out-dir "${staged_dir}" | tee "${XBL_DUMP_LOG}"
+
+    DTB_PATCH="${XBLCONFIG_DTB}"
+    DTB_SECTION="${XBLCONFIG_DTB_SECTION}"
+    if [ -z "${DTB_PATCH}" ]; then
+        # Parse a line like:
+        #   [+] config_item[6] -> PH# 8 -> './post-ddr-kodiak-1.0.dtb' (90280 bytes)
+        POST_DDR_LINE=$(grep -m1 "post-ddr.*\.dtb" "${XBL_DUMP_LOG}" || true)
+        if [ -n "${POST_DDR_LINE}" ]; then
+            DTB_PATCH=$(echo "${POST_DDR_LINE}" | sed "s|.* -> '||;s|'.*||" | xargs basename)
+            DTB_SECTION=$(echo "${POST_DDR_LINE}" | sed "s/.*PH# \([0-9]*\).*/\1/")
+        fi
+    fi
+
+    if [ -n "${DTB_PATCH}" ]; then
+        ORIG_DTB="${staged_dir}/${DTB_PATCH}"
+        UPDATED_DTB="${staged_dir}/${DTB_PATCH%.dtb}-updated.dtb"
+
+        qcom-capsule-tool set-dtb-property \
+            "${ORIG_DTB}" \
+            /sw/uefi/uefiplat \
+            QcCapsuleRootCert \
+            "@list:${ROOT_INC}" \
+            "${UPDATED_DTB}"
+
+        qcom-capsule-tool parse-config \
+            "${xbl_config}" replace \
+            "${DTB_SECTION}" \
+            "${UPDATED_DTB}" \
+            "${staged_dir}/xbl_config_patched.elf"
+
+        mv "${staged_dir}/xbl_config_patched.elf" \
+           "${xbl_config}"
+
+        touch "${CAPSULE_DIR}/.xbl_with_oem_cert"
+    fi
+}
+
 do_compile() {
     CBSP_DATA="${STAGING_DATADIR_NATIVE}/cbsp-boot-utilities"
     EDK2_BASETOOLS="${STAGING_DATADIR_NATIVE}/edk2-basetools"
@@ -234,47 +285,10 @@ do_compile() {
     mkdir -p "${BOOTBINS_STAGED}"
     cp -r "${BOOTBINS_DIR}/." "${BOOTBINS_STAGED}/"
 
-    # Dump xbl_config.elf sections; parse output to auto-detect the post-DDR
-    # DTB and its section index.  XBLCONFIG_DTB / XBLCONFIG_DTB_SECTION
-    # override auto-detection when set explicitly.
-    XBL_DUMP_LOG="${CAPSULE_DIR}/xbl_dump.log"
-    qcom-capsule-tool parse-config \
-        "${BOOTBINS_STAGED}/xbl_config.elf" dump \
-        --out-dir "${BOOTBINS_STAGED}" | tee "${XBL_DUMP_LOG}"
-
-    DTB_PATCH="${XBLCONFIG_DTB}"
-    DTB_SECTION="${XBLCONFIG_DTB_SECTION}"
-    if [ -z "${DTB_PATCH}" ]; then
-        # Parse a line like:
-        #   [+] config_item[6] -> PH# 8 -> './post-ddr-kodiak-1.0.dtb' (90280 bytes)
-        POST_DDR_LINE=$(grep -m1 "post-ddr.*\.dtb" "${XBL_DUMP_LOG}" || true)
-        if [ -n "${POST_DDR_LINE}" ]; then
-            DTB_PATCH=$(echo "${POST_DDR_LINE}" | sed "s|.* -> '||;s|'.*||" | xargs basename)
-            DTB_SECTION=$(echo "${POST_DDR_LINE}" | sed "s/.*PH# \([0-9]*\).*/\1/")
-        fi
-    fi
-
-    if [ -n "${DTB_PATCH}" ]; then
-        ORIG_DTB="${BOOTBINS_STAGED}/${DTB_PATCH}"
-        UPDATED_DTB="${BOOTBINS_STAGED}/${DTB_PATCH%.dtb}-updated.dtb"
-
-        qcom-capsule-tool set-dtb-property \
-            "${ORIG_DTB}" \
-            /sw/uefi/uefiplat \
-            QcCapsuleRootCert \
-            "@list:${ROOT_INC}" \
-            "${UPDATED_DTB}"
-
-        qcom-capsule-tool parse-config \
-            "${BOOTBINS_STAGED}/xbl_config.elf" replace \
-            "${DTB_SECTION}" \
-            "${UPDATED_DTB}" \
-            "${BOOTBINS_STAGED}/xbl_config_patched.elf"
-
-        mv "${BOOTBINS_STAGED}/xbl_config_patched.elf" \
-           "${BOOTBINS_STAGED}/xbl_config.elf"
-
-        touch "${CAPSULE_DIR}/.xbl_with_oem_cert"
+    # Inject OEM root cert into xbl_config.elf when present.  Platforms
+    # without xbl_config.elf (e.g. hamoa) skip this step.
+    if [ -f "${BOOTBINS_STAGED}/xbl_config.elf" ]; then
+        patch_xblconfig_cert "${BOOTBINS_STAGED}/xbl_config.elf"
     fi
 
     qcom-capsule-tool sysfw-version-create \
