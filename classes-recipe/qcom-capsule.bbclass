@@ -126,6 +126,9 @@ do_configure[noexec] = "1"
 # Ensure boot binaries are deployed before we try to consume them
 do_compile[depends] += "${@'${QCOM_BOOT_FIRMWARE}:do_deploy' if d.getVar('QCOM_BOOT_FIRMWARE') else ''}"
 
+# Pull in the kernel DTB when capsule includes a dtb entry.
+do_compile[depends] += "${@'virtual/kernel:do_deploy' if 'dtb' in d.getVar('CAPSULE_ENTRIES').split() else ''}"
+
 python generate_fvupdate() {
     """Generate FvUpdate.xml from CAPSULE_ENTRIES when the variable is set."""
     import os
@@ -284,6 +287,16 @@ do_compile() {
     BOOTBINS_STAGED="${CAPSULE_DIR}/bootbins"
     mkdir -p "${BOOTBINS_STAGED}"
     cp -r "${BOOTBINS_DIR}/." "${BOOTBINS_STAGED}/"
+
+    # Stage kernel DTB vfat image as dtb.bin so FVCreation.py can find it
+    # when FvUpdate.xml references dtb.bin.  Only needed when CAPSULE_ENTRIES
+    # includes a dtb entry (avoids touching platforms that don't need it).
+    if echo "${CAPSULE_ENTRIES}" | grep -qw dtb && \
+            [ -n "${QCOM_DTB_DEFAULT}" ] && \
+            [ -f "${DEPLOY_DIR_IMAGE}/dtb-${QCOM_DTB_DEFAULT}-image.vfat" ]; then
+        cp "${DEPLOY_DIR_IMAGE}/dtb-${QCOM_DTB_DEFAULT}-image.vfat" \
+            "${BOOTBINS_STAGED}/dtb.bin"
+    fi
 
     # Inject OEM root cert into xbl_config.elf when present.  Platforms
     # without xbl_config.elf (e.g. hamoa) skip this step.
