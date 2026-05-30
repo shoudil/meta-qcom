@@ -8,6 +8,8 @@ inherit kernel cml1
 
 COMPATIBLE_MACHINE = "(qcom)"
 
+LINUX_QCOM_FIT_DTB_COMPATIBLE = "conf/machine/include/fit-dtb-compatible-linux-qcom.inc"
+
 LINUX_VERSION ?= "6.18.25"
 
 PV = "${LINUX_VERSION}"
