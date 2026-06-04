@@ -105,6 +105,7 @@ FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-camx] = \
 FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-camx-staging] = \
     "monaco-evk monaco-evk-camx monaco-el2 monaco-camx-el2 monaco-staging"
 FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-subtype0] = "monaco-ac-evk monaco-evk-camera-imx577"
+FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-subtype1] = "monaco-ac-evk monaco-evk-ifp-mezzanine"
 FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-subtype3] = "monaco-evk monaco-evk-ifp-mezzanine"
 FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-subtype3-staging] = \
     "monaco-evk monaco-evk-ifp-mezzanine monaco-staging monaco-evk-staging"
