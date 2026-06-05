@@ -24,103 +24,103 @@ FIT_DTB_COMPATIBLE[qcom_hamoa-evk-camx] = "hamoa-iot-evk hamoa-evk-camx"
 FIT_DTB_COMPATIBLE[qcom_purwa-evk-camx] = "purwa-iot-evk purwa-evk-camx"
 
 # ---------- lemans ----------
-FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-el2gh-staging] = \
     "lemans-evk lemans-evk-camera-csi1-imx577 lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9075-iot] = \
     "lemans-evk lemans-evk-camera-csi1-imx577 lemans-el2"
-FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-staging] = \
     "lemans-evk lemans-evk-camera-csi1-imx577 lemans-el2 lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-camx] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-el2gh-camx] = \
     "lemans-evk lemans-evk-camx"
-FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-camx-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-el2gh-camx-staging] = \
     "lemans-evk lemans-evk-camx lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-camx-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-camx] = \
     "lemans-evk lemans-evk-camx lemans-el2 lemans-camx-el2"
-FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-camx-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-camx-staging] = \
     "lemans-evk lemans-evk-camx lemans-el2 lemans-camx-el2 lemans-staging"
 FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-subtype1] = \
     "lemans-evk lemans-evk-ifp-mezzanine"
 FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-subtype1-staging] = \
     "lemans-evk lemans-evk-ifp-mezzanine lemans-staging lemans-evk-staging"
 
-FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-el2gh-staging] = \
     "qcs9100-ride lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9100-qam] = \
     "qcs9100-ride lemans-el2"
-FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-staging] = \
     "qcs9100-ride lemans-el2 lemans-staging"
 FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-camx] = \
     "qcs9100-ride sa8775p-ride-camx"
 FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-camx-staging] = \
     "qcs9100-ride sa8775p-ride-camx lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-r2.0-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-r2.0-el2gh-staging] = \
     "qcs9100-ride-r3 lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-r2.0-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-r2.0] = \
     "qcs9100-ride-r3 lemans-el2"
-FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-r2.0-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-r2.0-staging] = \
     "qcs9100-ride-r3 lemans-el2 lemans-staging"
 FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-r2.0-camx] = \
     "qcs9100-ride-r3 sa8775p-ride-camx"
 FIT_DTB_COMPATIBLE[qcom_qcs9100-qam-r2.0-camx-staging] = \
     "qcs9100-ride-r3 sa8775p-ride-camx lemans-staging"
 
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-staging] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-el2gh-staging] = \
     "sa8775p-ride lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam] = \
     "sa8775p-ride lemans-el2"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-staging] = \
     "sa8775p-ride lemans-el2 lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-camx] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-el2gh-camx] = \
     "sa8775p-ride sa8775p-ride-camx"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-camx-staging] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-camx-el2gh-staging] = \
     "sa8775p-ride sa8775p-ride-camx lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-camx-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-camx] = \
     "sa8775p-ride sa8775p-ride-camx lemans-el2 lemans-camx-el2"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-camx-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-camx-staging] = \
     "sa8775p-ride sa8775p-ride-camx lemans-el2 lemans-camx-el2 lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-staging] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-el2gh-staging] = \
     "sa8775p-ride-r3 lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0] = \
     "sa8775p-ride-r3 lemans-el2"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-staging] = \
     "sa8775p-ride-r3 lemans-el2 lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-camx] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-el2gh-camx] = \
     "sa8775p-ride-r3 sa8775p-ride-camx"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-camx-staging] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-el2gh-camx-staging] = \
     "sa8775p-ride-r3 sa8775p-ride-camx lemans-staging"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-camx-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-camx] = \
     "sa8775p-ride-r3 sa8775p-ride-camx lemans-el2 lemans-camx-el2"
-FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-camx-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_sa8775p-qam-r2.0-camx-staging] = \
     "sa8775p-ride-r3 sa8775p-ride-camx lemans-el2 lemans-camx-el2 lemans-staging"
 
 # ---------- monaco ----------
-FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-el2gh-staging] = \
     "monaco-evk monaco-evk-camera-imx577 monaco-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_qcs8275-iot] = \
     "monaco-evk monaco-evk-camera-imx577 monaco-el2"
-FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-staging] = \
     "monaco-evk monaco-evk-camera-imx577 monaco-el2 monaco-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-camx] = "monaco-evk monaco-evk-camx"
-FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-camx-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-el2gh-camx] = "monaco-evk monaco-evk-camx"
+FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-el2gh-camx-staging] = \
     "monaco-evk monaco-evk-camx monaco-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-camx-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-camx] = \
     "monaco-evk monaco-evk-camx monaco-el2 monaco-camx-el2"
-FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-camx-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-camx-staging] = \
     "monaco-evk monaco-evk-camx monaco-el2 monaco-camx-el2 monaco-staging"
 FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-subtype3] = "monaco-evk monaco-evk-ifp-mezzanine"
 FIT_DTB_COMPATIBLE[qcom_qcs8275-iot-subtype3-staging] = \
     "monaco-evk monaco-evk-ifp-mezzanine monaco-staging monaco-evk-staging"
 
-FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-staging] = "qcs8300-ride monaco-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-el2kvm] = "qcs8300-ride monaco-el2"
-FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-el2gh-staging] = "qcs8300-ride monaco-staging"
+FIT_DTB_COMPATIBLE[qcom_qcs8300-adp] = "qcs8300-ride monaco-el2"
+FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-staging] = \
     "qcs8300-ride monaco-el2 monaco-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-camx] = "qcs8300-ride qcs8300-ride-camx"
-FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-camx-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-el2gh-camx] = "qcs8300-ride qcs8300-ride-camx"
+FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-el2gh-camx-staging] = \
     "qcs8300-ride qcs8300-ride-camx monaco-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-camx-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-camx] = \
     "qcs8300-ride qcs8300-ride-camx monaco-el2 monaco-camx-el2"
-FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-camx-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-camx-staging] = \
     "qcs8300-ride qcs8300-ride-camx monaco-el2 monaco-camx-el2 monaco-staging"
 
 # ---------- talos ----------
