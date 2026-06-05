@@ -20,6 +20,9 @@ require conf/machine/include/fit-dtb-compatible.inc
 # ---------- hamoa  ----------
 FIT_DTB_COMPATIBLE[qcom_hamoa-evk-camx] = "hamoa-iot-evk hamoa-evk-camx"
 
+# ---------- purwa -----------
+FIT_DTB_COMPATIBLE[qcom_purwa-evk-camx] = "purwa-iot-evk purwa-evk-camx"
+
 # ---------- lemans ----------
 FIT_DTB_COMPATIBLE[qcom_qcs9075-iot-staging] = \
     "lemans-evk lemans-evk-camera-csi1-imx577 lemans-staging"
