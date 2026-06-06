@@ -125,32 +125,32 @@ FIT_DTB_COMPATIBLE[qcom_qcs8300-adp-camx-staging] = \
     "qcs8300-ride qcs8300-ride-camx monaco-el2 monaco-camx-el2 monaco-staging"
 
 # ---------- talos ----------
-FIT_DTB_COMPATIBLE[qcom_qcs615-adp-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs615-adp-el2gh-staging] = \
     "qcs615-ride talos-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs615-adp-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_qcs615-adp] = \
     "qcs615-ride talos-el2"
-FIT_DTB_COMPATIBLE[qcom_qcs615-adp-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs615-adp-staging] = \
     "qcs615-ride talos-el2 talos-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs615-iot-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs615-iot-el2gh-staging] = \
     "talos-evk talos-evk-camera-imx577 talos-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs615-iot-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_qcs615-iot] = \
     "talos-evk talos-evk-camera-imx577 talos-el2"
-FIT_DTB_COMPATIBLE[qcom_qcs615-iot-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs615-iot-staging] = \
     "talos-evk talos-evk-camera-imx577 talos-el2 talos-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs615-iot-camx] = "talos-evk talos-evk-camx"
+FIT_DTB_COMPATIBLE[qcom_qcs615-iot-el2gh-camx] = "talos-evk talos-evk-camx"
 FIT_DTB_COMPATIBLE[qcom_qcs615-iot-camx-staging] = \
     "talos-evk talos-evk-camx talos-staging"
-FIT_DTB_COMPATIBLE[qcom_qcs615-iot-camx-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_qcs615-iot-camx] = \
     "talos-evk talos-evk-camx talos-el2"
-FIT_DTB_COMPATIBLE[qcom_qcs615-iot-camx-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_qcs615-iot-el2gh-camx-staging] = \
     "talos-evk talos-evk-camx talos-el2 talos-staging"
 # Compatible string "qcom,talos-evk-lvds-auo,g133han01-staging" encodes as
 # "qcom_talos-evk-lvds-auo_g133han01-staging" (both commas become underscores).
-FIT_DTB_COMPATIBLE[qcom_talos-evk-lvds-auo_g133han01-staging] = \
+FIT_DTB_COMPATIBLE[qcom_talos-evk-lvds-auo_g133han01-el2gh-staging] = \
     "talos-evk talos-evk-lvds-auo_g133han01 talos-staging"
-FIT_DTB_COMPATIBLE[qcom_talos-evk-lvds-auo_g133han01-el2kvm] = \
+FIT_DTB_COMPATIBLE[qcom_talos-evk-lvds-auo_g133han01] = \
     "talos-evk talos-evk-lvds-auo_g133han01 talos-el2"
-FIT_DTB_COMPATIBLE[qcom_talos-evk-lvds-auo_g133han01-el2kvm-staging] = \
+FIT_DTB_COMPATIBLE[qcom_talos-evk-lvds-auo_g133han01-staging] = \
     "talos-evk talos-evk-lvds-auo_g133han01 talos-el2 talos-staging"
 
 # ---------- kodiak ----------
