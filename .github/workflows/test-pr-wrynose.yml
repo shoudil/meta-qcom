@@ -13,6 +13,7 @@ permissions:
   pull-requests: write
   contents: read
   packages: read
+  actions: read
 
 jobs:
   determine-target-branch:
@@ -20,11 +21,21 @@ jobs:
     outputs:
       branch: ${{ steps.branch.outputs.value }}
     steps:
+      # github.event.workflow_run.pull_requests is empty for PRs opened from
+      # forked repositories, so the target branch can't be read from the event
+      # payload. Read it instead from the Event File artifact uploaded by the
+      # build: it is the literal pull_request event that triggered the build and
+      # therefore identifies the target branch reliably, forks included.
+      - name: Download event file
+        uses: actions/download-artifact@v7
+        with:
+          name: Event File
+          run-id: ${{ github.event.workflow_run.id }}
+          github-token: ${{ github.token }}
       - id: branch
-        env:
-          PULL_REQUESTS_JSON: ${{ toJSON(github.event.workflow_run.pull_requests) }}
         run: |
-          BRANCH=$(echo "$PULL_REQUESTS_JSON" | jq -r '.[0].base.ref // "master"')
+          BRANCH=$(jq -r '.pull_request.base.ref // "master"' event.json)
+          echo "::notice title=Target branch::Resolved target branch: $BRANCH"
           echo "value=$BRANCH" >> "$GITHUB_OUTPUT"
 
   test-wrynose:
