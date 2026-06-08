@@ -15,7 +15,11 @@ This layer depends on:
 ```text
 URI: https://github.com/openembedded/openembedded-core.git
 layers: meta
-branch: master
+branch: wrynose
+revision: HEAD
+
+URI: https://git.yoctoproject.org/meta-lts-mixins
+branch: wrynose/linux-firmware
 revision: HEAD
 ```
 
@@ -24,7 +28,7 @@ This layer has an optional dependency on meta-oe layer:
 ```text
 URI: https://github.com/openembedded/meta-openembedded.git
 layers: meta-oe
-branch: master
+branch: wrynose
 revision: HEAD
 ```
 
@@ -37,6 +41,8 @@ for the implementation details.
 
 - **master:** Primary development branch, with focus on upstream support and
   compatibility with the most recent Yocto Project release.
+- **wrynose:** LTS Stable branch, with focus on long term support and
+  compatibility with the most recent Yocto Project LTS release.
 - **all stable branches up until styhead:** Legacy branches maintained by Linaro,
   prior to the migration to [Qualcomm-linux](https://github.com/qualcomm-linux).
 
@@ -68,7 +74,7 @@ an easy way to setup bitbake based projects. For more details, visit the
 2. Clone meta-qcom layer
 
     ```bash
-    git clone https://github.com/qualcomm-linux/meta-qcom.git -b master
+    git clone https://github.com/qualcomm-linux/meta-qcom.git -b wrynose
     ```
 
 3. Build using the KAS configuration for one of the supported boards
@@ -175,6 +181,11 @@ Make sure that ModemManager is not running, disable it if necessary.
 Please submit any patches against the `meta-qcom` layer (branch **master**)
 by using the GitHub pull-request feature. Fork the repo, create a branch,
 do the work, rebase from upstream, and create the pull request.
+
+On the stable (branch **wrynose**) patches should be integrated as a backport
+whenever possible, and for that they must follow the (branch **master**) process.
+If the changes cannot be submitted to (branch **master**), then they must be
+submitted to (branch **wrynose**), including the necessary explanation.
 
 For some useful guidelines when submitting patches, please refer to:
 [Preparing Changes for Submission](https://docs.yoctoproject.org/dev/contributor-guide/submit-changes.html#preparing-changes-for-submission)
