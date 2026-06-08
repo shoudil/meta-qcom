@@ -10,7 +10,7 @@ inherit module
 SRCREV = "b65fb932d5bf6a8008e1f9b068e4a83b6999cb82"
 
 SRC_URI = "\
-	git://github.com/TC956X/TC9564_Host_Driver.git;protocol=https;branch=industrial_limited_tested;tag=V_06-00-01 \
+	git://github.com/qualcomm-linux/TC9564_Host_Driver.git;protocol=https;branch=industrial_limited_tested;tag=V_06-00-01 \
 	file://0001-net-ethernet-tc956x-Makefile-support-cross-build-via.patch \
 	file://0002-net-ethernet-tc956x-read-MAC-address-from-DT-NVMEM-o.patch \
 	file://0003-net-ethernet-tc956x-Replace-phylink-.validate-with-..patch \
