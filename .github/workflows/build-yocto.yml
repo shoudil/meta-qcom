@@ -73,7 +73,6 @@ jobs:
       - uses: actions/checkout@v6
         with:
           persist-credentials: false
-          ref: ${{ inputs.git_ref }}
 
       - name: Download kas lockfile
         uses: actions/download-artifact@v7
