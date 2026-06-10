@@ -192,11 +192,30 @@ jobs:
             yamlfile: ""
     uses: ./.github/workflows/compile.yml
     with:
+      name: ${{ matrix.machine }}/${{ matrix.distro.name }}${{ matrix.kernel.dirname }}
       machine: ${{matrix.machine}}
       distro_yaml: ${{matrix.distro.yamlfile}}
       distro_name: ${{matrix.distro.name}}
       kernel_yaml: ${{matrix.kernel.yamlfile}}
       kernel_dirname: ${{matrix.kernel.dirname}}
+      cache_dir: ${{ needs.compile-env.outputs.CACHE_DIR }}
+
+  compile_sdk:
+    needs: [github-cache-check, compile_warm_up, compile-env]
+    if: |
+      github.repository_owner == 'qualcomm-linux' &&
+      (inputs.skip_if_github_cached != true || needs.github-cache-check.outputs.cache_hit != 'true')
+    uses: ./.github/workflows/compile.yml
+    with:
+      name: qcom-armv8a/qcom-distro-sdk
+      sdk: true
+      target: false
+      world: false
+      machine: 'qcom-armv8a'
+      distro_yaml: ':ci/qcom-distro.yml'
+      distro_name: 'qcom-distro-sdk'
+      kernel_yaml: ''
+      kernel_dirname: ''
       cache_dir: ${{ needs.compile-env.outputs.CACHE_DIR }}
 
   compile:
@@ -384,6 +403,7 @@ jobs:
                 yamlfile: ""
     uses: ./.github/workflows/compile.yml
     with:
+      name: ${{ matrix.machine }}/${{ matrix.distro.name }}${{ matrix.kernel.dirname }}
       enabled: ${{inputs.profile != 'pr' || (matrix.distro.name != 'debug' && matrix.distro.name != 'performance')}}
       machine: ${{matrix.machine}}
       distro_yaml: ${{matrix.distro.yamlfile}}
@@ -393,7 +413,7 @@ jobs:
       cache_dir: ${{ needs.compile-env.outputs.CACHE_DIR }}
 
   publish_summary:
-    needs: [github-cache-check, compile]
+    needs: [github-cache-check, compile, compile_sdk]
     if: |
       always() && github.repository_owner == 'qualcomm-linux' &&
       (inputs.skip_if_github_cached != true || needs.github-cache-check.outputs.cache_hit != 'true')
@@ -409,7 +429,7 @@ jobs:
           pattern: build-url*
 
   github-cache-save:
-    needs: [github-cache-check, compile]
+    needs: [github-cache-check, compile, compile_sdk]
     if: |
       github.repository_owner == 'qualcomm-linux' &&
       inputs.skip_if_github_cached == true &&
@@ -428,7 +448,7 @@ jobs:
 
   build_successful:
     if: github.repository_owner == 'qualcomm-linux'
-    needs: compile
+    needs: [compile, compile_sdk]
     runs-on: ubuntu-latest
     steps:
       - name: Build completed successfully

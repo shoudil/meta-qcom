@@ -5,6 +5,21 @@ on:
         required: false
         type: boolean
         default: true
+      sdk:
+        required: false
+        type: boolean
+        default: false
+      target:
+        required: false
+        type: boolean
+        default: true
+      world:
+        required: false
+        type: boolean
+        default: true
+      name:
+        required: true
+        type: string
       machine:
         required: true
         type: string
@@ -31,7 +46,7 @@ jobs:
   reusable_compile_job:
     if: inputs.enabled
     runs-on: [self-hosted, qcom-u2404, amd64]
-    name: ${{ inputs.machine }}/${{ inputs.distro_name }}${{ inputs.kernel_dirname }}
+    name: ${{ inputs.name }}
     steps:
       - uses: actions/checkout@v6
         with:
@@ -81,34 +96,47 @@ jobs:
           $KAS_CONTAINER dump --resolve-env --resolve-local --resolve-refs ${KAS_YAMLS} > kas-build.yml
 
       - name: Kas build world
+        if:  inputs.world
         shell: bash
         run: |
           $KAS_CONTAINER build ${KAS_YAMLS}:ci/world.yml
+
+      - name: Kas build world (buildstats)
+        if:  inputs.world
+        shell: bash
+        run: |
           ci/kas-container-shell-helper.sh ci/yocto-buildstats.sh
           rename.ul -va buildstats buildstats-world $KAS_WORK_DIR/build/buildstats*
           mv $KAS_WORK_DIR/build/buildstats* .
 
       - name: Kas build images
+        if:  inputs.target
         shell: bash
         run: |
           $KAS_CONTAINER build ${KAS_YAMLS}
+
+      - name: Kas build images (buildstats)
+        if:  inputs.target
+        shell: bash
+        run: |
           ci/kas-container-shell-helper.sh ci/yocto-buildstats.sh
           mv $KAS_WORK_DIR/build/buildstats* .
 
       - name: Kas build SDK
+        if:  inputs.sdk
         shell: bash
         run: |
-          if [ "${INPUTS_MACHINE}" = "qcom-armv8a" ]; then
-            # SDK only with the default kernel and qcom-distro
-            if [ "${INPUTS_KERNEL_YAML}" = "" ] && [ "${INPUTS_DISTRO_YAML}" = ":ci/qcom-distro.yml" ] ; then
-              $KAS_CONTAINER build ${KAS_YAMLS} --task populate_sdk \
-                --target qcom-multimedia-image \
-                --target qcom-multimedia-proprietary-image
-              ci/kas-container-shell-helper.sh ci/yocto-buildstats.sh
-              rename.ul -av buildstats buildstats-sdk $KAS_WORK_DIR/build/buildstats*
-              mv $KAS_WORK_DIR/build/buildstats* .
-            fi
-          fi
+          $KAS_CONTAINER build ${KAS_YAMLS} --task populate_sdk \
+            --target qcom-multimedia-image \
+            --target qcom-multimedia-proprietary-image
+
+      - name: Kas build SDK (buildstats)
+        if:  inputs.sdk
+        shell: bash
+        run: |
+          ci/kas-container-shell-helper.sh ci/yocto-buildstats.sh
+          rename.ul -av buildstats buildstats-sdk $KAS_WORK_DIR/build/buildstats*
+          mv $KAS_WORK_DIR/build/buildstats* .
 
       - uses: actions/upload-artifact@v6
         with:
@@ -130,11 +158,13 @@ jobs:
           deploy_dir=../kas/build/tmp/deploy/images/${INPUTS_MACHINE}
           uploads_dir=./uploads/${INPUTS_DISTRO_NAME}${INPUTS_KERNEL_DIRNAME}/${INPUTS_MACHINE}
           mkdir -p $uploads_dir
-          # Publish everything that is linked by bitbake at the end of the build (avoid timestamp and duplication)
-          find $deploy_dir/ -maxdepth 1 -type l -exec cp --dereference {} $uploads_dir/ \;
-          # Files without links: *.vfat, *.elf, *.efi, efi.stub, fit *.its, qcom-metadata.dtb and qclinuxfitImage
-          # Copy *.efi, *.efi and *.vfat as they are useful for debugging
-          find $deploy_dir/ -maxdepth 1 -type f \( -name \*.efi -o -name \*.elf -o -name dtb-\*.vfat \) -exec cp {} $uploads_dir/ \;
+          if [ -d $deploy_dir ]; then
+            # Publish everything that is linked by bitbake at the end of the build (avoid timestamp and duplication)
+            find $deploy_dir/ -maxdepth 1 -type l -exec cp --dereference {} $uploads_dir/ \;
+            # Files without links: *.vfat, *.elf, *.efi, efi.stub, fit *.its, qcom-metadata.dtb and qclinuxfitImage
+            # Copy *.efi, *.efi and *.vfat as they are useful for debugging
+            find $deploy_dir/ -maxdepth 1 -type f \( -name \*.efi -o -name \*.elf -o -name dtb-\*.vfat \) -exec cp {} $uploads_dir/ \;
+          fi
           cp buildstats* kas-build.yml $uploads_dir/
           if [ -d $deploy_dir/../../sdk ]; then
             cp $deploy_dir/../../sdk/* $uploads_dir/
