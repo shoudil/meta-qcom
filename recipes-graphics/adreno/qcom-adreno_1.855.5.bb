@@ -6,12 +6,12 @@ DESCRIPTION = "Collection of prebuilt User Mode libraries to support OpenGL ES, 
 
 LICENSE = "LICENSE.qcom-2"
 LIC_FILES_CHKSUM = "file://NO.LOGIN.BINARY.LICENSE.QTI.pdf;md5=4ceffe94cb40cdce6d2f4fb93cc063d1 \
-                    file://NOTICE;md5=8a8bfc3e11e68334dc7e9d2daf1e93e3 "
+                    file://NOTICE;md5=356106e5f0928f95d25f52304574ba35 "
 
 # no top-level dir in the archive, unpack to subdir to prevent UNPACKDIR pollution
 SRC_URI = "https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/gfx-adreno.le.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/${BPN}_${PV}_armv8a.tar.gz;subdir=${BP}"
-PBT_BUILD_DATE = "260407"
-SRC_URI[sha256sum] = "ac4fb526e1b5fbd607e96919ac4af65c34c15603e21e58b5527ea1d70152091c"
+PBT_BUILD_DATE = "260608"
+SRC_URI[sha256sum] = "771b20cd2bfbbef08f707af6ff8c765027c8351cf24c767d9698ca9acda2c599"
 
 # These are listed here in order to identify RDEPENDS
 DEPENDS += " glib-2.0 libdrm virtual/libgbm msm-gbm-backend \
