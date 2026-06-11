@@ -4,6 +4,8 @@ overrides:
     repos:
         oe-core:
             commit: 06dd66e6220e5ce4ed4b9af4d8231ae5f0a8ce80
+        meta-lts-mixins:
+            commit: 348a9eaaf3991e2329d0cef14dce23fabaef9191
         bitbake:
             commit: 22021758e66737bcf68dfd2b74adc6a0cb1d42d9
         meta-arm:
