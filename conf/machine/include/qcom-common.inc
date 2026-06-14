@@ -92,7 +92,7 @@ RT_ARGS_IDLE  = "${@oe.utils.conditional('QCOM_CPUIDLE_OFF',   '', '', \
 
 # Combine
 RT_KERNEL_CMDLINE = "${RT_ARGS_ISOL} ${RT_ARGS_IRQ} ${RT_ARGS_NOCBS} \
-                     ${RT_ARGS_EXP} ${RT_ARGS_IDLE}"
+                     ${RT_ARGS_EXP} ${RT_ARGS_IDLE} efi=runtime"
 
 # Append only when RT kernel is selected
 KERNEL_CMDLINE_EXTRA:append = "${@bb.utils.contains_any('PREFERRED_PROVIDER_virtual/kernel',\
