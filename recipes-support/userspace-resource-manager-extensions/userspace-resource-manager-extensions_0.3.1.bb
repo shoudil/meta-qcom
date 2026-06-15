@@ -5,15 +5,15 @@ URM behaviour, for example: Add new custom resources and signals without modifyi
 the core URM codebase, Override default resource handlers with custom implementations, \
 Provide target-specific configurations for different hardware platforms. \
 The URM Extensions framework allows for extending URM functionality through a clean plugin architecture."
- 
+
 LICENSE = "BSD-3-Clause-Clear"
 LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=2998c54c288b081076c9af987bdf4838"
 
 SRC_URI = "git://github.com/qualcomm/userspace-resource-manager-extensions.git;protocol=https;branch=main;tag=v${PV}"
-SRCREV = "ab8e725509136bb263b856d1d88dbe7601772937"
- 
+SRCREV = "65b7a14ee0a1d72c34f16b6a13622c009d829a67"
+
 inherit cmake
- 
+
 DEPENDS += " userspace-resource-manager"
 FILES:${PN}-dev += "${libdir}/urm/libUrmPlugin.so"
 FILES:${PN} += " \
