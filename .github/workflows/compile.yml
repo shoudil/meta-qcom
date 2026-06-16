@@ -165,6 +165,7 @@ jobs:
       - name: Stage build artifacts for publishing
         shell: bash
         run: |
+          set -x
           # The upload-private-artifact-action runs from a container that
           # expects file to be relative to our PWD. deploy_dir is outside
           # that, so we move things around:
@@ -173,14 +174,14 @@ jobs:
           mkdir -p $uploads_dir
           if [ -d $deploy_dir ]; then
             # Publish everything that is linked by bitbake at the end of the build (avoid timestamp and duplication)
-            find $deploy_dir/ -maxdepth 1 -type l -exec cp --dereference {} $uploads_dir/ \;
+            find $deploy_dir/ -maxdepth 1 -type l -exec cp -v --dereference {} $uploads_dir/ \;
             # Files without links: *.vfat, *.elf, *.efi, efi.stub, fit *.its, qcom-metadata.dtb and qclinuxfitImage
             # Copy *.efi, *.efi and *.vfat as they are useful for debugging
-            find $deploy_dir/ -maxdepth 1 -type f \( -name \*.efi -o -name \*.elf -o -name dtb-\*.vfat \) -exec cp {} $uploads_dir/ \;
+            find $deploy_dir/ -maxdepth 1 -type f \( -name \*.efi -o -name \*.elf -o -name dtb-\*.vfat \) -exec cp -v {} $uploads_dir/ \;
           fi
-          cp buildstats* kas-build.yml $uploads_dir/
+          cp -v buildstats* kas-build.yml $uploads_dir/
           if [ -d $deploy_dir/../../sdk ]; then
-            cp $deploy_dir/../../sdk/* $uploads_dir/
+            cp -v $deploy_dir/../../sdk/* $uploads_dir/
           fi
         env:
           INPUTS_MACHINE: ${{ inputs.machine }}
