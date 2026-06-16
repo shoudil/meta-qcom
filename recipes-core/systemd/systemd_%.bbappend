@@ -1,6 +1,9 @@
 FILESEXTRAPATHS:prepend:qcom := "${THISDIR}/${PN}:"
 
-SRC_URI:append:qcom = " file://99-dma-heap.rules"
+SRC_URI:append:qcom = " \
+    file://0001-boot-stub-honor-PE-SectionAlignment-when-loading-inn.patch \
+    file://99-dma-heap.rules \
+"
 
 # Create a group dmaheap and add this group to /dev/dma_heap/system through
 # dma-heap rules.
