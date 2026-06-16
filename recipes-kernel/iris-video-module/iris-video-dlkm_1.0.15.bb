@@ -5,6 +5,7 @@ LIC_FILES_CHKSUM = "file://LICENSE.txt;md5=12f884d2ae1ff87c09e5b7ccc2c4ca7e"
 
 SRC_URI = " \
     git://github.com/qualcomm-linux/video-driver.git;protocol=https;branch=video.qclinux.main;tag=v${PV} \
+    file://0001-video-driver-copy-struct-v4l2_format-by-assignment.patch \
     file://blacklist-video.conf.venus \
     file://blacklist-video.conf.vidc \
 "
