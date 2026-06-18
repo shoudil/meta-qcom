@@ -17,7 +17,7 @@ overrides:
         meta-audioreach:
             commit: c80ebf5be5cc47a1bab1acb4b1987c8cd8b48218
         meta-selinux:
-            commit: 1ba26da4b9bec3f102bd831efe0db00c7d61f7f2
+            commit: 1c3a699f363167571ab39fecb0fe6f56691a4e20
         meta-updater:
             commit: 7f5eef0421e966234230ee8f4e4a93e3fc8e3ac6
         meta-security:
