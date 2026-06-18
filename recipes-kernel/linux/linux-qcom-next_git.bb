@@ -10,12 +10,12 @@ COMPATIBLE_MACHINE = "(qcom)"
 
 LINUX_QCOM_FIT_DTB_COMPATIBLE = "conf/machine/include/fit-dtb-compatible-linux-qcom.inc"
 
-LINUX_VERSION ?= "7.0+7.1-rc6"
+LINUX_VERSION ?= "7.0+7.1-rc7"
 
 PV = "${LINUX_VERSION}+git"
 
-# tag: qcom-next-7.1-rc6-20260609
-SRCREV ?= "f74a35752ee9fde35f8980d2635660334bff6446"
+# tag: qcom-next-7.1-rc7-20260617
+SRCREV ?= "8dba9258929fce68a7b0d148c2a461ba2159f930"
 
 SRCBRANCH ?= "nobranch=1"
 SRCBRANCH:class-devupstream ?= "branch=qcom-next"
