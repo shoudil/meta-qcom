@@ -41,8 +41,8 @@ for the implementation details.
 
 - **master:** Primary development branch, with focus on upstream support and
   compatibility with the most recent Yocto Project release.
-- **wrynose:** LTS Stable branch, with focus on long term support and
-  compatibility with the most recent Yocto Project LTS release.
+- **wrynose:** LTS branch based on the Yocto Project 6.0 release, used by
+  Qualcomm Linux 2.x.
 - **all stable branches up until styhead:** Legacy branches maintained by Linaro,
   prior to the migration to [Qualcomm-linux](https://github.com/qualcomm-linux).
 
