@@ -5,6 +5,8 @@
 
 ## Introduction
 
+<img align="right" src="https://www.yoctoproject.org/wp-content/uploads/sites/32/2023/10/yoctocompatible1.jpg" alt="Yocto Compatible Project Badge" width="150"/>
+
 OpenEmbedded/Yocto Project hardware enablement layer for Qualcomm based platforms.
 
 This layer provides additional recipes and machine configuration files for
