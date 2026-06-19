@@ -3,28 +3,9 @@
 ## Build QDL tool
 
 QDL tool communicates with USB devices of VID:PID `05c6:9008` and uploads a
-flash loader, which is then used for flashing images. Follow the steps below
-to download and compile QDL for your platform:
-
-1. Clone the QDL repository:
-
-   ```bash
-   git clone https://github.com/linux-msm/qdl
-   ```
-
-2. Read the README and install build dependencies (`libxml2-dev` and
-   `libusb-1.0-0-dev`). On Debian-based distribution run:
-
-   ```bash
-   sudo apt install libxml2-dev libusb-1.0-0-dev
-   ```
-
-3. Build the QDL tool using make:
-
-   ```bash
-   cd qdl
-   make
-   ```
+flash loader, which is then used for flashing images. Download and build QDL
+by following the upstream build instructions:
+[Build QDL](https://github.com/linux-msm/qdl#build).
 
 As QDL tool requires raw USB access, to be able to run it as a non-root user
 create an appropriate `udev` rule by following steps described in
