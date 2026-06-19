@@ -39,6 +39,8 @@ for the implementation details.
 
 - **master:** Primary development branch, with focus on upstream support and
   compatibility with the most recent Yocto Project release.
+- **wrynose:** LTS branch based on the Yocto Project 6.0 release, used by
+  Qualcomm Linux 2.x.
 - **all stable branches up until styhead:** Legacy branches maintained by Linaro,
   prior to the migration to [Qualcomm-linux](https://github.com/qualcomm-linux).
 
@@ -61,11 +63,13 @@ Please follow the instructions below for a KAS-based build. The KAS tool offers
 an easy way to setup bitbake based projects. For more details, visit the
 [KAS documentation](https://kas.readthedocs.io/en/latest/index.html).
 
-1. Install kas tool
+The steps below use `kas-container`, which runs the build inside a container,
+so the only host requirements are a container runtime (Docker or Podman) and
+the `kas-container` wrapper script — kas, bitbake and the build dependencies do
+not need to be installed on the host.
 
-    ```bash
-    sudo pip3 install kas
-    ```
+1. Get the `kas-container` script on your `PATH`
+   (from [kas-container](https://github.com/siemens/kas/blob/master/kas-container)).
 
 2. Clone meta-qcom layer
 
@@ -76,101 +80,24 @@ an easy way to setup bitbake based projects. For more details, visit the
 3. Build using the KAS configuration for one of the supported boards
 
     ```bash
-    kas build meta-qcom/ci/rb3gen2-core-kit.yml
+    kas-container build meta-qcom/ci/rb3gen2-core-kit.yml
     ```
+
+This reuses the same `ci/<board>.yml` configurations that CI uses. See
+[AGENTS.md](AGENTS.md) for more advanced usage, including sharing the
+`DL_DIR`/`SSTATE_DIR` caches across builds.
+
+> **Note:** To run kas natively on the host instead of in a container, install
+> kas by following the
+> [kas installation guide](https://kas.readthedocs.io/en/latest/userguide/getting-started.html#installation),
+> then use `kas build` in place of `kas-container build` in the steps above.
 
 For a manual build without KAS, refer to the [Yocto Project Quick Build](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html).
 
 ## Flash
 
-### Build QDL tool
-
-QDL tool communicates with USB devices of VID:PID `05c6:9008` and uploads a
-flash loader, which is then used for flashing images. Follow the steps below
-to download and compile QDL for your platform:
-
-1. Clone the QDL repository:
-
-   ```bash
-   git clone https://github.com/linux-msm/qdl
-   ```
-
-2. Read the README and install build dependencies (`libxml2-dev` and
-   `libusb-1.0-0-dev`). On Debian-based distribution run:
-
-   ```bash
-   sudo apt install libxml2-dev libusb-1.0-0-dev
-   ```
-
-3. Build the QDL tool using make:
-
-   ```bash
-   cd qdl
-   make
-   ```
-
-As QDL tool requires raw USB access, to be able to run it as a non-root user
-create an appropriate `udev` rule by following steps described in
-[Update udev rules](https://docs.qualcomm.com/bundle/publicresource/topics/80-70014-254/flash_images_unregistered.html#update-udev-rules)
-
-### Prepare the Board
-
-#### RB3 Gen 2
-
-Location of all DIP switches, USB debug port and buttons (`F_DL` for instance)
-can be found on [RB3 Gen 2 Quick Start Guide](https://docs.qualcomm.com/bundle/publicresource/topics/80-70014-253/ubuntu_host.html).
-
-1. Set up `DIP_SW_0` positions `1` and `2` to `ON`. This enables serial output
-   to the debug port.
-2. To put the device into EDL mode press and hold the `F_DL` button
-   before connecting the power cable.
-
-### Flash images
-
-Make sure that ModemManager is not running, disable it if necessary.
-
-1. Connect the micro USB debug cable to the host. Baud rate should be `115200`.
-   Check in `dmesg` how UART shows up (e.g. `/dev/ttyUSB0`):
-
-   ```console
-   $ sudo dmesg | grep tty
-   [217664.921039] usb 3-1.1.4: FTDI Serial Device converter attached to ttyUSB0
-   ```
-
-2. Use your favorite serial communication program to access the console, such
-   as minicom, picocom, putty etc. Baud rate should be 115200:
-
-   ```bash
-   picocom -b 115200 /dev/ttyUSB0
-   ```
-
-3. Plug in the USB-C cable from the host.
-
-4. Use the QDL tool (built in the previous section) to flash the images:
-
-   ```bash
-   cd build/tmp/deploy/images/rb3gen2-core-kit/core-image-base-rb3gen2-core-kit.rootfs.qcomflash
-   qdl --debug prog_firehose_ddr.elf rawprogram*.xml patch*.xml
-   ```
-
-   If you have multiple boards connected the host, provide the serial
-   number of the board to flash through `--serial` param:
-
-   ```bash
-   qdl --serial=0AA94EFD --debug prog_firehose_ddr.elf rawprogram*.xml patch*.xml
-   ```
-
-   Serial can be obtained using `lsusb -v -d 05c6:9008` command.
-
-5. Ensure that the device is booted in Emergency Download (EDL) mode
-   (please refer to Quick Start Guide for your board). The process of
-   flashing should start automatically:
-
-   ```text
-   USB: using out-chunk-size of 1048576
-   HELLO version: 0x2 compatible: 0x1 max_len: 1024 mode: 0
-   READ64 image: 13 offset: 0x0 length: 0x40
-   ```
+For instructions on building the QDL tool, preparing the board, and flashing
+images over USB (EDL mode), see [Flashing images](docs/flashing.md).
 
 ## Security recommendations for production
 
