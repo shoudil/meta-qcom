@@ -59,11 +59,13 @@ Please follow the instructions below for a KAS-based build. The KAS tool offers
 an easy way to setup bitbake based projects. For more details, visit the
 [KAS documentation](https://kas.readthedocs.io/en/latest/index.html).
 
-1. Install kas tool
+The steps below use `kas-container`, which runs the build inside a container,
+so the only host requirements are a container runtime (Docker or Podman) and
+the `kas-container` wrapper script — kas, bitbake and the build dependencies do
+not need to be installed on the host.
 
-    ```bash
-    sudo pip3 install kas
-    ```
+1. Get the `kas-container` script on your `PATH`
+   (from [kas-container](https://github.com/siemens/kas/blob/master/kas-container)).
 
 2. Clone meta-qcom layer
 
@@ -74,8 +76,17 @@ an easy way to setup bitbake based projects. For more details, visit the
 3. Build using the KAS configuration for one of the supported boards
 
     ```bash
-    kas build meta-qcom/ci/rb3gen2-core-kit.yml
+    kas-container build meta-qcom/ci/rb3gen2-core-kit.yml
     ```
+
+This reuses the same `ci/<board>.yml` configurations that CI uses. See
+[AGENTS.md](AGENTS.md) for more advanced usage, including sharing the
+`DL_DIR`/`SSTATE_DIR` caches across builds.
+
+> **Note:** To run kas natively on the host instead of in a container, install
+> kas by following the
+> [kas installation guide](https://kas.readthedocs.io/en/latest/userguide/getting-started.html#installation),
+> then use `kas build` in place of `kas-container build` in the steps above.
 
 For a manual build without KAS, refer to the [Yocto Project Quick Build](https://docs.yoctoproject.org/brief-yoctoprojectqs/index.html).
 
