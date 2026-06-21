@@ -8,7 +8,8 @@ SRC_URI[camx.sha256sum] = "b84903c48932462e4373934c7c10d311b8ad80f5ff822375de300
 SRC_URI[chicdk.sha256sum] = "e563a96bc45f4685d0b7514400a1a81d07cb1b48c3dc2bef19438a48f2d09986"
 SRC_URI[camxcommon.sha256sum] = "91d79a5530f926571e6921bd38b8eb22d7b223867cd2d375d28441e2282c88c1"
 
-DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'qcom-adreno virtual/libopencl1', '', d)}"
+DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'virtual/libopencl1', '', d)}"
+DEPENDS += "${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'virtual/egl virtual/libgles2', '', d)}"
 
 do_install:append() {
     # Copy json only when /etc folder exists in ${S}
@@ -20,6 +21,13 @@ do_install:append() {
     cp -r ${S}/usr/share/camx ${D}${datadir}
     # copy skel file
     cp -r ${S}/usr/share/qcom ${D}${datadir}
+
+    # Remove OpenCL-dependent libraries when opencl is not enabled.
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'false', 'true', d)}; then
+        rm -f ${D}${libdir}/camx/${PLATFORM}/*.cl
+        rm -f ${D}${libdir}/camx/${PLATFORM}/libmctf_cl_program.bin
+        rm -f ${D}${libdir}/camx/${PLATFORM}/libmctfengine_stub*
+    fi
 }
 
 RPROVIDES:${PN} = "camxlib-monaco"
