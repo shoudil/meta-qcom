@@ -70,7 +70,7 @@ do_install:append() {
 }
 
 PACKAGE_BEFORE_PN += "camx-kodiak chicdk-kodiak ${PN}-skel"
-RDEPENDS:${PN} += "chicdk-kodiak"
+RDEPENDS:${PN} += "chicdk-kodiak ${PN}-skel"
 RDEPENDS:${PN}-dev += "camxcommon-headers-dev"
 RRECOMMENDS:${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'virtual-opencl-icd', '', d)} sensinghub qcom-sensors-binaries"
 
