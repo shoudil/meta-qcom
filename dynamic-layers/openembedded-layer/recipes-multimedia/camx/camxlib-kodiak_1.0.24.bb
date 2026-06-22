@@ -20,8 +20,12 @@ SRC_URI[chicdk.sha256sum] = "8adc152ebdb6d0a105f9b4f8ccaae0bfde9f05058605ebcc07b
 
 S = "${UNPACKDIR}"
 
-DEPENDS += "glib-2.0 fastrpc protobuf-camx libxml2 virtual/egl virtual/libgles2 qmi-framework sensinghub qcom-sensors-binaries \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'qcom-adreno virtual/libopencl1', '', d)}"
+DEPENDS += "glib-2.0 fastrpc protobuf-camx libxml2 qmi-framework sensinghub qcom-sensors-binaries"
+
+DEPENDS += " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'virtual/egl virtual/libgles2', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'virtual/libopencl1', '', d)} \
+"
 
 # This package is currently only used and tested on ARMv8 (aarch64) machines.
 # Therefore, builds for other architectures are not necessary and are explicitly excluded.
@@ -36,6 +40,20 @@ do_install:append() {
     install -d ${D}${datadir}/doc/chicdk-kodiak
 
     cp -r ${S}/usr/lib/* ${D}${libdir}
+
+    # Remove OpenCL-dependent libraries when opencl is not enabled.
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'false', 'true', d)}; then
+        rm -f ${D}${libdir}/camx/kodiak/*.cl
+        rm -f ${D}${libdir}/camx/kodiak/lib_algo_svhdr*
+        rm -f ${D}${libdir}/camx/kodiak/camera/components/libshdr3*
+        rm -f ${D}${libdir}/camx/kodiak/camera/components/libbanding_correction*
+    fi
+
+    # Remove OpenGL/EGL-dependent libraries when opengl is not enabled.
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'false', 'true', d)}; then
+        rm -f ${D}${libdir}/camx/kodiak/camera/components/libiwarp*
+    fi
+
     # copy Deep Learning based binary
     cp -r ${S}/usr/share/camx ${D}${datadir}
     # copy skel file
