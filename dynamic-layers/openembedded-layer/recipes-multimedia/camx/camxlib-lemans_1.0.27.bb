@@ -24,6 +24,7 @@ do_install:append() {
 
 RPROVIDES:${PN} = "camxlib-monaco"
 PACKAGE_BEFORE_PN += "camx-nhx ${PN}-skel"
+RDEPENDS:${PN} += "${PN}-skel"
 RRECOMMENDS:${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'virtual-opencl-icd', '', d)}"
 
 FILES:camx-nhx = "\
