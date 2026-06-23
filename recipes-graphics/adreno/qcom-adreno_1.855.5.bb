@@ -29,7 +29,12 @@ COMPATIBLE_MACHINE = "^$"
 # qcom-armv8a machine.
 COMPATIBLE_MACHINE:aarch64 = "(.*)"
 
-PACKAGE_BEFORE_PN += " ${PN}-common ${PN}-gles1 ${PN}-gles2 ${PN}-egl ${PN}-vulkan ${PN}-cl"
+PACKAGE_BEFORE_PN += " \
+    ${PN}-common \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'glvnd', '${PN}-gles1 ${PN}-gles2 ${PN}-egl', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'vulkan', '${PN}-vulkan', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'opencl', '${PN}-cl', '', d)} \
+"
 
 RPROVIDES:${PN}-egl += "virtual-egl-icd"
 RPROVIDES:${PN}-cl += "virtual-opencl-icd"
@@ -49,30 +54,43 @@ RDEPENDS:${PN} = " \
 ALLOW_EMPTY:${PN} = "1"
 
 do_install () {
-    if ${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'true', 'false', d)}; then
-        install -d ${D}${includedir}/CL
-        cp ${S}/usr/include/CL/cl_ext_qcom.h ${D}${includedir}/CL/
-    fi
-
     install -d ${D}/${libdir}
     cp -r ${S}/usr/lib/* ${D}/${libdir}/
 
-    if ! ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'true', 'false', d)}; then
-        rm ${D}/${libdir}/libeglSubDriverX11.so*
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'glvnd', 'true', 'false', d)}; then
+        install -d ${D}${datadir}/glvnd/egl_vendor.d
+        cp ${S}/usr/share/glvnd/egl_vendor.d/10_adreno.json ${D}${datadir}/glvnd/egl_vendor.d/
+
+        if ! ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'true', 'false', d)}; then
+            rm ${D}${libdir}/libeglSubDriverX11.so*
+        fi
+
+        if ! ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'true', 'false', d)}; then
+            rm ${D}${libdir}/libeglSubDriverWayland.so*
+        fi
+    else
+        rm  ${D}${libdir}/libeglSubDriver*.so* \
+            ${D}${libdir}/libGLES*.so* \
+            ${D}${libdir}/libEGL_*.so*
     fi
 
-    if ! ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'true', 'false', d)}; then
-        rm ${D}/${libdir}/libeglSubDriverWayland.so*
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'vulkan', 'true', 'false', d)}; then
+        install -d ${D}${datadir}/vulkan/icd.d
+        cp ${S}/usr/share/vulkan/icd.d/adrenovk.json ${D}${datadir}/vulkan/icd.d/
+    else
+        rm ${D}${libdir}/libvulkan_*.so*
     fi
 
-    install -d ${D}${datadir}/glvnd/egl_vendor.d
-    cp ${S}/usr/share/glvnd/egl_vendor.d/10_adreno.json ${D}${datadir}/glvnd/egl_vendor.d/
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'true', 'false', d)}; then
+        install -d ${D}${includedir}/CL
+        cp ${S}/usr/include/CL/cl_ext_qcom.h ${D}${includedir}/CL/
 
-    install -d ${D}${datadir}/vulkan/icd.d
-    cp ${S}/usr/share/vulkan/icd.d/adrenovk.json ${D}${datadir}/vulkan/icd.d/
-
-    install -d ${D}${sysconfdir}/OpenCL/vendors
-    cp ${S}/etc/OpenCL/vendors/adrenocl.icd ${D}${sysconfdir}/OpenCL/vendors/
+        install -d ${D}${sysconfdir}/OpenCL/vendors
+        cp ${S}/etc/OpenCL/vendors/adrenocl.icd ${D}${sysconfdir}/OpenCL/vendors/
+    else
+        rm  ${D}${libdir}/libOpenCL_*.so* \
+            ${D}${libdir}/libCB*.so*
+    fi
 
     install -d ${D}${sysconfdir}/modprobe.d
     cp ${S}/etc/modprobe.d/qcom-adreno.conf ${D}/${sysconfdir}/modprobe.d/qcom-adreno.conf
