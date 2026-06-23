@@ -1,9 +1,0 @@
-PLATFORM = "hamoa"
-PBT_BUILD_DATE = "260608"
-
-require common.inc
-
-SRC_URI[camxlib.sha256sum] = "de9462268613e3efce2b1103b81ac0b0927cdb957a9791779094114821017656"
-SRC_URI[camx.sha256sum] = "dc51e2fb8ba211551b86f22e849a41499aba1460f44d5c2fb6daf6759c0bf0b9"
-SRC_URI[chicdk.sha256sum] = "60eb44f2fee434bbe22fe7598771da9c2e5d11ad2d22954fc0d01e216827364c"
-SRC_URI[camxcommon.sha256sum] = "08e5e6256b80b9b8a0296977f247810f89dfb456da10618e76a9593ab6a75b78"

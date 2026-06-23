@@ -8,20 +8,24 @@ LICENSE = "LICENSE.qcom-2"
 LIC_FILES_CHKSUM = "file://usr/share/doc/${BPN}/LICENSE.QCOM-2.txt;md5=165287851294f2fb8ac8cbc5e24b02b0 \
                     file://usr/share/doc/${BPN}/NOTICE;md5=04facc2e07e3d41171a931477be0c690"
 
-PBT_BUILD_DATE = "260515"
+PBT_BUILD_DATE = "260617"
 SRC_URI = " \
    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/${BPN}_${PV}_armv8-2a.tar.gz;name=camxlib \
    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/camx-kodiak_${PV}_armv8-2a.tar.gz;name=camx \
    https://qartifactory-edge.qualcomm.com/artifactory/qsc_releases/software/chip/component/camx.qclinux.0.0/${PBT_BUILD_DATE}/prebuilt_yocto/chicdk-kodiak_${PV}_armv8-2a.tar.gz;name=chicdk \
    "
-SRC_URI[camxlib.sha256sum] = "51cc525d7cf9572b890ea9576fcb1a97fb3d7670f1ff4db368c365fa07dcde60"
-SRC_URI[camx.sha256sum] = "2477d93fc5da81806086d252624787b5d6c330cfbfcdcf9373330381179005a0"
-SRC_URI[chicdk.sha256sum] = "d328d0889417c28bc2ff88a20a7ddf020e0123db1a05399a977a8490798c9256"
+SRC_URI[camxlib.sha256sum] = "25972b1932bb3dc06c73c5261c16ce047645e7ed95162810f4bb243c1816a025"
+SRC_URI[camx.sha256sum] = "e83ad33e4c2dc823339ac9512d45a02dfe7f316cb60d34f27aea5637f9c80b0e"
+SRC_URI[chicdk.sha256sum] = "8adc152ebdb6d0a105f9b4f8ccaae0bfde9f05058605ebcc07b7057dfcc55c61"
 
 S = "${UNPACKDIR}"
 
-DEPENDS += "glib-2.0 fastrpc protobuf-camx libxml2 virtual/egl virtual/libgles2 qmi-framework sensinghub qcom-sensors-binaries \
-    ${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'qcom-adreno virtual/libopencl1', '', d)}"
+DEPENDS += "glib-2.0 fastrpc protobuf-camx libxml2 qmi-framework sensinghub qcom-sensors-binaries"
+
+DEPENDS += " \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'virtual/egl virtual/libgles2', '', d)} \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'virtual/libopencl1', '', d)} \
+"
 
 # This package is currently only used and tested on ARMv8 (aarch64) machines.
 # Therefore, builds for other architectures are not necessary and are explicitly excluded.
@@ -36,6 +40,24 @@ do_install:append() {
     install -d ${D}${datadir}/doc/chicdk-kodiak
 
     cp -r ${S}/usr/lib/* ${D}${libdir}
+
+    # Remove OpenCL-dependent libraries when opencl is not enabled.
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'false', 'true', d)}; then
+        rm -f ${D}${libdir}/camx/kodiak/*.cl
+        rm -f ${D}${libdir}/camx/kodiak/lib_algo_svhdr*
+        rm -f ${D}${libdir}/camx/kodiak/camera/components/libshdr3*
+        rm -f ${D}${libdir}/camx/kodiak/camera/components/libbanding_correction*
+    fi
+
+    # Remove OpenGL/EGL-dependent libraries when opengl is not enabled.
+    if ${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'false', 'true', d)}; then
+        rm -f ${D}${libdir}/camx/kodiak/camera/components/libiwarp*
+    fi
+
+    # copy Deep Learning based binary
+    cp -r ${S}/usr/share/camx ${D}${datadir}
+    # copy skel file
+    cp -r ${S}/usr/share/qcom ${D}${datadir}
 
     # Install bin files only if /usr/bin exists in ${S}
     if [ -d "${S}${bindir}" ]; then
@@ -65,8 +87,8 @@ do_install:append() {
     fi
 }
 
-PACKAGE_BEFORE_PN += "camx-kodiak chicdk-kodiak"
-RDEPENDS:${PN} += "chicdk-kodiak"
+PACKAGE_BEFORE_PN += "camx-kodiak chicdk-kodiak ${PN}-skel"
+RDEPENDS:${PN} += "chicdk-kodiak ${PN}-skel"
 RDEPENDS:${PN}-dev += "camxcommon-headers-dev"
 RRECOMMENDS:${PN} += "${@bb.utils.contains('DISTRO_FEATURES', 'opencl', 'virtual-opencl-icd', '', d)} sensinghub qcom-sensors-binaries"
 
@@ -100,6 +122,10 @@ FILES:chicdk-kodiak = "\
     ${libdir}/camx/kodiak/hw/com.qti.chi.*${SOLIBS} \
     ${bindir}/ \
     "
+FILES:${PN}-skel = "\
+    ${datadir}/camx \
+    ${datadir}/qcom \
+    "
 FILES:${PN} = "\
     ${libdir}/libcamera_metadata_kodiak*${SOLIBS} \
     ${libdir}/camx/kodiak/*${SOLIBS} \
@@ -112,10 +138,14 @@ FILES:${PN}-dev = "\
     "
 FILES:${PN}-staticdev = "${libdir}/camx/kodiak/*.a"
 
-# Preserve ${PN} naming to avoid ambiguity in package identification.
+# Preserve ${PN},${PN}-skel naming to avoid ambiguity in package identification.
 DEBIAN_NOAUTONAME:${PN} = "1"
+DEBIAN_NOAUTONAME:${PN}-skel = "1"
 
 # Algo librarires are pre-compiled, pre-stripped.
-# Skipping QA checks: 'already-stripped' because:
+# Skipping QA checks: 'already-stripped', 'arch', 'libdir' because:
 # - Library files are Pre-stripped  (already-stripped)
+# - skel binaries/library are not AArch64 (arch mismatch)      (arch)
+# - Files are installed under /usr/share (non-libdir path) (libdir)
 INSANE_SKIP:${PN} = "already-stripped"
+INSANE_SKIP:${PN}-skel += " arch libdir already-stripped"
