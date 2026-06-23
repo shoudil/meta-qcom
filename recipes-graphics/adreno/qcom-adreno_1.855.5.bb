@@ -14,7 +14,8 @@ PBT_BUILD_DATE = "260608"
 SRC_URI[sha256sum] = "771b20cd2bfbbef08f707af6ff8c765027c8351cf24c767d9698ca9acda2c599"
 
 # These are listed here in order to identify RDEPENDS
-DEPENDS += " glib-2.0 libdrm virtual/libgbm msm-gbm-backend \
+DEPENDS += " glib-2.0 libdrm \
+             ${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'virtual/libgbm msm-gbm-backend', '', d)} \
              ${@bb.utils.contains('DISTRO_FEATURES', 'glvnd', 'libglvnd', '', d)} \
              ${@bb.utils.contains('DISTRO_FEATURES', 'wayland', 'wayland', '', d)} \
              ${@bb.utils.contains('DISTRO_FEATURES', 'x11', 'libxcb libx11 xcb-util-image', '', d)}"
