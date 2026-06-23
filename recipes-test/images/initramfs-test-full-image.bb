@@ -21,7 +21,7 @@ PACKAGE_INSTALL += " \
     util-linux \
     util-linux-chrt \
     util-linux-lsblk \
-    weston-examples \
+    ${@bb.utils.contains('DISTRO_FEATURES', 'opengl', 'weston-examples', '', d)} \
 "
 
 PACKAGE_INSTALL:append:aarch64 = " \
