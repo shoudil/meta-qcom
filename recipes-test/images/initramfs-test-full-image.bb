@@ -50,9 +50,12 @@ PACKAGE_INSTALL_openembedded-layer += " \
     makedumpfile \
     mbw \
     ncurses-terminfo-base \
-    pipewire-tools \
     sysbench \
     tinymembench \
     tiobench \
     whetstone \
+"
+
+PACKAGE_INSTALL_multimedia-layer += " \
+    pipewire-tools \
 "
