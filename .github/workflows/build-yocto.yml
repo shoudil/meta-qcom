@@ -417,6 +417,14 @@ jobs:
                 type: u-boot-qcom-fit-6.18
                 dirname: "_linux-qcom-6.18_u-boot-qcom-fit"
                 yamlfile: ":ci/linux-qcom-6.18.yml:ci/u-boot-qcom.yml:ci/kernel-fit-image.yml"
+          - machine: sdx75-idp
+            distro:
+                name: nodistro
+                yamlfile: ""
+            kernel:
+                type: default
+                dirname: ""
+                yamlfile: ""
     uses: ./.github/workflows/compile.yml
     with:
       name: ${{ matrix.machine }}/${{ matrix.distro.name }}${{ matrix.kernel.dirname }}
