@@ -30,8 +30,6 @@ KERNEL_DEVICETREE:append:pn-linux-qcom-next = " ${LINUX_QCOM_KERNEL_DEVICETREE}"
 KERNEL_DEVICETREE:append:pn-linux-qcom-rt = " ${LINUX_QCOM_KERNEL_DEVICETREE}"
 KERNEL_DEVICETREE:append:pn-linux-qcom-next-rt = " ${LINUX_QCOM_KERNEL_DEVICETREE}"
 
-PREFERRED_PROVIDER_android-tools-conf = "android-tools-conf-configfs"
-
 # Fastboot expects an ext4 image, which needs to be 4096 aligned
 IMAGE_FSTYPES ?= "ext4.gz"
 IMAGE_ROOTFS_ALIGNMENT ?= "4096"
