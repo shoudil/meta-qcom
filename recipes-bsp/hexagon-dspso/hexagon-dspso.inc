@@ -7,6 +7,12 @@ DSPSO_SOC ?= "unknown"
 DSPSO_VENDOR ?= "Qualcomm"
 DSPSO_DEVICE ?= "Unknown"
 
+DSPSO_PACKAGES ?= " \
+    hexagon-dsp-binaries-${DSP_PKG_NAME}-adsp \
+    hexagon-dsp-binaries-${DSP_PKG_NAME}-cdsp \
+    hexagon-dsp-binaries-${DSP_PKG_NAME}-sdsp \
+"
+
 # Conditionally populate SRC_URI. We have to do it here rather than in python
 # script to let base.bbclass to pick up dependencies
 SRC_URI += "${DSPSO_URI}"
@@ -25,11 +31,9 @@ DEPENDS += "e2fsprogs-native"
 
 inherit allarch
 
-PACKAGES = " \
+PACKAGES:append = " \
     hexagon-dsp-binaries-${DSP_PKG_NAME}-config \
-    hexagon-dsp-binaries-${DSP_PKG_NAME}-adsp \
-    hexagon-dsp-binaries-${DSP_PKG_NAME}-cdsp \
-    hexagon-dsp-binaries-${DSP_PKG_NAME}-sdsp \
+    ${DSPSO_PACKAGES} \
 "
 
 RDEPENDS:hexagon-dsp-binaries-${DSP_PKG_NAME}-adsp = "${DSPSO_CONFIG}"
