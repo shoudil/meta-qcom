@@ -180,6 +180,8 @@ RDEPENDS:${PN}-qcom-qcs8300-ride-gdsp = "${PN}-conf linux-firmware-qcom-qcs8300-
 RDEPENDS:${PN}-qcom-sa8775p-ride-adsp = "${PN}-conf linux-firmware-qcom-sa8775p-audio (= 1:${PV})"
 RDEPENDS:${PN}-qcom-sa8775p-ride-cdsp = "${PN}-conf linux-firmware-qcom-sa8775p-compute (= 1:${PV})"
 RDEPENDS:${PN}-qcom-sa8775p-ride-gdsp = "${PN}-conf linux-firmware-qcom-sa8775p-generalpurpose (= 1:${PV})"
+RDEPENDS:${PN}-qcom-sdm845-hdk-adsp = "${PN}-thundercomm-db845c-adsp (= 1:${PV})"
+RDEPENDS:${PN}-qcom-sdm845-hdk-cdsp = "${PN}-thundercomm-db845c-cdsp (= 1:${PV})"
 RDEPENDS:${PN}-qcom-shikra-cqm-evk-cdsp = "${PN}-qcom-shikra-cqs-evk-cdsp"
 RDEPENDS:${PN}-qcom-shikra-cqs-evk-cdsp = "${PN}-conf linux-firmware-qcom-shikra-compute (= 1:${PV})"
 RDEPENDS:${PN}-qcom-shikra-iqs-evk-cdsp = "${PN}-qcom-shikra-cqs-evk-cdsp"
