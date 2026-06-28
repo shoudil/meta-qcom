@@ -315,3 +315,32 @@ SKIP_FILEDEPS:${PN}-thundercomm-db845c-sdsp = "1"
 SKIP_FILEDEPS:${PN}-thundercomm-rb2-cdsp = "1"
 SKIP_FILEDEPS:${PN}-thundercomm-rb3gen2-cdsp = "1"
 SKIP_FILEDEPS:${PN}-thundercomm-rb5-cdsp = "1"
+
+WARN_QA:append = " hexagon-dsp-binaries-symlink-deps"
+QAPKGTEST[hexagon-dsp-binaries-symlink-deps] = "package_qa_check_symlinks"
+def package_qa_check_symlinks(pkg, d):
+    packages = set((d.getVar('PACKAGES') or '').split())
+
+    localdata = bb.data.createCopy(d)
+    localdata.setVar('OVERRIDES', pkg)
+
+    pkgdest = d.getVar("PKGDEST")
+    pkgdir = os.path.join(pkgdest, pkg)
+
+    for walkroot, dirs, files in os.walk(pkgdir):
+        for f in files:
+            name = os.path.join(walkroot, f)
+            if os.path.exists(name) or not os.path.lexists(name):
+                continue
+
+            relpath = os.path.relpath(name, pkgdir)
+            target = os.path.relpath(os.path.realpath(name), pkgdir)
+
+            found = False
+            for p in packages:
+                if os.path.exists(os.path.join(pkgdest, p, target)):
+                    found = True
+                    if p not in (localdata.getVar('RDEPENDS') or ''):
+                        oe.qa.handle_error("hexagon-dsp-binaries-symlink-deps", f"In package {pkg} broken symlink {relpath} -> {target} (present in package {p})", d)
+            if not found:
+                oe.qa.handle_error("hexagon-dsp-binaries-symlink-deps", f"In package {pkg} broken symlink {relpath} -> {target} ", d)
