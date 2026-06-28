@@ -36,8 +36,10 @@ do_install () {
 	oe_runmake install 'DESTDIR=${D}'
 }
 
+PACKAGES_DYNAMIC = "^${PN}-.*-config"
+
 PACKAGE_BEFORE_PN =+ "\
-    ${PN}-conf \
+    ${PN}-config-schema \
     ${PN}-arduino-monza-adsp \
     ${PN}-arduino-monza-cdsp \
     ${PN}-arduino-monza-gdsp \
@@ -91,7 +93,7 @@ PACKAGE_BEFORE_PN =+ "\
 "
 
 LICENSE:${PN} = "dspso-WHENCE"
-LICENSE:${PN}-conf = "MIT"
+LICENSE:${PN}-config-schema = "MIT"
 LICENSE:${PN}-arduino-monza-adsp = "dspso-qcom-2"
 LICENSE:${PN}-arduino-monza-cdsp = "dspso-qcom-2"
 LICENSE:${PN}-arduino-monza-gdsp = "dspso-qcom-2"
@@ -143,72 +145,94 @@ LICENSE:${PN}-thundercomm-rb5-sdsp = "dspso-qcom"
 LICENSE:${PN}-thundercomm-rubikpi3-adsp = "dspso-qcom"
 LICENSE:${PN}-thundercomm-rubikpi3-cdsp = "dspso-qcom"
 
-RDEPENDS:${PN}-arduino-monza-adsp = "${PN}-conf linux-firmware-qcom-qcs8300-audio (= 1:${PV})"
+RDEPENDS:${PN}-arduino-monza-adsp = "linux-firmware-qcom-qcs8300-audio (= 1:${PV})"
 RDEPENDS:${PN}-arduino-monza-adsp += "${PN}-qcom-qcs8300-ride-adsp"
-RDEPENDS:${PN}-arduino-monza-cdsp = "${PN}-conf linux-firmware-qcom-qcs8300-compute (= 1:${PV})"
+RDEPENDS:${PN}-arduino-monza-cdsp = "linux-firmware-qcom-qcs8300-compute (= 1:${PV})"
 RDEPENDS:${PN}-arduino-monza-cdsp += "${PN}-qcom-qcs8300-ride-cdsp"
-RDEPENDS:${PN}-arduino-monza-gdsp = "${PN}-conf linux-firmware-qcom-qcs8300-generalpurpose (= 1:${PV})"
+RDEPENDS:${PN}-arduino-monza-gdsp = "linux-firmware-qcom-qcs8300-generalpurpose (= 1:${PV})"
 RDEPENDS:${PN}-arduino-monza-gdsp += "${PN}-qcom-qcs8300-ride-gdsp"
-RDEPENDS:${PN}-qcom-db820c-adsp = "${PN}-conf linux-firmware-qcom-apq8096-audio (= 1:${PV})"
-RDEPENDS:${PN}-qcom-glymur-crd-adsp = "${PN}-conf linux-firmware-qcom-glymur-audio (= 1:${PV})"
-RDEPENDS:${PN}-qcom-glymur-crd-cdsp = "${PN}-conf linux-firmware-qcom-glymur-compute (= 1:${PV})"
-RDEPENDS:${PN}-qcom-hamoa-iot-evk-adsp = "${PN}-conf linux-firmware-qcom-x1e80100-audio (= 1:${PV})"
-RDEPENDS:${PN}-qcom-hamoa-iot-evk-cdsp = "${PN}-conf linux-firmware-qcom-x1e80100-compute (= 1:${PV})"
-RDEPENDS:${PN}-qcom-iq8275-evk-adsp = "${PN}-conf linux-firmware-qcom-qcs8300-audio (= 1:${PV})"
+RDEPENDS:${PN}-qcom-db820c-adsp = "linux-firmware-qcom-apq8096-audio (= 1:${PV})"
+RDEPENDS:${PN}-qcom-glymur-crd-adsp = "linux-firmware-qcom-glymur-audio (= 1:${PV})"
+RDEPENDS:${PN}-qcom-glymur-crd-cdsp = "linux-firmware-qcom-glymur-compute (= 1:${PV})"
+RDEPENDS:${PN}-qcom-hamoa-iot-evk-adsp = "linux-firmware-qcom-x1e80100-audio (= 1:${PV})"
+RDEPENDS:${PN}-qcom-hamoa-iot-evk-cdsp = "linux-firmware-qcom-x1e80100-compute (= 1:${PV})"
+RDEPENDS:${PN}-qcom-iq8275-evk-adsp = "linux-firmware-qcom-qcs8300-audio (= 1:${PV})"
 RDEPENDS:${PN}-qcom-iq8275-evk-adsp += "${PN}-qcom-qcs8300-ride-adsp"
-RDEPENDS:${PN}-qcom-iq8275-evk-cdsp = "${PN}-conf linux-firmware-qcom-qcs8300-compute (= 1:${PV})"
+RDEPENDS:${PN}-qcom-iq8275-evk-cdsp = "linux-firmware-qcom-qcs8300-compute (= 1:${PV})"
 RDEPENDS:${PN}-qcom-iq8275-evk-cdsp += "${PN}-qcom-qcs8300-ride-cdsp"
-RDEPENDS:${PN}-qcom-iq8275-evk-gdsp = "${PN}-conf linux-firmware-qcom-qcs8300-generalpurpose (= 1:${PV})"
+RDEPENDS:${PN}-qcom-iq8275-evk-gdsp = "linux-firmware-qcom-qcs8300-generalpurpose (= 1:${PV})"
 RDEPENDS:${PN}-qcom-iq8275-evk-gdsp += "${PN}-qcom-qcs8300-ride-gdsp"
-RDEPENDS:${PN}-qcom-iq9075-evk-adsp = "${PN}-conf linux-firmware-qcom-sa8775p-audio (= 1:${PV})"
+RDEPENDS:${PN}-qcom-iq9075-evk-adsp = "linux-firmware-qcom-sa8775p-audio (= 1:${PV})"
 RDEPENDS:${PN}-qcom-iq9075-evk-adsp += "${PN}-qcom-sa8775p-ride-adsp"
-RDEPENDS:${PN}-qcom-iq9075-evk-cdsp = "${PN}-conf linux-firmware-qcom-sa8775p-compute (= 1:${PV})"
+RDEPENDS:${PN}-qcom-iq9075-evk-cdsp = "linux-firmware-qcom-sa8775p-compute (= 1:${PV})"
 RDEPENDS:${PN}-qcom-iq9075-evk-cdsp += "${PN}-qcom-sa8775p-ride-cdsp"
-RDEPENDS:${PN}-qcom-iq9075-evk-gdsp = "${PN}-conf linux-firmware-qcom-sa8775p-generalpurpose (= 1:${PV})"
+RDEPENDS:${PN}-qcom-iq9075-evk-gdsp = "linux-firmware-qcom-sa8775p-generalpurpose (= 1:${PV})"
 RDEPENDS:${PN}-qcom-iq9075-evk-gdsp += "${PN}-qcom-sa8775p-ride-gdsp"
-RDEPENDS:${PN}-qcom-kaanapali-mtp-adsp = "${PN}-conf linux-firmware-qcom-kaanapali-audio (= 1:${PV})"
-RDEPENDS:${PN}-qcom-kaanapali-mtp-cdsp = "${PN}-conf linux-firmware-qcom-kaanapali-compute (= 1:${PV})"
+RDEPENDS:${PN}-qcom-kaanapali-mtp-adsp = "linux-firmware-qcom-kaanapali-audio (= 1:${PV})"
+RDEPENDS:${PN}-qcom-kaanapali-mtp-cdsp = "linux-firmware-qcom-kaanapali-compute (= 1:${PV})"
 RDEPENDS:${PN}-qcom-purwa-iot-evk-adsp = "${PN}-qcom-hamoa-iot-evk-adsp"
 RDEPENDS:${PN}-qcom-purwa-iot-evk-cdsp = "${PN}-qcom-hamoa-iot-evk-cdsp"
 RDEPENDS:${PN}-qcom-qcm6490-idp-adsp = "${PN}-thundercomm-rb3gen2-adsp"
 RDEPENDS:${PN}-qcom-qcm6490-idp-cdsp = "${PN}-thundercomm-rb3gen2-cdsp"
-RDEPENDS:${PN}-qcom-qcs615-ride-adsp = "${PN}-conf linux-firmware-qcom-qcs615-audio (= 1:${PV})"
-RDEPENDS:${PN}-qcom-qcs615-ride-cdsp = "${PN}-conf linux-firmware-qcom-qcs615-compute (= 1:${PV})"
-RDEPENDS:${PN}-qcom-qcs8300-ride-adsp = "${PN}-conf linux-firmware-qcom-qcs8300-audio (= 1:${PV})"
-RDEPENDS:${PN}-qcom-qcs8300-ride-cdsp = "${PN}-conf linux-firmware-qcom-qcs8300-compute (= 1:${PV})"
-RDEPENDS:${PN}-qcom-qcs8300-ride-gdsp = "${PN}-conf linux-firmware-qcom-qcs8300-generalpurpose (= 1:${PV})"
-RDEPENDS:${PN}-qcom-sa8775p-ride-adsp = "${PN}-conf linux-firmware-qcom-sa8775p-audio (= 1:${PV})"
-RDEPENDS:${PN}-qcom-sa8775p-ride-cdsp = "${PN}-conf linux-firmware-qcom-sa8775p-compute (= 1:${PV})"
-RDEPENDS:${PN}-qcom-sa8775p-ride-gdsp = "${PN}-conf linux-firmware-qcom-sa8775p-generalpurpose (= 1:${PV})"
+RDEPENDS:${PN}-qcom-qcs615-ride-adsp = "linux-firmware-qcom-qcs615-audio (= 1:${PV})"
+RDEPENDS:${PN}-qcom-qcs615-ride-cdsp = "linux-firmware-qcom-qcs615-compute (= 1:${PV})"
+RDEPENDS:${PN}-qcom-qcs8300-ride-adsp = "linux-firmware-qcom-qcs8300-audio (= 1:${PV})"
+RDEPENDS:${PN}-qcom-qcs8300-ride-cdsp = "linux-firmware-qcom-qcs8300-compute (= 1:${PV})"
+RDEPENDS:${PN}-qcom-qcs8300-ride-gdsp = "linux-firmware-qcom-qcs8300-generalpurpose (= 1:${PV})"
+RDEPENDS:${PN}-qcom-sa8775p-ride-adsp = "linux-firmware-qcom-sa8775p-audio (= 1:${PV})"
+RDEPENDS:${PN}-qcom-sa8775p-ride-cdsp = "linux-firmware-qcom-sa8775p-compute (= 1:${PV})"
+RDEPENDS:${PN}-qcom-sa8775p-ride-gdsp = "linux-firmware-qcom-sa8775p-generalpurpose (= 1:${PV})"
 RDEPENDS:${PN}-qcom-sdm845-hdk-adsp = "${PN}-thundercomm-db845c-adsp (= 1:${PV})"
 RDEPENDS:${PN}-qcom-sdm845-hdk-cdsp = "${PN}-thundercomm-db845c-cdsp (= 1:${PV})"
 RDEPENDS:${PN}-qcom-shikra-cqm-evk-cdsp = "${PN}-qcom-shikra-cqs-evk-cdsp"
-RDEPENDS:${PN}-qcom-shikra-cqs-evk-cdsp = "${PN}-conf linux-firmware-qcom-shikra-compute (= 1:${PV})"
+RDEPENDS:${PN}-qcom-shikra-cqs-evk-cdsp = "linux-firmware-qcom-shikra-compute (= 1:${PV})"
 RDEPENDS:${PN}-qcom-shikra-iqs-evk-cdsp = "${PN}-qcom-shikra-cqs-evk-cdsp"
-RDEPENDS:${PN}-qcom-sm8750-mtp-adsp = "${PN}-conf linux-firmware-qcom-sa8775p-audio (= 1:${PV})"
-RDEPENDS:${PN}-qcom-sm8750-mtp-cdsp = "${PN}-conf linux-firmware-qcom-sa8775p-compute (= 1:${PV})"
-RDEPENDS:${PN}-radxa-dragon-q6a-adsp = "${PN}-conf linux-firmware-qcom-qcs6490-radxa-dragon-q6a-audio (= 1:${PV})"
-RDEPENDS:${PN}-radxa-dragon-q6a-cdsp = "${PN}-conf linux-firmware-qcom-qcs6490-radxa-dragon-q6a-compute (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-db845c-adsp = "${PN}-conf linux-firmware-qcom-sdm845-audio (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-db845c-cdsp = "${PN}-conf linux-firmware-qcom-sdm845-compute (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-db845c-sdsp = "${PN}-conf linux-firmware-qcom-sdm845-thundercomm-db845c-sensors (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-rb1-adsp = "${PN}-conf linux-firmware-qcom-qcm2290-audio (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-rb2-adsp = "${PN}-conf linux-firmware-qcom-qrb4210-audio (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-rb2-cdsp = "${PN}-conf linux-firmware-qcom-qrb4210-compute (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-rb3gen2-adsp = "${PN}-conf linux-firmware-qcom-qcm6490-audio (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-rb3gen2-cdsp = "${PN}-conf linux-firmware-qcom-qcm6490-compute (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-rb5-adsp = "${PN}-conf linux-firmware-qcom-sm8250-audio (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-rb5-cdsp = "${PN}-conf linux-firmware-qcom-sm8250-compute (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-rb5-sdsp = "${PN}-conf linux-firmware-qcom-sm8250-thundercomm-rb5-sensors (= 1:${PV})"
-RDEPENDS:${PN}-thundercomm-rubikpi3-adsp = "${PN}-conf linux-firmware-qcom-qcs6490-thundercomm-rubikpi3-audio (= 1:${PV})"
+RDEPENDS:${PN}-qcom-sm8750-mtp-adsp = "linux-firmware-qcom-sa8775p-audio (= 1:${PV})"
+RDEPENDS:${PN}-qcom-sm8750-mtp-cdsp = "linux-firmware-qcom-sa8775p-compute (= 1:${PV})"
+RDEPENDS:${PN}-radxa-dragon-q6a-adsp = "linux-firmware-qcom-qcs6490-radxa-dragon-q6a-audio (= 1:${PV})"
+RDEPENDS:${PN}-radxa-dragon-q6a-cdsp = "linux-firmware-qcom-qcs6490-radxa-dragon-q6a-compute (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-db845c-adsp = "linux-firmware-qcom-sdm845-audio (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-db845c-cdsp = "linux-firmware-qcom-sdm845-compute (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-db845c-sdsp = "linux-firmware-qcom-sdm845-thundercomm-db845c-sensors (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-rb1-adsp = "linux-firmware-qcom-qcm2290-audio (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-rb2-adsp = "linux-firmware-qcom-qrb4210-audio (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-rb2-cdsp = "linux-firmware-qcom-qrb4210-compute (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-rb3gen2-adsp = "linux-firmware-qcom-qcm6490-audio (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-rb3gen2-cdsp = "linux-firmware-qcom-qcm6490-compute (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-rb5-adsp = "linux-firmware-qcom-sm8250-audio (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-rb5-cdsp = "linux-firmware-qcom-sm8250-compute (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-rb5-sdsp = "linux-firmware-qcom-sm8250-thundercomm-rb5-sensors (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-rubikpi3-adsp = "linux-firmware-qcom-qcs6490-thundercomm-rubikpi3-audio (= 1:${PV})"
 RDEPENDS:${PN}-thundercomm-rubikpi3-cdsp = "${PN}-thundercomm-rb3gen2-cdsp (= 1:${PV})"
+
+python() {
+    for p in d.getVar('PACKAGES').split():
+        if not p.endswith('dsp'):
+            continue
+
+        cfg = (p[:-4] + 'config').replace('-qcom-', '-qualcomm-')
+        if cfg not in (d.getVar('RDEPENDS:' + p) or "").split():
+            d.prependVar('RDEPENDS:' + p, cfg + ' ')
+}
+
+python populate_packages:prepend () {
+    def fix_cfg_package(fn, pkg, file_regex, output_pattern, group):
+        d.setVar('LICENSE:' + pkg, 'MIT')
+
+    cfgdir = d.expand('${datadir}/qcom/conf.d')
+    do_split_packages(d, cfgdir, '^hexagon-dsp-binaries-(.*).yaml',
+                      'hexagon-dsp-binaries-%s-config',
+                      'Hexagon DSP config file for %s',
+                      extra_depends='',
+                      hook=fix_cfg_package)
+}
 
 # Keep the base package empty so that one can choose which files
 # to include and do not pull all of them all in.
 FILES:${PN} = ""
 ALLOW_EMPTY:${PN} = "1"
 
-FILES:${PN}-conf = "${datadir}/qcom/conf.d"
+FILES:${PN}-config-schema = "${datadir}/qcom/conf.d/schema.json"
 
 FILES:${PN}-arduino-monza-adsp = "${datadir}/qcom/qcs8300/Arduino/Monza/dsp/adsp"
 FILES:${PN}-arduino-monza-cdsp = "${datadir}/qcom/qcs8300/Arduino/Monza/dsp/cdsp*"
