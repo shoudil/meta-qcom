@@ -199,6 +199,7 @@ RDEPENDS:${PN}-thundercomm-rb5-adsp = "${PN}-conf linux-firmware-qcom-sm8250-aud
 RDEPENDS:${PN}-thundercomm-rb5-cdsp = "${PN}-conf linux-firmware-qcom-sm8250-compute (= 1:${PV})"
 RDEPENDS:${PN}-thundercomm-rb5-sdsp = "${PN}-conf linux-firmware-qcom-sm8250-thundercomm-rb5-sensors (= 1:${PV})"
 RDEPENDS:${PN}-thundercomm-rubikpi3-adsp = "${PN}-conf linux-firmware-qcom-qcs6490-thundercomm-rubikpi3-audio (= 1:${PV})"
+RDEPENDS:${PN}-thundercomm-rubikpi3-cdsp = "${PN}-thundercomm-rb3gen2-cdsp (= 1:${PV})"
 
 # Keep the base package empty so that one can choose which files
 # to include and do not pull all of them all in.
