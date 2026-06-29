@@ -222,7 +222,7 @@ Guidelines:
 - Add a body for non-trivial changes explaining **why** and key design decisions.
 - Wrap body lines for readability (~72 chars).
 - Use consistent recipe bump wording for version updates, e.g.
-  `recipe-name: Update to vX.Y.Z`.
+  `recipe-name: upgrade vX.Y.Z -> vA.B.C`.
 - Avoid mixing unrelated changes in one commit; split logically.
 - Each patch must be logically coherent, self-contained, and independently buildable.
 - The tree must remain in a functional state after every commit.
