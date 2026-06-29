@@ -153,7 +153,8 @@ create_qcomflash_pkg() {
                        -name '*.mbn' -o \
                        -name '*.melf' -o \
                        -name '*.xz' -o \
-                       -name 'qsahara_*.xml' \)` ; do
+                       -name 'qsahara_*.xml' \) \
+                    ! -name 'uefi_dtbs*.xz'` ; do
                 install -m 0644 ${bfw} spinor
             done
 
@@ -165,6 +166,12 @@ create_qcomflash_pkg() {
             # cdt file
             if [ -n "${QCOM_CDT_FILE}" ]; then
                 install -m 0644 ${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/spinor/${QCOM_CDT_FILE}.bin spinor/cdt.bin
+            fi
+
+            # uefi dtb
+            if [ -n "${QCOM_UEFI_DTB}" ] && \
+                    [ -f "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/spinor/${QCOM_UEFI_DTB}" ]; then
+                install -m 0644 "${DEPLOY_DIR_IMAGE}/${QCOM_BOOT_FILES_SUBDIR}/spinor/${QCOM_UEFI_DTB}" spinor/uefi_dtbs.xz
             fi
 
             # dtb image
