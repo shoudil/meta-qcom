@@ -192,11 +192,11 @@ For the underlying change style (when authoring on `master` before backporting,
 or for wrynose-only changes), use the style seen in recent history:
 
 - `component: imperative summary` (preferred when scoped), e.g.
-  - `ci/qcom-distro: Include meta-dpdk layer (#1902)`
+  - `ci/qcom-distro: Include meta-dpdk layer`
   - `fit-dtb-compatible: drop SoC version suffixes from compatible strings`
-  - `debug.yml: enable FTrace settings in kernel cmdline (#2155)`
+  - `debug.yml: enable FTrace settings in kernel cmdline`
 - Or concise imperative summary when cross-cutting, e.g.
-  - `Drop SoC version suffixes from FIT DTB compatible strings (#2159)`
+  - `Drop SoC version suffixes from FIT DTB compatible strings`
 
 Every commit **must** include a `Signed-off-by` trailer using the identity from
 the local git configuration:
@@ -223,7 +223,6 @@ Guidelines:
 - Wrap body lines for readability (~72 chars).
 - Use consistent recipe bump wording for version updates, e.g.
   `recipe-name: Update to vX.Y.Z`.
-- Include PR reference in subject when appropriate: `(#NNNN)`.
 - Avoid mixing unrelated changes in one commit; split logically.
 - Each patch must be logically coherent, self-contained, and independently buildable.
 - The tree must remain in a functional state after every commit.
