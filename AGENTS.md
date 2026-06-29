@@ -166,11 +166,6 @@ ci/kas-container-shell-helper.sh ci/yocto-check-layer.sh
 ci/kas-container-shell-helper.sh ci/oe-selftest.sh
 ```
 
-Important:
-
-- Follow Yocto submission guidance referenced in README:
-  [Preparing Changes for Submission](https://docs.yoctoproject.org/dev/contributor-guide/submit-changes.html#preparing-changes-for-submission)
-
 ## 7) Commit message best practices (project style)
 
 For **backports**, preserve the original master commit message and metadata, and
@@ -188,42 +183,20 @@ cherry-pick trailer that `git cherry-pick -x` adds:
 (cherry picked from commit <sha>)
 ```
 
-For the underlying change style (when authoring on `master` before backporting,
-or for wrynose-only changes), use the style seen in recent history:
+Follow the commit subject and message requirements documented in
+[CONTRIBUTING.md](CONTRIBUTING.md): an atomic change per commit, a
+`recipe-name: summary of the changes` subject, a plain-English body that
+explains the problem before the imperative actions, and the mandatory
+`Signed-off-by` (and, when applicable, `Assisted-by`) trailers.
 
-- `component: imperative summary` (preferred when scoped), e.g.
-  - `ci/qcom-distro: Include meta-dpdk layer`
-  - `fit-dtb-compatible: drop SoC version suffixes from compatible strings`
-  - `debug.yml: enable FTrace settings in kernel cmdline`
-- Or concise imperative summary when cross-cutting, e.g.
-  - `Drop SoC version suffixes from FIT DTB compatible strings`
-
-Every commit **must** include a `Signed-off-by` trailer using the identity from
-the local git configuration:
-
-```sh
-git commit -s   # or pass --signoff; fetches user.name / user.email from git config
-```
-
-`git cherry-pick` preserves the original author's `Signed-off-by`; add your own
-with `git cherry-pick -s` if your workflow requires it. If committing
-programmatically, append the trailer explicitly:
+When committing programmatically, take the `Signed-off-by` identity from the
+local git configuration and append the trailer explicitly:
 
 ```text
 Signed-off-by: $(git config user.name) <$(git config user.email)>
 ```
 
-Never fabricate a name or email; always read from `git config`.
+Never fabricate a name or email; always read them from `git config`.
 
-Guidelines:
-
-- Keep subject line short and specific; capture intent, not a file-by-file dump.
-- Use imperative mood (`Add`, `Update`, `Drop`, `Enable`, `Revert`).
-- Add a body for non-trivial changes explaining **why** and key design decisions.
-- Wrap body lines for readability (~72 chars).
-- Use consistent recipe bump wording for version updates, e.g.
-  `recipe-name: upgrade vX.Y.Z -> vA.B.C`.
-- Avoid mixing unrelated changes in one commit; split logically.
-- Each patch must be logically coherent, self-contained, and independently buildable.
-- The tree must remain in a functional state after every commit.
-- Fixups within the same patch series are not allowed; changes should be corrected in the patch where they are introduced.
+Fixups within the same patch series are not allowed; changes should be
+corrected in the patch where they are introduced.
