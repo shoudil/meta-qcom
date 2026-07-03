@@ -1,4 +1,10 @@
-# Contributing to meta-qcom
+# Contributing to meta-qcom (wrynose LTS)
+
+`wrynose` is the LTS Stable branch, so changes should be backported from
+`master` whenever possible rather than submitted here directly. Please prefer
+the backporting process and follow [BACKPORTING.md](BACKPORTING.md) for the
+workflow. Submit a change directly to `wrynose` only when it cannot be applied
+to `master`, and include the necessary explanation.
 
 For some useful guidelines when submitting patches, please refer to:
 [Preparing Changes for Submission](https://docs.yoctoproject.org/dev/contributor-guide/submit-changes.html#preparing-changes-for-submission)

@@ -149,7 +149,9 @@ by using the GitHub pull-request feature. Fork the repo, create a branch,
 do the work, rebase from upstream, and create the pull request.
 
 On the stable (branch **wrynose**) patches should be integrated as a backport
-whenever possible, and for that they must follow the (branch **master**) process.
+whenever possible. See [BACKPORTING.md](BACKPORTING.md) for the backport
+workflow.
+
 If the changes cannot be submitted to (branch **master**), then they must be
 submitted to (branch **wrynose**), including the necessary explanation.
 Please read [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow

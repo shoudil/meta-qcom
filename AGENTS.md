@@ -129,65 +129,16 @@ We expect every change to be backported to `wrynose` unless it is specific to
 `wrynose` (e.g. it does not apply to `master`, or `master` has diverged in a way
 that makes the change meaningless there).
 
-### Default path: backport from master
+The full backport workflow — the default `git cherry-pick -x` path from
+`master`, the exception for wrynose-only changes, the CI-equivalent checks to
+run before opening a PR, and the `[Backport wrynose]` commit message
+conventions — is documented in [BACKPORTING.md](BACKPORTING.md).
 
-1. Land the change on **master** following the master workflow (fork, topic
-   branch, rebase on latest upstream `master`, open a PR).
-2. Once it is merged on `master`, backport the merged commit(s) to `wrynose`
-   using **`git cherry-pick -x`** so the backport records the original commit
-   hash in the message (`(cherry picked from commit <sha>)`):
-
-   ```sh
-   git fetch origin
-   git checkout -b backport/<PR-or-topic>-to-wrynose origin/wrynose
-   git cherry-pick -x <sha> [<sha> ...]      # -x records the source commit
-   # resolve conflicts if any, keeping the change minimal and equivalent
-   ```
-
-3. Run the CI-equivalent checks (see below).
-4. Open a GitHub pull request targeting **wrynose**. Follow the project's
-   `[Backport wrynose]` subject convention seen in history (see section 7).
-5. Use PR discussion for review iteration.
-
-### Exception: wrynose-only changes
-
-If the change **cannot** be submitted to `master` (it is specific to `wrynose`),
-then submit it directly against `wrynose`, and **explain in the commit body and
-PR description why it is wrynose-only** and not a backport. This mirrors the
-`README.md` contribution guidance for the stable branch.
-
-### Before opening/updating a wrynose PR
-
-Run CI-equivalent checks in this order:
-
-```sh
-ci/kas-container-shell-helper.sh ci/yocto-patchreview.sh
-ci/kas-container-shell-helper.sh ci/yocto-check-layer.sh
-ci/kas-container-shell-helper.sh ci/oe-selftest.sh
-```
-
-## 7) Commit message best practices (project style)
-
-For **backports**, preserve the original master commit message and metadata, and
-keep the `cherry-pick -x` trailer intact. The branch convention is to prefix the
-subject with `[Backport wrynose]`, as seen in recent history:
-
-- `[Backport wrynose] iq-9075-evk: build sdcc feature DTs as overlays (#2463)`
-- `[Backport wrynose] kgsl-dlkm: Update to v1.0.4 (#2409)`
-- `[Backport wrynose] linux-qcom-6.18 : update to tag qcom-6.18.y-20260611 (#2447)`
-
-The backported body should retain the original explanation and end with the
-cherry-pick trailer that `git cherry-pick -x` adds:
-
-```text
-(cherry picked from commit <sha>)
-```
-
-Follow the commit subject and message requirements documented in
-[CONTRIBUTING.md](CONTRIBUTING.md): an atomic change per commit, a
-`recipe-name: summary of the changes` subject, a plain-English body that
-explains the problem before the imperative actions, and the mandatory
-`Signed-off-by` (and, when applicable, `Assisted-by`) trailers.
+If the change **cannot** be submitted to `master` (it is specific to
+`wrynose`), then submit it directly against `wrynose`, and **explain in the
+commit body and PR description why it is wrynose-only** and not a backport.
+The general contribution workflow and the commit subject and message
+requirements are documented in [CONTRIBUTING.md](CONTRIBUTING.md).
 
 When committing programmatically, take the `Signed-off-by` identity from the
 local git configuration and append the trailer explicitly:
