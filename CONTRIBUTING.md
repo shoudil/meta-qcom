@@ -1,9 +1,5 @@
 # Contributing to meta-qcom
 
-Please submit any patches against the `meta-qcom` layer (branch **master**)
-by using the GitHub pull-request feature. Fork the repo, create a branch,
-do the work, rebase from upstream, and create the pull request.
-
 For some useful guidelines when submitting patches, please refer to:
 [Preparing Changes for Submission](https://docs.yoctoproject.org/dev/contributor-guide/submit-changes.html#preparing-changes-for-submission)
 

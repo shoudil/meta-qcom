@@ -145,9 +145,12 @@ build it with KAS using the configuration for your target machine and distro.
 
 ## Contributing
 
-Contributions are welcome. Please read [CONTRIBUTING.md](CONTRIBUTING.md) for
-the contribution workflow and the commit subject and message requirements
-before opening a pull request.
+Please submit any patches against the `meta-qcom` layer (branch **master**)
+by using the GitHub pull-request feature. Fork the repo, create a branch,
+do the work, rebase from upstream, and create the pull request.
+
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow
+and the commit subject and message requirements before opening a pull request.
 
 Branch **kirkstone** is not open for direct contributions, please raise an
 issue with the suggested change instead.
