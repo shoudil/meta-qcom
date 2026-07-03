@@ -129,102 +129,25 @@ We expect every change to be backported to `wrynose` unless it is specific to
 `wrynose` (e.g. it does not apply to `master`, or `master` has diverged in a way
 that makes the change meaningless there).
 
-### Default path: backport from master
+The full backport workflow — the default `git cherry-pick -x` path from
+`master`, the exception for wrynose-only changes, the CI-equivalent checks to
+run before opening a PR, and the `[Backport wrynose]` commit message
+conventions — is documented in [BACKPORTING.md](BACKPORTING.md).
 
-1. Land the change on **master** following the master workflow (fork, topic
-   branch, rebase on latest upstream `master`, open a PR).
-2. Once it is merged on `master`, backport the merged commit(s) to `wrynose`
-   using **`git cherry-pick -x`** so the backport records the original commit
-   hash in the message (`(cherry picked from commit <sha>)`):
+If the change **cannot** be submitted to `master` (it is specific to
+`wrynose`), then submit it directly against `wrynose`, and **explain in the
+commit body and PR description why it is wrynose-only** and not a backport.
+The general contribution workflow and the commit subject and message
+requirements are documented in [CONTRIBUTING.md](CONTRIBUTING.md).
 
-   ```sh
-   git fetch origin
-   git checkout -b backport/<PR-or-topic>-to-wrynose origin/wrynose
-   git cherry-pick -x <sha> [<sha> ...]      # -x records the source commit
-   # resolve conflicts if any, keeping the change minimal and equivalent
-   ```
-
-3. Run the CI-equivalent checks (see below).
-4. Open a GitHub pull request targeting **wrynose**. Follow the project's
-   `[Backport wrynose]` subject convention seen in history (see section 7).
-5. Use PR discussion for review iteration.
-
-### Exception: wrynose-only changes
-
-If the change **cannot** be submitted to `master` (it is specific to `wrynose`),
-then submit it directly against `wrynose`, and **explain in the commit body and
-PR description why it is wrynose-only** and not a backport. This mirrors the
-`README.md` contribution guidance for the stable branch.
-
-### Before opening/updating a wrynose PR
-
-Run CI-equivalent checks in this order:
-
-```sh
-ci/kas-container-shell-helper.sh ci/yocto-patchreview.sh
-ci/kas-container-shell-helper.sh ci/yocto-check-layer.sh
-ci/kas-container-shell-helper.sh ci/oe-selftest.sh
-```
-
-Important:
-
-- Follow Yocto submission guidance referenced in README:
-  [Preparing Changes for Submission](https://docs.yoctoproject.org/dev/contributor-guide/submit-changes.html#preparing-changes-for-submission)
-
-## 7) Commit message best practices (project style)
-
-For **backports**, preserve the original master commit message and metadata, and
-keep the `cherry-pick -x` trailer intact. The branch convention is to prefix the
-subject with `[Backport wrynose]`, as seen in recent history:
-
-- `[Backport wrynose] iq-9075-evk: build sdcc feature DTs as overlays (#2463)`
-- `[Backport wrynose] kgsl-dlkm: Update to v1.0.4 (#2409)`
-- `[Backport wrynose] linux-qcom-6.18 : update to tag qcom-6.18.y-20260611 (#2447)`
-
-The backported body should retain the original explanation and end with the
-cherry-pick trailer that `git cherry-pick -x` adds:
-
-```text
-(cherry picked from commit <sha>)
-```
-
-For the underlying change style (when authoring on `master` before backporting,
-or for wrynose-only changes), use the style seen in recent history:
-
-- `component: imperative summary` (preferred when scoped), e.g.
-  - `ci/qcom-distro: Include meta-dpdk layer (#1902)`
-  - `fit-dtb-compatible: drop SoC version suffixes from compatible strings`
-  - `debug.yml: enable FTrace settings in kernel cmdline (#2155)`
-- Or concise imperative summary when cross-cutting, e.g.
-  - `Drop SoC version suffixes from FIT DTB compatible strings (#2159)`
-
-Every commit **must** include a `Signed-off-by` trailer using the identity from
-the local git configuration:
-
-```sh
-git commit -s   # or pass --signoff; fetches user.name / user.email from git config
-```
-
-`git cherry-pick` preserves the original author's `Signed-off-by`; add your own
-with `git cherry-pick -s` if your workflow requires it. If committing
-programmatically, append the trailer explicitly:
+When committing programmatically, take the `Signed-off-by` identity from the
+local git configuration and append the trailer explicitly:
 
 ```text
 Signed-off-by: $(git config user.name) <$(git config user.email)>
 ```
 
-Never fabricate a name or email; always read from `git config`.
+Never fabricate a name or email; always read them from `git config`.
 
-Guidelines:
-
-- Keep subject line short and specific; capture intent, not a file-by-file dump.
-- Use imperative mood (`Add`, `Update`, `Drop`, `Enable`, `Revert`).
-- Add a body for non-trivial changes explaining **why** and key design decisions.
-- Wrap body lines for readability (~72 chars).
-- Use consistent recipe bump wording for version updates, e.g.
-  `recipe-name: Update to vX.Y.Z`.
-- Include PR reference in subject when appropriate: `(#NNNN)`.
-- Avoid mixing unrelated changes in one commit; split logically.
-- Each patch must be logically coherent, self-contained, and independently buildable.
-- The tree must remain in a functional state after every commit.
-- Fixups within the same patch series are not allowed; changes should be corrected in the patch where they are introduced.
+Fixups within the same patch series are not allowed; changes should be
+corrected in the patch where they are introduced.

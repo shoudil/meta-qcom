@@ -149,14 +149,13 @@ by using the GitHub pull-request feature. Fork the repo, create a branch,
 do the work, rebase from upstream, and create the pull request.
 
 On the stable (branch **wrynose**) patches should be integrated as a backport
-whenever possible, and for that they must follow the (branch **master**) process.
+whenever possible. See [BACKPORTING.md](BACKPORTING.md) for the backport
+workflow.
+
 If the changes cannot be submitted to (branch **master**), then they must be
 submitted to (branch **wrynose**), including the necessary explanation.
-
-For some useful guidelines when submitting patches, please refer to:
-[Preparing Changes for Submission](https://docs.yoctoproject.org/dev/contributor-guide/submit-changes.html#preparing-changes-for-submission)
-
-Pull requests will be discussed within the GitHub pull-request infrastructure.
+Please read [CONTRIBUTING.md](CONTRIBUTING.md) for the contribution workflow
+and the commit subject and message requirements before opening a pull request.
 
 Branch **kirkstone** is not open for direct contributions, please raise an
 issue with the suggested change instead.
