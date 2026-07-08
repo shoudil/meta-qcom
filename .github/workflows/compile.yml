@@ -153,12 +153,6 @@ jobs:
 
       - uses: actions/upload-artifact@v6
         with:
-          name: buildstats-${{ inputs.distro_name }}${{ inputs.kernel_dirname }}-${{ inputs.machine }}
-          path: |
-            buildstats*
-
-      - uses: actions/upload-artifact@v6
-        with:
           name: kas-build-${{ inputs.distro_name }}${{ inputs.kernel_dirname }}-${{ inputs.machine }}
           path: kas-build.yml
 
