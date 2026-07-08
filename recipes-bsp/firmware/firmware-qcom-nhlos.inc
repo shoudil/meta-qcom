@@ -70,7 +70,14 @@ do_install:prepend() {
             elif [ -r ${B}/$fw ] ; then
                 install -m 0644 ${B}/$fw ${D}${FW_QCOM_PATH}
             elif [ -r ${B}/firmware/image/$fw ] ; then
-                install -m 0644 ${B}/firmware/image/$fw ${D}${FW_QCOM_PATH}
+                if [ -d ${B}/firmware/image/$fw ] ; then
+                    find ${B}/firmware/image/$fw -type f | while read f ; do
+                        relpath="${f#${B}/firmware/image/}"
+                        install -Dm 0644 "$f" ${D}${FW_QCOM_PATH}/"$relpath"
+                    done
+                else
+                    install -m 0644 ${B}/firmware/image/$fw ${D}${FW_QCOM_PATH}
+                fi
             fi
         done
     fi
