@@ -3,7 +3,7 @@ header:
 overrides:
     repos:
         oe-core:
-            commit: 5d1aa5c806c061a2994f4decb59016610f093213
+            commit: 05b964cc4b56783715fa2db7c7303d978ccef7a4
         meta-lts-mixins:
             commit: 6ad95d00531b32ec01792ab496718943dc95277b
         bitbake:
